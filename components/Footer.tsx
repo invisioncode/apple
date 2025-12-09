@@ -8,8 +8,7 @@ const Footer: React.FC = () => {
   const location = useLocation();
 
   const toggleSection = (title: string) => {
-    if (window.innerWidth >= 768) return; // Disable toggle on desktop
-    setOpenSection(openSection === title ? null : title);
+    setOpenSection(prev => prev === title ? null : title);
   };
 
   const getBreadcrumbName = (path: string) => {
@@ -41,7 +40,7 @@ const Footer: React.FC = () => {
         </section>
 
         {/* Breadcrumbs */}
-        <nav aria-label="Breadcrumbs" className="flex items-center gap-2 py-4 mb-4 text-gray-500">
+        <nav aria-label="Breadcrumbs" className="flex items-center gap-2 py-4 mb-4 text-gray-500 border-b border-gray-300 md:border-b-0">
             <Link to="/" className="text-gray-800 hover:text-black" aria-label="Apple Home">
                 <Apple size={16} className="fill-current" />
             </Link>
@@ -85,11 +84,11 @@ const Footer: React.FC = () => {
                 <button 
                     type="button"
                     onClick={() => toggleSection(section.title)}
-                    className="flex items-center justify-between w-full py-3"
+                    className="flex items-center justify-between w-full py-3 text-left focus:outline-none"
                     aria-expanded={openSection === section.title}
                     aria-controls={`footer-section-${index}`}
                 >
-                    {section.title}
+                    <span className="flex-1">{section.title}</span>
                     <ChevronDown 
                         className={`w-4 h-4 text-gray-500 transition-transform duration-300 ${openSection === section.title ? 'rotate-180' : ''}`} 
                         aria-hidden="true"
@@ -97,27 +96,29 @@ const Footer: React.FC = () => {
                 </button>
               </h3>
               
-              <ul 
+              <div 
                 id={`footer-section-${index}`}
                 className={`
-                    overflow-hidden transition-all duration-300 ease-in-out list-none p-0 m-0
-                    ${openSection === section.title ? 'max-h-96 opacity-100 pb-4' : 'max-h-0 opacity-0'}
+                    overflow-hidden transition-all duration-300 ease-in-out
+                    ${openSection === section.title ? 'max-h-[1000px] opacity-100 pb-4' : 'max-h-0 opacity-0'}
                 `}
               >
-                {section.links.map((link) => (
-                  <li key={link} className="mb-2 pl-2">
-                    <a href="#" className="text-gray-600 hover:underline hover:text-[#1d1d1f] block py-1">
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+                <ul className="list-none p-0 m-0 space-y-2">
+                  {section.links.map((link) => (
+                    <li key={link} className="pl-1">
+                      <a href="#" className="text-gray-600 hover:underline hover:text-[#1d1d1f] block py-1">
+                        {link}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           ))}
         </nav>
 
         {/* Bottom */}
-        <div className="pt-6 border-t border-gray-300 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 pb-10">
+        <div className="pt-6 md:border-t border-gray-300 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 pb-10">
           <div className="text-center md:text-left w-full">
             <p className="mb-2">Xem thêm cách để mua hàng: <a href="#" className="text-apple-blue hover:underline">Tìm cửa hàng Apple Store</a> hoặc <a href="#" className="text-apple-blue hover:underline">nhà cung cấp khác</a> ở gần bạn. Hoặc gọi 1800-1127.</p>
             
