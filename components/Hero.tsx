@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from './Button';
 import { ProductHeroProps } from '../types';
 
@@ -11,6 +11,31 @@ const Hero: React.FC<ProductHeroProps> = ({
   links 
 }) => {
   const [loadingBtnIndex, setLoadingBtnIndex] = useState<number | null>(null);
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  // Clean up timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+  
+  const handleButtonClick = (index: number) => {
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    setLoadingBtnIndex(index);
+
+    // Reset loading state after a delay to ensure it doesn't spin forever
+    // if navigation is instant or if it's a hash link that doesn't unmount the component.
+    timeoutRef.current = setTimeout(() => {
+      setLoadingBtnIndex(null);
+    }, 2000);
+  };
   
   const textColorClass = textColor === 'white' ? 'text-white' : 'text-[#1d1d1f]';
   const overlayClass = textColor === 'white' ? 'bg-gradient-to-t from-black/20 to-transparent' : '';
@@ -55,7 +80,7 @@ const Hero: React.FC<ProductHeroProps> = ({
                 variant={link.primary ? 'primary' : 'outline'}
                 className={!link.primary && textColor === 'white' ? '!text-white !border-white hover:!bg-white hover:!text-black' : ''}
                 ariaLabel={`${link.label} ${title}`}
-                onClick={() => setLoadingBtnIndex(idx)}
+                onClick={() => handleButtonClick(idx)}
                 isLoading={loadingBtnIndex === idx}
              />
           ))}

@@ -32,7 +32,7 @@ const Navbar: React.FC = () => {
   const handleMouseLeave = () => {
     hoverTimeoutRef.current = setTimeout(() => {
         setHoveredLabel(null);
-    }, 150); // Slight delay to allow moving mouse from link to submenu
+    }, 200); // Slight delay to allow moving mouse from link to submenu
   };
 
   const activeSubMenu = hoveredLabel ? NAV_SUBMENUS[hoveredLabel] : null;
@@ -44,7 +44,6 @@ const Navbar: React.FC = () => {
           isMobileMenuOpen || hoveredLabel ? 'bg-[#161617]' : (isScrolled ? 'bg-[#161617]/80 backdrop-blur-md' : 'bg-[#161617]/90')
         }`}
         aria-label="Global"
-        onMouseLeave={handleMouseLeave}
       >
         <div className="max-w-[1024px] mx-auto px-4 h-[44px] flex items-center justify-between relative z-50">
           
@@ -70,6 +69,7 @@ const Navbar: React.FC = () => {
                 aria-label="Apple" 
                 onClick={closeMobileMenu}
                 onMouseEnter={() => handleMouseEnter('')} // Close submenu when hovering logo
+                onMouseLeave={handleMouseLeave}
              >
                 <Apple size={20} className="fill-current" aria-hidden="true" />
              </Link>
@@ -83,6 +83,7 @@ const Navbar: React.FC = () => {
                     key={item.label} 
                     className="h-full flex items-center"
                     onMouseEnter={() => handleMouseEnter(item.label)}
+                    onMouseLeave={handleMouseLeave}
                 >
                     <Link 
                         to={item.href}
@@ -106,6 +107,7 @@ const Navbar: React.FC = () => {
                 className="hover:opacity-80 transition-opacity p-1"
                 aria-label="Search apple.com"
                 onMouseEnter={() => handleMouseEnter('')} // Close submenu
+                onMouseLeave={handleMouseLeave}
             >
                <Search size={18} aria-hidden="true" />
             </button>
@@ -114,6 +116,7 @@ const Navbar: React.FC = () => {
                 className="hover:opacity-80 transition-opacity p-1" 
                 aria-label="Shopping Bag"
                 onMouseEnter={() => handleMouseEnter('')} // Close submenu
+                onMouseLeave={handleMouseLeave}
             >
                <ShoppingBag size={18} aria-hidden="true" />
             </Link>
@@ -123,17 +126,16 @@ const Navbar: React.FC = () => {
         {/* Desktop Submenu Overlay */}
         <div 
             className={`
-                absolute top-full left-0 w-full bg-[#161617] text-white overflow-hidden transition-all duration-500 ease-in-out
-                ${activeSubMenu ? 'opacity-100 visible max-h-[500px] border-b border-gray-700/50 shadow-2xl' : 'opacity-0 invisible max-h-0'}
+                absolute top-full left-0 w-full bg-[#161617] text-white overflow-hidden transition-all duration-300 ease-out
+                ${activeSubMenu ? 'opacity-100 visible max-h-[500px] border-b border-gray-700/50 shadow-2xl pb-12 pt-4' : 'opacity-0 invisible max-h-0 pt-0 pb-0'}
             `}
             onMouseEnter={() => {
                 if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
             }}
             onMouseLeave={handleMouseLeave}
         >
-            <div className="max-w-[1024px] mx-auto px-4 py-10">
-                {/* Grid layout for columns to align strictly with navbar items if needed, but flex is safer for variable content */}
-                <div className="flex flex-row justify-start gap-x-12 pl-4"> 
+            <div className="max-w-[1024px] mx-auto px-4">
+                <div className="flex flex-row justify-start gap-x-12 pl-4 animate-fade-in"> 
                     {activeSubMenu && activeSubMenu.map((group, idx) => (
                         <div key={idx} className="flex flex-col gap-3 min-w-[140px]">
                             {group.title && (
