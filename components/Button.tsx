@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 
 interface ButtonProps {
   label: string;
@@ -9,6 +10,12 @@ interface ButtonProps {
   size?: 'sm' | 'md' | 'lg';
   className?: string;
   ariaLabel?: string;
+  disabled?: boolean;
+  isLoading?: boolean;
+  'aria-expanded'?: boolean;
+  'aria-controls'?: string;
+  'aria-haspopup'?: boolean | "dialog" | "menu" | "listbox" | "tree" | "grid";
+  'aria-pressed'?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({ 
@@ -18,14 +25,20 @@ const Button: React.FC<ButtonProps> = ({
   href, 
   size = 'md',
   className = '',
-  ariaLabel
+  ariaLabel,
+  disabled = false,
+  isLoading = false,
+  'aria-expanded': ariaExpanded,
+  'aria-controls': ariaControls,
+  'aria-haspopup': ariaHasPopup,
+  'aria-pressed': ariaPressed,
 }) => {
-  const baseStyles = "inline-flex items-center justify-center rounded-full transition-all duration-300 font-medium cursor-pointer";
+  const baseStyles = "inline-flex items-center justify-center rounded-full transition-all duration-300 font-medium cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#0071e3] disabled:opacity-50 disabled:cursor-not-allowed";
   
   const variants = {
     primary: "bg-[#0071e3] text-white hover:bg-[#0077ed]",
     outline: "bg-transparent border border-[#0071e3] text-[#0071e3] hover:bg-[#0071e3] hover:text-white",
-    link: "bg-transparent text-[#0066cc] hover:underline hover:text-[#004499] !p-0 !rounded-none",
+    link: "bg-transparent text-[#0066cc] hover:underline hover:text-[#004499] !p-0 !rounded-none focus-visible:ring-0 focus-visible:underline",
   };
 
   const sizes = {
@@ -36,21 +49,44 @@ const Button: React.FC<ButtonProps> = ({
 
   // Link variant ignores size usually, but we keep it safe
   const appliedSize = variant === 'link' ? '' : sizes[size];
+  const combinedClassName = `${baseStyles} ${variants[variant]} ${appliedSize} ${className} ${isLoading ? 'opacity-80 cursor-wait' : ''}`;
 
   const content = (
-    <span className="flex items-center gap-1">
-      {label}
-      {variant === 'link' && <span className="text-xs">›</span>}
+    <span className="flex items-center gap-2">
+      {isLoading && <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />}
+      <span>{label}</span>
+      {!isLoading && variant === 'link' && <span className="text-xs" aria-hidden="true">›</span>}
     </span>
   );
 
+  const commonAriaProps = {
+    'aria-label': ariaLabel || label,
+    'aria-disabled': (disabled || isLoading) ? true : undefined,
+    'aria-busy': isLoading ? true : undefined,
+  };
+
+  const isInteractive = !disabled && !isLoading;
+
   if (href) {
+    if (disabled) {
+        return (
+            <span 
+                className={`${combinedClassName} opacity-50 cursor-not-allowed`} 
+                role="link" 
+                aria-disabled="true"
+            >
+                {content}
+            </span>
+        );
+    }
+
     if (href.startsWith('http') || href.startsWith('#')) {
       return (
         <a 
           href={href} 
-          className={`${baseStyles} ${variants[variant]} ${appliedSize} ${className}`}
-          aria-label={ariaLabel || label}
+          onClick={isInteractive ? onClick : (e) => e.preventDefault()}
+          className={combinedClassName}
+          {...commonAriaProps}
         >
           {content}
         </a>
@@ -59,8 +95,9 @@ const Button: React.FC<ButtonProps> = ({
     return (
       <Link 
         to={href} 
-        className={`${baseStyles} ${variants[variant]} ${appliedSize} ${className}`}
-        aria-label={ariaLabel || label}
+        onClick={isInteractive ? onClick : (e) => e.preventDefault()}
+        className={combinedClassName}
+        {...commonAriaProps}
       >
         {content}
       </Link>
@@ -70,9 +107,14 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button 
       type="button"
-      onClick={onClick} 
-      className={`${baseStyles} ${variants[variant]} ${appliedSize} ${className}`}
-      aria-label={ariaLabel || label}
+      onClick={onClick}
+      disabled={disabled || isLoading}
+      className={combinedClassName}
+      {...commonAriaProps}
+      aria-expanded={ariaExpanded}
+      aria-controls={ariaControls}
+      aria-haspopup={ariaHasPopup}
+      aria-pressed={ariaPressed}
     >
       {content}
     </button>

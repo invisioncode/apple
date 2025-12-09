@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, Search, ShoppingBag, Apple } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { NAV_ITEMS } from '../constants';
+import { NAV_ITEMS, NAV_SUBMENUS } from '../constants';
 import SmartSearch from './SmartSearch';
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  
+  // State for submenus
+  const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,15 +23,30 @@ const Navbar: React.FC = () => {
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
+  // Handle Desktop Hover Logic
+  const handleMouseEnter = (label: string) => {
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    setHoveredLabel(label);
+  };
+
+  const handleMouseLeave = () => {
+    hoverTimeoutRef.current = setTimeout(() => {
+        setHoveredLabel(null);
+    }, 150); // Slight delay to allow moving mouse from link to submenu
+  };
+
+  const activeSubMenu = hoveredLabel ? NAV_SUBMENUS[hoveredLabel] : null;
+
   return (
     <>
       <nav 
         className={`fixed top-0 w-full z-40 transition-all duration-300 ${
-          isMobileMenuOpen ? 'bg-black' : 'bg-[#161617]/80 backdrop-blur-md'
+          isMobileMenuOpen || hoveredLabel ? 'bg-[#161617]' : (isScrolled ? 'bg-[#161617]/80 backdrop-blur-md' : 'bg-[#161617]/90')
         }`}
         aria-label="Global"
+        onMouseLeave={handleMouseLeave}
       >
-        <div className="max-w-[1024px] mx-auto px-4 h-[44px] flex items-center justify-between">
+        <div className="max-w-[1024px] mx-auto px-4 h-[44px] flex items-center justify-between relative z-50">
           
           {/* Mobile Menu Button */}
           <div className="md:hidden z-50 text-[#e8e8ed]">
@@ -43,21 +62,34 @@ const Navbar: React.FC = () => {
             </button>
           </div>
 
-          {/* Logo (Centered on mobile, Left on Desktop) */}
+          {/* Logo */}
           <div className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 z-50">
-             <Link to="/" className="text-[#e8e8ed] hover:opacity-80 transition-opacity" aria-label="Apple" onClick={closeMobileMenu}>
+             <Link 
+                to="/" 
+                className="text-[#e8e8ed] hover:opacity-80 transition-opacity" 
+                aria-label="Apple" 
+                onClick={closeMobileMenu}
+                onMouseEnter={() => handleMouseEnter('')} // Close submenu when hovering logo
+             >
                 <Apple size={20} className="fill-current" aria-hidden="true" />
              </Link>
           </div>
 
           {/* Desktop Nav Items */}
-          <div className="hidden md:flex justify-between items-center w-full px-8">
-            <ul className="flex justify-between items-center w-full list-none m-0 p-0">
+          <div className="hidden md:flex justify-between items-center w-full px-8 h-full">
+            <ul className="flex justify-between items-center w-full list-none m-0 p-0 h-full">
                 {NAV_ITEMS.map((item) => (
-                <li key={item.label}>
+                <li 
+                    key={item.label} 
+                    className="h-full flex items-center"
+                    onMouseEnter={() => handleMouseEnter(item.label)}
+                >
                     <Link 
                         to={item.href}
-                        className="text-[12px] text-[#e8e8ed]/80 hover:text-white transition-colors duration-300 tracking-tight"
+                        className={`
+                            text-[12px] transition-colors duration-300 tracking-tight px-2
+                            ${hoveredLabel && hoveredLabel !== item.label ? 'text-gray-500' : 'text-[#e8e8ed]/80 hover:text-white'}
+                        `}
                     >
                         {item.label}
                     </Link>
@@ -73,13 +105,58 @@ const Navbar: React.FC = () => {
                 onClick={() => setIsSearchOpen(true)}
                 className="hover:opacity-80 transition-opacity p-1"
                 aria-label="Search apple.com"
+                onMouseEnter={() => handleMouseEnter('')} // Close submenu
             >
                <Search size={18} aria-hidden="true" />
             </button>
-            <Link to="/store" className="hover:opacity-80 transition-opacity p-1" aria-label="Shopping Bag">
+            <Link 
+                to="/store" 
+                className="hover:opacity-80 transition-opacity p-1" 
+                aria-label="Shopping Bag"
+                onMouseEnter={() => handleMouseEnter('')} // Close submenu
+            >
                <ShoppingBag size={18} aria-hidden="true" />
             </Link>
           </div>
+        </div>
+
+        {/* Desktop Submenu Overlay */}
+        <div 
+            className={`
+                absolute top-full left-0 w-full bg-[#161617] text-white overflow-hidden transition-all duration-500 ease-in-out
+                ${activeSubMenu ? 'opacity-100 visible max-h-[500px] border-b border-gray-700/50 shadow-2xl' : 'opacity-0 invisible max-h-0'}
+            `}
+            onMouseEnter={() => {
+                if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+            }}
+            onMouseLeave={handleMouseLeave}
+        >
+            <div className="max-w-[1024px] mx-auto px-4 py-10">
+                <div className="flex flex-row justify-start gap-12">
+                    {activeSubMenu && activeSubMenu.map((group, idx) => (
+                        <div key={idx} className="flex flex-col gap-3 min-w-[120px]">
+                            {group.title && (
+                                <span className="text-[12px] text-gray-400 font-normal mb-1 block">
+                                    {group.title}
+                                </span>
+                            )}
+                            <ul className="space-y-2">
+                                {group.links.map((link, lIdx) => (
+                                    <li key={lIdx}>
+                                        <Link 
+                                            to={link.href}
+                                            className="text-[20px] font-semibold text-[#e8e8ed] hover:text-white block leading-tight"
+                                            onClick={() => setHoveredLabel(null)}
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
 
         {/* Mobile Menu Content */}
@@ -123,6 +200,17 @@ const Navbar: React.FC = () => {
             </nav>
           </div>
         </div>
+        
+        {/* Blur Overlay for Page Content when Menu is Open */}
+        <div 
+            className={`
+                fixed inset-0 bg-black/40 backdrop-blur-sm z-30 transition-opacity duration-500 pointer-events-none md:pointer-events-auto
+                ${hoveredLabel ? 'opacity-100 visible' : 'opacity-0 invisible'}
+            `} 
+            style={{ top: '44px', height: 'calc(100vh - 44px)' }}
+            aria-hidden="true"
+        />
+
       </nav>
 
       {/* Smart Search Modal */}

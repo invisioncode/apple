@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from './Button';
 import { ProductHeroProps } from '../types';
 
@@ -10,6 +10,8 @@ const Hero: React.FC<ProductHeroProps> = ({
   textColor, 
   links 
 }) => {
+  const [loadingBtnIndex, setLoadingBtnIndex] = useState<number | null>(null);
+  
   const textColorClass = textColor === 'white' ? 'text-white' : 'text-[#1d1d1f]';
   const overlayClass = textColor === 'white' ? 'bg-gradient-to-t from-black/20 to-transparent' : '';
   const bgColorClass = textColor === 'white' ? 'bg-black' : 'bg-[#f5f5f7]';
@@ -53,6 +55,8 @@ const Hero: React.FC<ProductHeroProps> = ({
                 variant={link.primary ? 'primary' : 'outline'}
                 className={!link.primary && textColor === 'white' ? '!text-white !border-white hover:!bg-white hover:!text-black' : ''}
                 ariaLabel={`${link.label} ${title}`}
+                onClick={() => setLoadingBtnIndex(idx)}
+                isLoading={loadingBtnIndex === idx}
              />
           ))}
         </div>

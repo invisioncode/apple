@@ -27,3 +27,18 @@ export interface FooterSection {
   title: string;
   links: string[];
 }
+
+// New Types for Submenus
+export interface SubMenuLink {
+  label: string;
+  href: string;
+}
+
+export interface SubMenuGroup {
+  title?: string; // e.g., "Explore Mac", "Shop Mac"
+  links: SubMenuLink[];
+}
+
+export interface SubMenuData {
+  [key: string]: SubMenuGroup[]; // key matches the NavItem label (e.g., "Mac")
+}
