@@ -87,7 +87,7 @@ const Navbar: React.FC = () => {
                     <Link 
                         to={item.href}
                         className={`
-                            text-[12px] transition-colors duration-300 tracking-tight px-2
+                            text-[12px] transition-all duration-300 tracking-tight px-2 hover:underline hover:underline-offset-4 decoration-white/50
                             ${hoveredLabel && hoveredLabel !== item.label ? 'text-gray-500' : 'text-[#e8e8ed]/80 hover:text-white'}
                         `}
                     >
