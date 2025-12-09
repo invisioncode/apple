@@ -9,8 +9,8 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'AirPods', href: '/airpods' },
   { label: 'TV & Nhà', href: '/tv-home' },
   { label: 'Giải Trí', href: '/entertainment' },
-  { label: 'Phụ Kiện', href: '#' },
-  { label: 'Hỗ Trợ', href: '#' },
+  { label: 'Phụ Kiện', href: '/accessories' },
+  { label: 'Hỗ Trợ', href: '/support' },
 ];
 
 export const NAV_SUBMENUS: SubMenuData = {
@@ -18,28 +18,28 @@ export const NAV_SUBMENUS: SubMenuData = {
     {
       title: 'Mua Sắm',
       links: [
-        { label: 'Mua sản phẩm mới nhất', href: '#' },
+        { label: 'Mua sản phẩm mới nhất', href: '/store' },
         { label: 'Mac', href: '/mac' },
         { label: 'iPad', href: '/ipad' },
         { label: 'iPhone', href: '/iphone' },
         { label: 'Apple Watch', href: '/watch' },
-        { label: 'Phụ kiện', href: '#' },
+        { label: 'Phụ kiện', href: '/accessories' },
       ]
     },
     {
       title: 'Liên kết nhanh',
       links: [
-        { label: 'Tìm cửa hàng', href: '#' },
-        { label: 'Tình trạng đơn hàng', href: '#' },
-        { label: 'Tài chính', href: '#' },
+        { label: 'Tìm cửa hàng', href: '/store/find-store' },
+        { label: 'Tình trạng đơn hàng', href: '/store/order-status' },
+        { label: 'Tài chính', href: '/store/financing' },
       ]
     },
     {
       title: 'Ưu đãi đặc biệt',
       links: [
-        { label: 'Sản phẩm tân trang', href: '#' },
-        { label: 'Giáo dục', href: '#' },
-        { label: 'Doanh nghiệp', href: '#' },
+        { label: 'Sản phẩm tân trang', href: '/store/refurbished' },
+        { label: 'Giáo dục', href: '/store/education' },
+        { label: 'Doanh nghiệp', href: '/store/business' },
       ]
     }
   ],
@@ -48,30 +48,30 @@ export const NAV_SUBMENUS: SubMenuData = {
       title: 'Khám Phá Mac',
       links: [
         { label: 'Khám phá tất cả Mac', href: '/mac' },
-        { label: 'MacBook Air', href: '#' },
-        { label: 'MacBook Pro', href: '#' },
-        { label: 'iMac', href: '#' },
-        { label: 'Mac mini', href: '#' },
-        { label: 'Mac Studio', href: '#' },
-        { label: 'Mac Pro', href: '#' },
-        { label: 'Màn hình', href: '#' },
+        { label: 'MacBook Air', href: '/mac/macbook-air' },
+        { label: 'MacBook Pro', href: '/mac/macbook-pro' },
+        { label: 'iMac', href: '/mac/imac' },
+        { label: 'Mac mini', href: '/mac/mac-mini' },
+        { label: 'Mac Studio', href: '/mac/mac-studio' },
+        { label: 'Mac Pro', href: '/mac/mac-pro' },
+        { label: 'Màn hình', href: '/mac/displays' },
       ]
     },
     {
       title: 'Mua Mac',
       links: [
-        { label: 'Mua Mac', href: '#' },
-        { label: 'Phụ kiện Mac', href: '#' },
-        { label: 'Tài chính', href: '#' },
+        { label: 'Mua Mac', href: '/store/buy-mac' },
+        { label: 'Phụ kiện Mac', href: '/mac/accessories' },
+        { label: 'Tài chính', href: '/mac/financing' },
       ]
     },
     {
       title: 'Hơn nữa về Mac',
       links: [
-        { label: 'Hỗ trợ Mac', href: '#' },
-        { label: 'macOS Sequoia', href: '#' },
-        { label: 'Apple Intelligence', href: '#' },
-        { label: 'Continuity', href: '#' },
+        { label: 'Hỗ trợ Mac', href: '/support/mac' },
+        { label: 'macOS Sequoia', href: '/mac/macos-sequoia' },
+        { label: 'Apple Intelligence', href: '/mac/apple-intelligence' },
+        { label: 'Continuity', href: '/mac/continuity' },
       ]
     }
   ],
@@ -80,26 +80,26 @@ export const NAV_SUBMENUS: SubMenuData = {
       title: 'Khám Phá iPad',
       links: [
         { label: 'Khám phá tất cả iPad', href: '/ipad' },
-        { label: 'iPad Pro', href: '#' },
-        { label: 'iPad Air', href: '#' },
-        { label: 'iPad', href: '#' },
-        { label: 'iPad mini', href: '#' },
-        { label: 'Apple Pencil', href: '#' },
-        { label: 'Bàn phím', href: '#' },
+        { label: 'iPad Pro', href: '/ipad/ipad-pro' },
+        { label: 'iPad Air', href: '/ipad/ipad-air' },
+        { label: 'iPad', href: '/ipad/ipad-10th-gen' },
+        { label: 'iPad mini', href: '/ipad/ipad-mini' },
+        { label: 'Apple Pencil', href: '/ipad/apple-pencil' },
+        { label: 'Bàn phím', href: '/ipad/keyboards' },
       ]
     },
     {
       title: 'Mua iPad',
       links: [
-        { label: 'Mua iPad', href: '#' },
-        { label: 'Phụ kiện iPad', href: '#' },
+        { label: 'Mua iPad', href: '/store/buy-ipad' },
+        { label: 'Phụ kiện iPad', href: '/ipad/accessories' },
       ]
     },
     {
       title: 'Hơn nữa về iPad',
       links: [
-        { label: 'Hỗ trợ iPad', href: '#' },
-        { label: 'iPadOS 18', href: '#' },
+        { label: 'Hỗ trợ iPad', href: '/support/ipad' },
+        { label: 'iPadOS 18', href: '/ipad/ipados-18' },
       ]
     }
   ],
@@ -108,26 +108,26 @@ export const NAV_SUBMENUS: SubMenuData = {
       title: 'Khám Phá iPhone',
       links: [
         { label: 'Khám phá tất cả iPhone', href: '/iphone' },
-        { label: 'iPhone 16 Pro', href: '#' },
-        { label: 'iPhone 16', href: '#' },
-        { label: 'iPhone 15', href: '#' },
-        { label: 'iPhone 14', href: '#' },
-        { label: 'iPhone SE', href: '#' },
+        { label: 'iPhone 16 Pro', href: '/iphone/iphone-16-pro' },
+        { label: 'iPhone 16', href: '/iphone/iphone-16' },
+        { label: 'iPhone 15', href: '/iphone/iphone-15' },
+        { label: 'iPhone 14', href: '/iphone/iphone-14' },
+        { label: 'iPhone SE', href: '/iphone/iphone-se' },
       ]
     },
     {
       title: 'Mua iPhone',
       links: [
-        { label: 'Mua iPhone', href: '#' },
-        { label: 'Phụ kiện iPhone', href: '#' },
+        { label: 'Mua iPhone', href: '/store/buy-iphone' },
+        { label: 'Phụ kiện iPhone', href: '/iphone/accessories' },
       ]
     },
     {
       title: 'Hơn nữa về iPhone',
       links: [
-        { label: 'Hỗ trợ iPhone', href: '#' },
-        { label: 'iOS 18', href: '#' },
-        { label: 'Quyền riêng tư', href: '#' },
+        { label: 'Hỗ trợ iPhone', href: '/support/iphone' },
+        { label: 'iOS 18', href: '/iphone/ios-18' },
+        { label: 'Quyền riêng tư', href: '/iphone/privacy' },
       ]
     }
   ],
@@ -136,25 +136,25 @@ export const NAV_SUBMENUS: SubMenuData = {
       title: 'Khám Phá Watch',
       links: [
         { label: 'Khám phá tất cả Apple Watch', href: '/watch' },
-        { label: 'Apple Watch Series 10', href: '#' },
-        { label: 'Apple Watch Ultra 2', href: '#' },
-        { label: 'Apple Watch SE', href: '#' },
-        { label: 'Apple Watch Nike', href: '#' },
+        { label: 'Apple Watch Series 10', href: '/watch/apple-watch-series-10' },
+        { label: 'Apple Watch Ultra 2', href: '/watch/apple-watch-ultra-2' },
+        { label: 'Apple Watch SE', href: '/watch/apple-watch-se' },
+        { label: 'Apple Watch Nike', href: '/watch/apple-watch-nike' },
       ]
     },
     {
       title: 'Mua Watch',
       links: [
-        { label: 'Mua Apple Watch', href: '#' },
-        { label: 'Dây đeo', href: '#' },
-        { label: 'Phụ kiện Watch', href: '#' },
+        { label: 'Mua Apple Watch', href: '/store/buy-watch' },
+        { label: 'Dây đeo', href: '/watch/bands' },
+        { label: 'Phụ kiện Watch', href: '/watch/accessories' },
       ]
     },
     {
       title: 'Hơn nữa về Watch',
       links: [
-        { label: 'Hỗ trợ Apple Watch', href: '#' },
-        { label: 'watchOS 11', href: '#' },
+        { label: 'Hỗ trợ Apple Watch', href: '/support/watch' },
+        { label: 'watchOS 11', href: '/watch/watchos-11' },
       ]
     }
   ],
@@ -163,16 +163,16 @@ export const NAV_SUBMENUS: SubMenuData = {
       title: 'Khám Phá AirPods',
       links: [
         { label: 'Khám phá tất cả AirPods', href: '/airpods' },
-        { label: 'AirPods 4', href: '#' },
-        { label: 'AirPods Pro 2', href: '#' },
-        { label: 'AirPods Max', href: '#' },
+        { label: 'AirPods 4', href: '/airpods/airpods-4' },
+        { label: 'AirPods Pro 2', href: '/airpods/airpods-pro-2' },
+        { label: 'AirPods Max', href: '/airpods/airpods-max' },
       ]
     },
     {
       title: 'Mua AirPods',
       links: [
-        { label: 'Mua AirPods', href: '#' },
-        { label: 'Hỗ trợ AirPods', href: '#' },
+        { label: 'Mua AirPods', href: '/store/buy-airpods' },
+        { label: 'Hỗ trợ AirPods', href: '/support/airpods' },
       ]
     }
   ],
@@ -181,17 +181,17 @@ export const NAV_SUBMENUS: SubMenuData = {
       title: 'Khám Phá TV & Nhà',
       links: [
         { label: 'Khám phá TV & Nhà', href: '/tv-home' },
-        { label: 'Apple TV 4K', href: '#' },
-        { label: 'HomePod', href: '#' },
-        { label: 'HomePod mini', href: '#' },
+        { label: 'Apple TV 4K', href: '/tv-home/apple-tv-4k' },
+        { label: 'HomePod', href: '/tv-home/homepod' },
+        { label: 'HomePod mini', href: '/tv-home/homepod-mini' },
       ]
     },
     {
       title: 'Mua TV & Nhà',
       links: [
-        { label: 'Mua Apple TV 4K', href: '#' },
-        { label: 'Mua HomePod', href: '#' },
-        { label: 'Phụ kiện TV & Nhà', href: '#' },
+        { label: 'Mua Apple TV 4K', href: '/store/buy-apple-tv' },
+        { label: 'Mua HomePod', href: '/store/buy-homepod' },
+        { label: 'Phụ kiện TV & Nhà', href: '/tv-home/accessories' },
       ]
     }
   ],
@@ -199,13 +199,13 @@ export const NAV_SUBMENUS: SubMenuData = {
     {
       title: 'Khám Phá Giải Trí',
       links: [
-        { label: 'Apple One', href: '#' },
-        { label: 'Apple TV+', href: '#' },
-        { label: 'Apple Music', href: '#' },
-        { label: 'Apple Arcade', href: '#' },
-        { label: 'Apple Podcasts', href: '#' },
-        { label: 'Apple Books', href: '#' },
-        { label: 'App Store', href: '#' },
+        { label: 'Apple One', href: '/entertainment/apple-one' },
+        { label: 'Apple TV+', href: '/entertainment/apple-tv-plus' },
+        { label: 'Apple Music', href: '/entertainment/apple-music' },
+        { label: 'Apple Arcade', href: '/entertainment/apple-arcade' },
+        { label: 'Apple Podcasts', href: '/entertainment/apple-podcasts' },
+        { label: 'Apple Books', href: '/entertainment/apple-books' },
+        { label: 'App Store', href: '/entertainment/app-store' },
       ]
     }
   ]

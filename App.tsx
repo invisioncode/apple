@@ -11,6 +11,7 @@ import Watch from './pages/Watch';
 import Airpods from './pages/Airpods';
 import TvHome from './pages/TvHome';
 import Entertainment from './pages/Entertainment';
+import ProductDetail from './pages/ProductDetail';
 
 // Scroll to top wrapper
 const ScrollToTop = () => {
@@ -41,6 +42,10 @@ function App() {
                 <Route path="/airpods" element={<Airpods />} />
                 <Route path="/tv-home" element={<TvHome />} />
                 <Route path="/entertainment" element={<Entertainment />} />
+                
+                {/* Dynamic Product Page for Submenu Links */}
+                <Route path="/:category/:productSlug" element={<ProductDetail />} />
+                
                 {/* Fallback */}
                 <Route path="*" element={<Home />} />
             </Routes>

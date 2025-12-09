@@ -132,9 +132,10 @@ const Navbar: React.FC = () => {
             onMouseLeave={handleMouseLeave}
         >
             <div className="max-w-[1024px] mx-auto px-4 py-10">
-                <div className="flex flex-row justify-start gap-12">
+                {/* Grid layout for columns to align strictly with navbar items if needed, but flex is safer for variable content */}
+                <div className="flex flex-row justify-start gap-x-12 pl-4"> 
                     {activeSubMenu && activeSubMenu.map((group, idx) => (
-                        <div key={idx} className="flex flex-col gap-3 min-w-[120px]">
+                        <div key={idx} className="flex flex-col gap-3 min-w-[140px]">
                             {group.title && (
                                 <span className="text-[12px] text-gray-400 font-normal mb-1 block">
                                     {group.title}
@@ -145,7 +146,10 @@ const Navbar: React.FC = () => {
                                     <li key={lIdx}>
                                         <Link 
                                             to={link.href}
-                                            className="text-[20px] font-semibold text-[#e8e8ed] hover:text-white block leading-tight"
+                                            className={`
+                                                block hover:text-white leading-tight
+                                                ${group.title ? 'text-[12px] font-semibold text-[#e8e8ed]' : 'text-[24px] font-semibold text-[#e8e8ed] mb-1'} 
+                                            `}
                                             onClick={() => setHoveredLabel(null)}
                                         >
                                             {link.label}
