@@ -12,10 +12,11 @@ const GridItem: React.FC<GridItemProps> = ({
   large = false
 }) => {
   const textColorClass = textColor === 'white' ? 'text-white' : 'text-[#1d1d1f]';
+  const bgColorClass = textColor === 'white' ? 'bg-black' : 'bg-[#f5f5f7]';
 
   return (
     <section 
-        className={`relative w-full ${large ? 'h-[600px]' : 'h-[500px] md:h-[580px]'} overflow-hidden group bg-gray-50`}
+        className={`relative w-full ${large ? 'h-[600px]' : 'h-[500px] md:h-[580px]'} overflow-hidden group ${bgColorClass}`}
         aria-label={title}
     >
       {/* Background Image */}

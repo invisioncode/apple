@@ -12,10 +12,11 @@ const Hero: React.FC<ProductHeroProps> = ({
 }) => {
   const textColorClass = textColor === 'white' ? 'text-white' : 'text-[#1d1d1f]';
   const overlayClass = textColor === 'white' ? 'bg-gradient-to-t from-black/20 to-transparent' : '';
+  const bgColorClass = textColor === 'white' ? 'bg-black' : 'bg-[#f5f5f7]';
 
   return (
     <section 
-        className="relative w-full h-[650px] md:h-[750px] overflow-hidden group"
+        className={`relative w-full h-[650px] md:h-[750px] overflow-hidden group ${bgColorClass}`}
         aria-label={title}
     >
       {/* Background Image */}
