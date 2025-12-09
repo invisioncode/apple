@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, Search, ShoppingBag, Apple } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -126,7 +127,7 @@ const Navbar: React.FC = () => {
         {/* Desktop Submenu Overlay */}
         <div 
             className={`
-                absolute top-full left-0 w-full bg-[#161617] text-white overflow-hidden transition-all duration-300 ease-out
+                absolute top-full left-0 w-full bg-[#161617] text-white overflow-hidden transition-all duration-300 ease-out z-50
                 ${activeSubMenu ? 'opacity-100 visible max-h-[500px] border-b border-gray-700/50 shadow-2xl pb-12 pt-4' : 'opacity-0 invisible max-h-0 pt-0 pb-0'}
             `}
             onMouseEnter={() => {

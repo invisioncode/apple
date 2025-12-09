@@ -43,7 +43,7 @@ const Hero: React.FC<ProductHeroProps> = ({
 
   return (
     <section 
-        className={`relative w-full h-[650px] md:h-[750px] overflow-hidden group ${bgColorClass}`}
+        className={`relative w-full h-[550px] sm:h-[650px] md:h-[750px] overflow-hidden group ${bgColorClass}`}
         aria-label={title}
     >
       {/* Background Image */}
@@ -56,22 +56,22 @@ const Hero: React.FC<ProductHeroProps> = ({
       <div className={`absolute inset-0 ${overlayClass}`} aria-hidden="true" />
 
       {/* Content Container */}
-      <div className="relative z-10 flex flex-col items-center justify-start pt-16 md:pt-24 h-full text-center px-4 w-full">
-        <h2 className={`text-4xl md:text-6xl font-semibold tracking-tight mb-2 ${textColorClass} animate-fade-in`}>
+      <div className="relative z-10 flex flex-col items-center justify-start pt-14 sm:pt-16 md:pt-24 h-full text-center px-6 md:px-4 w-full">
+        <h2 className={`text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight mb-1 sm:mb-2 ${textColorClass} animate-fade-in`}>
           {title}
         </h2>
         {subtitle && (
-          <p className={`text-xl md:text-3xl font-normal mb-3 ${textColorClass} animate-fade-in opacity-90`} style={{ animationDelay: '100ms' }}>
+          <p className={`text-lg sm:text-2xl md:text-3xl font-normal mb-3 sm:mb-4 ${textColorClass} animate-fade-in opacity-90`} style={{ animationDelay: '100ms' }}>
             {subtitle}
           </p>
         )}
         {description && (
-             <p className={`text-lg md:text-xl max-w-lg mx-auto mb-4 ${textColor === 'white' ? 'text-gray-200' : 'text-gray-600'} animate-fade-in`} style={{ animationDelay: '200ms' }}>
+             <p className={`text-sm sm:text-lg md:text-xl max-w-xs sm:max-w-lg mx-auto mb-4 sm:mb-6 ${textColor === 'white' ? 'text-gray-200' : 'text-gray-600'} animate-fade-in`} style={{ animationDelay: '200ms' }}>
                  {description}
              </p>
         )}
         
-        <div className="flex flex-col md:flex-row items-center gap-4 mt-2 animate-fade-in" style={{ animationDelay: '300ms' }}>
+        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 mt-2 sm:mt-4 animate-fade-in" style={{ animationDelay: '300ms' }}>
           {links.map((link, idx) => (
              <Button 
                 key={idx} 
