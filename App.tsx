@@ -16,6 +16,7 @@ import ProductDetail from './pages/ProductDetail';
 import StoreProductDetail from './pages/StoreProductDetail';
 import OrderStatus from './pages/OrderStatus';
 import Accessories from './pages/Accessories';
+import Support from './pages/Support';
 
 // Scroll to top wrapper
 const ScrollToTop = () => {
@@ -47,6 +48,7 @@ function App() {
                 <Route path="/airpods" element={<Airpods />} />
                 <Route path="/tv-home" element={<TvHome />} />
                 <Route path="/entertainment" element={<Entertainment />} />
+                <Route path="/support" element={<Support />} />
                 
                 {/* Accessories Pages */}
                 <Route path="/store/accessories" element={<Accessories />} />
