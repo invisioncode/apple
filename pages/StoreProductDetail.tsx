@@ -22,9 +22,19 @@ const PRODUCT_DB: Record<string, any> = {
     ],
     sizes: ['42mm', '46mm'],
     images: {
-      gold: ['https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYAR3ref?wid=800&hei=800&fmt=jpeg&qlt=90&.v=1724479536965'],
-      natural: ['https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYAQ3ref?wid=800&hei=800&fmt=jpeg&qlt=90&.v=1724479534575'],
-      slate: ['https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYAS3ref?wid=800&hei=800&fmt=jpeg&qlt=90&.v=1724479533355']
+      gold: [
+          'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYAR3ref?wid=800&hei=800&fmt=jpeg&qlt=90&.v=1724479536965',
+          'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYAR3ref?wid=800&hei=800&fmt=jpeg&qlt=90&.v=1724479536965', // Mock alternate view (duplicate for demo)
+          'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYAR3ref?wid=800&hei=800&fmt=jpeg&qlt=90&.v=1724479536965' // Mock alternate view 2 (duplicate for demo)
+      ],
+      natural: [
+          'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYAQ3ref?wid=800&hei=800&fmt=jpeg&qlt=90&.v=1724479534575',
+          'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYAQ3ref?wid=800&hei=800&fmt=jpeg&qlt=90&.v=1724479534575'
+      ],
+      slate: [
+          'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYAS3ref?wid=800&hei=800&fmt=jpeg&qlt=90&.v=1724479533355',
+          'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYAS3ref?wid=800&hei=800&fmt=jpeg&qlt=90&.v=1724479533355'
+      ]
     },
     compatibility: ["Apple Watch Series 10", "Apple Watch Ultra 2", "Apple Watch SE"]
   },
@@ -267,7 +277,7 @@ const PRODUCT_DB: Record<string, any> = {
 };
 
 const StoreProductDetail: React.FC = () => {
-  const { productSlug } = useParams<{ productSlug: string }>();
+  const { productSlug } = useParams();
   const { addToCart } = useCart();
   const { t } = useLanguage();
   
@@ -392,17 +402,21 @@ const StoreProductDetail: React.FC = () => {
                      </div>
                      
                      {currentImages.length > 1 && (
-                        <div className="flex justify-center gap-4 overflow-x-auto py-2 no-scrollbar">
+                        <div className="flex justify-center gap-4 overflow-x-auto py-2 no-scrollbar px-4 w-full">
                             {currentImages.map((img: string, idx: number) => (
                                 <button
                                     key={idx}
                                     onClick={() => setActiveImageIndex(idx)}
                                     className={`
-                                        w-16 h-16 md:w-20 md:h-20 rounded-xl border-2 overflow-hidden bg-gray-50 flex-shrink-0 transition-all
-                                        ${activeImageIndex === idx ? 'border-apple-blue opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}
+                                        relative w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden flex-shrink-0 transition-all duration-200 ease-in-out
+                                        ${activeImageIndex === idx 
+                                            ? 'ring-2 ring-apple-blue ring-offset-2 ring-offset-white opacity-100' 
+                                            : 'opacity-60 hover:opacity-100 hover:scale-105'
+                                        }
                                     `}
                                 >
-                                    <img src={img} alt="" className="w-full h-full object-cover mix-blend-multiply" />
+                                    <div className="absolute inset-0 bg-gray-50 -z-10" />
+                                    <img src={img} alt="" className="w-full h-full object-contain p-1 mix-blend-multiply" />
                                 </button>
                             ))}
                         </div>

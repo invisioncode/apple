@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
-import { ChevronDown, ChevronRight, SlidersHorizontal } from 'lucide-react';
+import { ChevronDown, ChevronRight, SlidersHorizontal, X, Eye } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import Button from '../components/Button';
 
@@ -16,7 +16,8 @@ const ACCESSORIES_DATA = [
     isNew: true,
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MA7E4?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1723162035543',
     colors: ['#353535', '#a6c5e3', '#f4e5ce', '#9fcfbf'],
-    category: 'iphone'
+    category: 'iphone',
+    description: 'Designed by Apple to complement iPhone 16 Pro, the Silicone Case with MagSafe is a delightful way to protect your iPhone. The silky, soft-touch finish of the silicone exterior feels great in your hand.'
   },
   {
     id: 'wallet-magsafe',
@@ -25,7 +26,8 @@ const ACCESSORIES_DATA = [
     isNew: false,
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MT263?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1693012847146',
     colors: ['#682b31', '#2f3422', '#8e8274'],
-    category: 'iphone'
+    category: 'iphone',
+    description: 'Designed with both style and function in mind, the new iPhone FineWoven Wallet with MagSafe is the perfect way to keep your ID and credit cards close at hand.'
   },
   // Power
   {
@@ -35,7 +37,8 @@ const ACCESSORIES_DATA = [
     isNew: false,
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MHXH3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1603996255000',
     colors: [],
-    category: 'power'
+    category: 'power',
+    description: 'The MagSafe Charger makes wireless charging a snap. The perfectly aligned magnets attach to your iPhone 12 or later.'
   },
   {
     id: '20w-adapter',
@@ -44,7 +47,8 @@ const ACCESSORIES_DATA = [
     isNew: false,
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MHJE3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1603375626000',
     colors: [],
-    category: 'power'
+    category: 'power',
+    description: 'The Apple 20W USB‑C Power Adapter offers fast, efficient charging at home, in the office, or on the go.'
   },
   {
     id: '35w-adapter',
@@ -53,7 +57,8 @@ const ACCESSORIES_DATA = [
     isNew: false,
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MNWP3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1652748058133',
     colors: [],
-    category: 'power'
+    category: 'power',
+    description: 'The 35W Dual USB-C Port Power Adapter allows you to charge two devices at the same time, whether you’re at home, in the office, or on the go.'
   },
   {
     id: 'cable-usbc',
@@ -62,7 +67,8 @@ const ACCESSORIES_DATA = [
     isNew: false,
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MM0A3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1632956386000',
     colors: [],
-    category: 'power'
+    category: 'power',
+    description: 'This 1-meter charge cable — with USB-C connectors on both ends — is ideal for charging, syncing, and transferring data between USB-C devices.'
   },
   // Watch
   {
@@ -72,7 +78,8 @@ const ACCESSORIES_DATA = [
     isNew: true,
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYAR3ref?wid=800&hei=800&fmt=jpeg&qlt=90&.v=1724479536965',
     colors: ['#E2C49D', '#D4D4D1', '#3C3C3D'],
-    category: 'watch'
+    category: 'watch',
+    description: 'A modern interpretation of a design developed in Milan at the end of the 19th century. Woven on specialized Italian machines, the smooth stainless steel mesh wraps fluidly around your wrist.'
   },
   {
     id: 'ocean-band',
@@ -81,7 +88,8 @@ const ACCESSORIES_DATA = [
     isNew: false,
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQED3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1660863032152',
     colors: ['#203c52', '#f0f0f0', '#ff6900'],
-    category: 'watch'
+    category: 'watch',
+    description: 'The Ocean Band is molded in a high performance elastomer with a tubular geometry allowing it to stretch for a perfect fit, even over a wetsuit.'
   },
   // iPad
   {
@@ -91,7 +99,8 @@ const ACCESSORIES_DATA = [
     isNew: true,
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MX2D3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1713841707336',
     colors: [],
-    category: 'ipad'
+    category: 'ipad',
+    description: 'Apple Pencil Pro adds even more magical capabilities to help bring your ideas to life. Advanced features like squeeze, barrel roll, and haptic feedback make marking up intuitive.'
   },
   {
     id: 'magic-keyboard-ipad',
@@ -100,7 +109,8 @@ const ACCESSORIES_DATA = [
     isNew: true,
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MWR53?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1713936663248',
     colors: ['#353535', '#e3e4e5'],
-    category: 'ipad'
+    category: 'ipad',
+    description: 'The Magic Keyboard for iPad Pro delivers an amazing typing and trackpad experience in a sleek, portable new design with an aluminum palm rest.'
   },
   // Mac
   {
@@ -110,7 +120,8 @@ const ACCESSORIES_DATA = [
     isNew: false,
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MMMQ3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1645138486301',
     colors: ['#000000', '#f0f0f0'],
-    category: 'mac'
+    category: 'mac',
+    description: 'Magic Mouse is wireless and rechargeable, with an optimized foot design that lets it glide smoothly across your desk. The Multi-Touch surface allows you to perform simple gestures.'
   },
   {
     id: 'magic-keyboard-touchid',
@@ -119,7 +130,8 @@ const ACCESSORIES_DATA = [
     isNew: false,
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MMMR3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1645719947833',
     colors: ['#353535', '#e3e4e5'],
-    category: 'mac'
+    category: 'mac',
+    description: 'Magic Keyboard with Touch ID and Numeric Keypad delivers a remarkably comfortable and precise typing experience.'
   },
   // AirTag
   {
@@ -129,7 +141,8 @@ const ACCESSORIES_DATA = [
     isNew: false,
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MX532?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1618028912000',
     colors: [],
-    category: 'airtag'
+    category: 'airtag',
+    description: 'AirTag is an easy way to keep track of your stuff. Attach one to your keys. Put another in your backpack.'
   },
   {
     id: 'airtag-leather-keyring',
@@ -138,7 +151,8 @@ const ACCESSORIES_DATA = [
     isNew: false,
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MX4M2?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1618028956000',
     colors: ['#8b5742', '#2b3f54'],
-    category: 'airtag'
+    category: 'airtag',
+    description: 'The leather key ring is thoughtfully crafted from the finest materials. The stainless steel is as striking as it is strong.'
   },
   // Audio
   {
@@ -148,7 +162,8 @@ const ACCESSORIES_DATA = [
     isNew: false,
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MTJV3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1694014871985',
     colors: [],
-    category: 'airpods'
+    category: 'airpods',
+    description: 'AirPods Pro feature up to 2x more Active Noise Cancellation, Transparency mode, and now Adaptive Audio.'
   },
   {
     id: 'airpods-max',
@@ -157,7 +172,8 @@ const ACCESSORIES_DATA = [
     isNew: true,
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MZOX3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1723843519890',
     colors: ['#2e3642', '#42586e', '#665c82', '#e87c64'],
-    category: 'airpods'
+    category: 'airpods',
+    description: 'AirPods Max reimagine over-ear headphones. An Apple-designed dynamic driver provides immersive high-fidelity audio.'
   }
 ];
 
@@ -175,12 +191,24 @@ const CATEGORIES = [
 const Accessories: React.FC = () => {
   const { language, localePrefix } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [quickLookProduct, setQuickLookProduct] = useState<any | null>(null);
   const isVi = language === 'vi';
 
   // Filter Logic
   const filteredProducts = selectedCategory === 'all' 
     ? ACCESSORIES_DATA 
     : ACCESSORIES_DATA.filter(p => p.category === selectedCategory);
+
+  // Modal Handlers
+  const openQuickLook = (product: any) => {
+    setQuickLookProduct(product);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeQuickLook = () => {
+    setQuickLookProduct(null);
+    document.body.style.overflow = 'unset';
+  };
 
   return (
     <div className="pt-[44px] min-h-screen bg-white">
@@ -231,22 +259,39 @@ const Accessories: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
                 {filteredProducts.map((product) => (
-                    <Link 
+                    <div 
                         key={product.id} 
-                        to={`${localePrefix}/store/product/${product.id}`}
-                        className="group flex flex-col gap-4 p-4 rounded-2xl hover:bg-[#f5f5f7] transition-colors"
+                        className="group flex flex-col gap-4 p-4 rounded-2xl hover:bg-[#f5f5f7] transition-colors relative"
                     >
-                        {/* Image Container */}
-                        <div className="aspect-square w-full relative bg-white rounded-xl overflow-hidden flex items-center justify-center p-6">
+                        {/* Image Container with Quick Look Button */}
+                        <div className="aspect-square w-full relative bg-white rounded-xl overflow-hidden flex items-center justify-center p-6 group/image">
+                            <Link to={`${localePrefix}/store/product/${product.id}`} className="absolute inset-0 z-0">
+                                <span className="sr-only">View product</span>
+                            </Link>
                             <img 
                                 src={product.image} 
                                 alt={product.title} 
                                 className="w-full h-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105" 
                             />
+                            {/* Quick Look Button */}
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    openQuickLook(product);
+                                }}
+                                className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-white/90 backdrop-blur-sm text-xs font-medium text-gray-900 py-2 px-4 rounded-full shadow-md border border-gray-200 opacity-0 translate-y-2 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 flex items-center gap-2 hover:bg-white hover:scale-105"
+                            >
+                                <Eye size={14} />
+                                {isVi ? 'Xem nhanh' : 'Quick Look'}
+                            </button>
                         </div>
 
                         {/* Details */}
-                        <div className="flex flex-col gap-2 flex-1">
+                        <Link 
+                            to={`${localePrefix}/store/product/${product.id}`}
+                            className="flex flex-col gap-2 flex-1"
+                        >
                             {product.isNew && (
                                 <span className="text-[10px] font-semibold text-orange-600 uppercase tracking-wide">
                                     {isVi ? 'Mới' : 'New'}
@@ -274,8 +319,8 @@ const Accessories: React.FC = () => {
                                     )}
                                 </div>
                             )}
-                        </div>
-                    </Link>
+                        </Link>
+                    </div>
                 ))}
             </div>
             
@@ -318,6 +363,79 @@ const Accessories: React.FC = () => {
               </div>
           </div>
       </section>
+
+      {/* Quick Look Modal */}
+      {quickLookProduct && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <div 
+                className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in"
+                onClick={closeQuickLook}
+            />
+            
+            {/* Modal Content */}
+            <div className="relative bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden animate-fade-in scale-100 flex flex-col md:flex-row max-h-[90vh]">
+                <button 
+                    onClick={closeQuickLook}
+                    className="absolute top-4 right-4 z-10 p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+                >
+                    <X size={20} className="text-gray-500" />
+                </button>
+
+                <div className="w-full md:w-1/2 bg-gray-50 p-8 flex items-center justify-center">
+                    <img 
+                        src={quickLookProduct.image} 
+                        alt={quickLookProduct.title} 
+                        className="max-w-full max-h-[400px] object-contain mix-blend-multiply"
+                    />
+                </div>
+
+                <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col overflow-y-auto">
+                    {quickLookProduct.isNew && (
+                        <span className="text-orange-600 font-bold text-xs uppercase tracking-wide mb-2">
+                            {isVi ? 'Mới' : 'New'}
+                        </span>
+                    )}
+                    <h2 className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] mb-2">
+                        {quickLookProduct.title}
+                    </h2>
+                    <p className="text-xl font-medium text-gray-900 mb-6">
+                        {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(quickLookProduct.price)}
+                    </p>
+                    
+                    <div className="prose prose-sm text-gray-600 mb-8">
+                        <p>{quickLookProduct.description}</p>
+                    </div>
+
+                    {quickLookProduct.colors.length > 0 && (
+                        <div className="mb-8">
+                            <span className="text-sm font-semibold text-gray-900 block mb-3">
+                                {isVi ? 'Màu sắc' : 'Color'}
+                            </span>
+                            <div className="flex flex-wrap gap-3">
+                                {quickLookProduct.colors.map((hex: string, idx: number) => (
+                                    <div 
+                                        key={idx} 
+                                        className="w-8 h-8 rounded-full border border-gray-200 shadow-sm" 
+                                        style={{ backgroundColor: hex }} 
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="mt-auto pt-4">
+                        <Button 
+                            label={isVi ? 'Xem chi tiết sản phẩm' : 'View full details'}
+                            href={`/store/product/${quickLookProduct.id}`}
+                            variant="primary"
+                            className="w-full"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -87,7 +87,7 @@ const PRODUCT_CONFIGS: Record<string, ProductConfig> = {
 };
 
 const ProductDetail: React.FC = () => {
-  const { category, productSlug } = useParams<{ category: string; productSlug: string }>();
+  const { category, productSlug } = useParams();
   const [isAddingToBag, setIsAddingToBag] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const [showToast, setShowToast] = useState(false);

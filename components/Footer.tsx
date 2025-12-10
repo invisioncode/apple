@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { getFooterColumns } from '../constants';
 import { ChevronDown, ChevronRight, Globe } from 'lucide-react';
