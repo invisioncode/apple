@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, Search, ShoppingBag, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -5,9 +6,11 @@ import { getNavItems, getNavSubmenus } from '../constants';
 import SmartSearch from './SmartSearch';
 import AppleLogo from './AppleLogo';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useCart } from '../contexts/CartContext';
 
 const Navbar: React.FC = () => {
   const { language, toggleLanguage, t } = useLanguage();
+  const { totalItems } = useCart();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -153,13 +156,18 @@ const Navbar: React.FC = () => {
             </button>
             <Link 
                 to="/store" 
-                className="hover:opacity-80 transition-opacity p-1" 
+                className="hover:opacity-80 transition-opacity p-1 relative" 
                 aria-label={t('bag.title')}
                 onClick={(e) => handleLinkClick(e, '/store')}
                 onMouseEnter={() => handleMouseEnter('')} // Close submenu
                 onMouseLeave={handleMouseLeave}
             >
                <ShoppingBag size={18} aria-hidden="true" />
+               {totalItems > 0 && (
+                 <span className="absolute -top-1 -right-1 bg-white text-black text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
+                    {totalItems}
+                 </span>
+               )}
             </Link>
           </div>
         </div>

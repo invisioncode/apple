@@ -1,3 +1,4 @@
+
 export interface NavItem {
   label: string;
   href: string;
@@ -17,6 +18,7 @@ export interface GridItemProps {
   title: string;
   subtitle?: string;
   imageUrl: string;
+  imageAlt?: string; // Added for accessibility
   textColor: 'black' | 'white';
   links?: { label: string; url: string }[];
   logoUrl?: string;

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -12,6 +13,7 @@ import Airpods from './pages/Airpods';
 import TvHome from './pages/TvHome';
 import Entertainment from './pages/Entertainment';
 import ProductDetail from './pages/ProductDetail';
+import OrderStatus from './pages/OrderStatus';
 
 // Scroll to top wrapper
 const ScrollToTop = () => {
@@ -35,6 +37,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/store" element={<Store />} />
+                <Route path="/store/order-status" element={<OrderStatus />} />
                 <Route path="/mac" element={<Mac />} />
                 <Route path="/ipad" element={<Ipad />} />
                 <Route path="/iphone" element={<Iphone />} />

@@ -5,12 +5,15 @@ import { ShoppingBag, Check, X, Truck, Store as StoreIcon } from 'lucide-react';
 import Hero from '../components/Hero';
 import GridItem from '../components/GridItem';
 import Button from '../components/Button';
+import { useCart } from '../contexts/CartContext';
 
 const ProductDetail: React.FC = () => {
   const { category, productSlug } = useParams<{ category: string; productSlug: string }>();
   const [isAddingToBag, setIsAddingToBag] = useState(false);
   const [isBagModalOpen, setIsBagModalOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  
+  const { addToCart } = useCart();
 
   // Helper to format slug to title (e.g., "macbook-air" -> "MacBook Air")
   const formatTitle = (slug: string) => {
@@ -26,6 +29,9 @@ const ProductDetail: React.FC = () => {
   
   // Deterministic seed for images based on slug
   const imageSeed = productSlug?.replace(/[^a-z0-9]/g, '') || 'apple';
+  
+  const PRODUCT_PRICE = 24999000;
+  const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(PRODUCT_PRICE);
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement> | React.MouseEvent<HTMLButtonElement>, id: string) => {
     e.preventDefault();
@@ -45,8 +51,20 @@ const ProductDetail: React.FC = () => {
 
   const handleAddToBag = () => {
     setIsAddingToBag(true);
-    // Simulate API call
+    
+    // Construct cart item
+    const newItem = {
+        id: productSlug || 'unknown-product',
+        name: title,
+        price: PRODUCT_PRICE,
+        image: `https://picsum.photos/seed/${imageSeed}buy/100/100`,
+        quantity: 1,
+        slug: productSlug || ''
+    };
+
+    // Simulate network delay
     setTimeout(() => {
+        addToCart(newItem);
         setIsAddingToBag(false);
         setIsBagModalOpen(true);
         setShowToast(true);
@@ -209,7 +227,7 @@ const ProductDetail: React.FC = () => {
                 <p className="text-gray-500 mb-6 text-sm">Giao hàng miễn phí. Trả lại dễ dàng.</p>
                 
                 <div className="mb-8">
-                    <span className="text-2xl font-bold text-gray-900">24.999.000đ</span>
+                    <span className="text-2xl font-bold text-gray-900">{formattedPrice}</span>
                     <p className="text-gray-500 text-sm mt-1">hoặc 1.041.000đ/tháng trong 24 tháng**</p>
                 </div>
 
@@ -284,7 +302,7 @@ const ProductDetail: React.FC = () => {
 
                     <div className="flex flex-col gap-3 w-full mt-8">
                         <Link 
-                            to="/store/cart" 
+                            to="/store" 
                             className="w-full bg-apple-blue text-white py-3 rounded-full font-medium hover:bg-apple-blue-hover transition-colors flex items-center justify-center gap-2"
                         >
                             <ShoppingBag size={18} />

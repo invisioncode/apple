@@ -1,3 +1,4 @@
+
 import { NavItem, FooterSection, SubMenuData, Language } from './types';
 
 // Helper to generate localized constants
@@ -278,7 +279,7 @@ export const getFooterColumns = (lang: Language): FooterSection[][] => {
             { label: isVi ? 'Ứng dụng Apple Store' : 'Apple Store App', href: 'https://apps.apple.com' },
             { label: isVi ? 'Tài Chính' : 'Financing', href: '/store/financing' },
             { label: isVi ? 'Tái Chế' : 'Apple Trade In', href: '/environment' },
-            { label: isVi ? 'Tình Trạng Đơn Hàng' : 'Order Status', href: '/account/orders' },
+            { label: isVi ? 'Tình Trạng Đơn Hàng' : 'Order Status', href: '/store/order-status' },
             { label: isVi ? 'Hỗ Trợ Mua Hàng' : 'Shopping Help', href: '/store/help' }
         ],
       },

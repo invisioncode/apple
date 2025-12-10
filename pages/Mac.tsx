@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Hero from '../components/Hero';
 import GridItem from '../components/GridItem';
@@ -29,6 +30,7 @@ const Mac: React.FC = () => {
                 title="MacBook Pro"
                 subtitle="Sức mạnh tối thượng."
                 imageUrl="https://picsum.photos/seed/macbookpro/1000/1000"
+                imageAlt="MacBook Pro displaying a vibrant, professional workspace on its Liquid Retina XDR display."
                 textColor="white"
                 large
                 links={[
@@ -43,6 +45,7 @@ const Mac: React.FC = () => {
                 title="Mac Studio"
                 subtitle="Sức mạnh sáng tạo chuyên nghiệp."
                 imageUrl="https://picsum.photos/seed/macstudio/1000/1000"
+                imageAlt="Front view of the Mac Studio showing ports and its compact aluminum design."
                 textColor="black"
                 links={[
                     { label: 'Tìm hiểu thêm', url: '#' },
@@ -56,6 +59,7 @@ const Mac: React.FC = () => {
                 title="Studio Display"
                 subtitle="Màn hình 5K Retina tuyệt đẹp."
                 imageUrl="https://picsum.photos/seed/studiodisplay/1000/1000"
+                imageAlt="Studio Display monitor showing a colorful abstract wallpaper."
                 textColor="black"
                 links={[
                     { label: 'Tìm hiểu thêm', url: '#' },
@@ -69,6 +73,7 @@ const Mac: React.FC = () => {
                 title="iMac"
                 subtitle="Màu sắc rực rỡ. Hiệu năng đỉnh cao."
                 imageUrl="https://picsum.photos/seed/imac/1000/1000"
+                imageAlt="iMac 24-inch in blue, showing the thin side profile and matching keyboard."
                 textColor="black"
                 links={[
                     { label: 'Tìm hiểu thêm', url: '#' },
@@ -82,6 +87,7 @@ const Mac: React.FC = () => {
                 title="Mac mini"
                 subtitle="Nhỏ hơn. Mạnh hơn."
                 imageUrl="https://picsum.photos/seed/macmini/1000/1000?grayscale"
+                imageAlt="Top-down view of the silver Mac mini showing the Apple logo."
                 textColor="black"
                 large
                 links={[

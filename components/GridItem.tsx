@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Button from './Button';
 import { GridItemProps } from '../types';
@@ -6,6 +7,7 @@ const GridItem: React.FC<GridItemProps> = ({
   title, 
   subtitle, 
   imageUrl, 
+  imageAlt,
   textColor, 
   links, 
   logoUrl,
@@ -24,7 +26,7 @@ const GridItem: React.FC<GridItemProps> = ({
         className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[1500ms] ease-in-out group-hover:scale-105"
         style={{ backgroundImage: `url(${imageUrl})` }}
         role="img"
-        aria-label={title + " image"}
+        aria-label={imageAlt || `${title} image`}
       />
       
       {/* Content */}
