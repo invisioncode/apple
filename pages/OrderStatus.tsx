@@ -11,7 +11,7 @@ const MOCK_ORDERS = [
     date: '20/10/2024',
     status: 'delivered', // delivered, shipped, processing
     items: [
-      { name: 'iPhone 16 Pro Max', image: 'https://picsum.photos/seed/iphone16pro/100/100', desc: 'Titan Tự Nhiên, 256GB' }
+      { name: 'iPhone 16 Pro Max', image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-natural-titanium-select-202409?wid=940&hei=1112&fmt=png-alpha&.v=1724342813959', desc: 'Titan Tự Nhiên, 256GB' }
     ]
   },
   {
@@ -20,8 +20,8 @@ const MOCK_ORDERS = [
     status: 'shipped',
     estimated: '28/10/2024',
     items: [
-      { name: 'AirPods 4', image: 'https://picsum.photos/seed/airpods4/100/100', desc: 'Có Chống Ồn Chủ Động' },
-      { name: 'Apple Watch Series 10', image: 'https://picsum.photos/seed/watch10/100/100', desc: 'Nhôm Đen Jet Black, 42mm' }
+      { name: 'AirPods 4', image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-4-anc-select-202409?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1725502549723', desc: 'Có Chống Ồn Chủ Động' },
+      { name: 'Apple Watch Series 10', image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/watch-s10-jetblack-select-202409?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1725515328330', desc: 'Nhôm Đen Jet Black, 42mm' }
     ]
   }
 ];

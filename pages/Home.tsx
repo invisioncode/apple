@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Hero from '../components/Hero';
 import GridItem from '../components/GridItem';
@@ -9,7 +10,7 @@ const Home: React.FC = () => {
       <Hero 
         title="iPhone 16 Pro"
         subtitle="Hello, Apple Intelligence."
-        imageUrl="https://picsum.photos/seed/iphone16pro/1920/1080" 
+        imageUrl="https://www.apple.com/v/iphone-16-pro/c/images/overview/welcome/hero_endframe__b3cjfkquc2s2_large.jpg" 
         textColor="white"
         links={[
           { label: 'Tìm hiểu thêm', url: '/iphone', primary: true },
@@ -22,7 +23,7 @@ const Home: React.FC = () => {
           <Hero 
           title="iPhone 16"
           subtitle="Hello, Apple Intelligence."
-          imageUrl="https://picsum.photos/seed/iphone16/1920/1080?grayscale" 
+          imageUrl="https://www.apple.com/v/iphone-16/c/images/overview/welcome/hero_large.jpg" 
           textColor="black"
           links={[
               { label: 'Tìm hiểu thêm', url: '/iphone', primary: true },
@@ -37,7 +38,7 @@ const Home: React.FC = () => {
           title="Apple Watch"
           subtitle="Mỏng hơn. Ấn tượng hơn."
           description="SERIES 10"
-          imageUrl="https://picsum.photos/seed/watch10/1920/1080?blur=2" 
+          imageUrl="https://www.apple.com/v/apple-watch-series-10/a/images/overview/hero/hero_static__c9d15g90w2aq_large.jpg" 
           textColor="black"
           links={[
               { label: 'Tìm hiểu thêm', url: '/watch', primary: true },
@@ -51,7 +52,8 @@ const Home: React.FC = () => {
           <GridItem 
               title="iPad Pro"
               subtitle="Mỏng không tưởng."
-              imageUrl="https://picsum.photos/seed/ipad/1000/1000"
+              imageUrl="https://www.apple.com/v/ipad-pro/aq/images/overview/hero/hero_endframe__ovj8dbnra82q_large.jpg"
+              imageAlt="iPad Pro displaying vibrant graphics"
               textColor="white"
               links={[
                   { label: 'Tìm hiểu thêm', url: '/ipad' },
@@ -61,7 +63,8 @@ const Home: React.FC = () => {
            <GridItem 
               title="MacBook Air"
               subtitle="Gọn nhẹ. Mạnh mẽ. M3."
-              imageUrl="https://picsum.photos/seed/macbook/1000/1000?grayscale"
+              imageUrl="https://www.apple.com/v/macbook-air/s/images/overview/hero_mba_13_15__8083041y1qyq_large.jpg"
+              imageAlt="MacBook Air M3 in midnight color"
               textColor="black"
               links={[
                   { label: 'Tìm hiểu thêm', url: '/mac' },
@@ -71,7 +74,8 @@ const Home: React.FC = () => {
            <GridItem 
               title="AirPods 4"
               subtitle="Biểu tượng âm thanh. Nay đã lột xác."
-              imageUrl="https://picsum.photos/seed/airpods/1000/1000"
+              imageUrl="https://www.apple.com/v/airpods-4/a/images/overview/hero__dbq22u8m0a2q_large.jpg"
+              imageAlt="AirPods 4 charging case and earbuds"
               textColor="black"
               links={[
                   { label: 'Tìm hiểu thêm', url: '/airpods' },
@@ -81,7 +85,8 @@ const Home: React.FC = () => {
            <GridItem 
               title="Apple Intelligence"
               subtitle="Trí thông minh tích hợp trên iPhone, iPad và Mac."
-              imageUrl="https://picsum.photos/seed/ai/1000/1000?blur=4"
+              imageUrl="https://www.apple.com/v/apple-intelligence/a/images/overview/hero/hero_endframe__ex4x77n5qj6u_large.jpg"
+              imageAlt="Abstract Apple Intelligence glowing icon"
               textColor="white"
               links={[
                   { label: 'Tìm hiểu thêm về Apple Intelligence', url: '#' },

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Hero from '../components/Hero';
 import GridItem from '../components/GridItem';
@@ -8,7 +9,7 @@ const Watch: React.FC = () => {
       <Hero 
         title="Apple Watch Series 10"
         subtitle="Màn hình lớn nhất, thiết kế mỏng nhất."
-        imageUrl="https://picsum.photos/seed/watch10hero/1920/1080" 
+        imageUrl="https://www.apple.com/v/apple-watch-series-10/a/images/overview/hero/hero_static__c9d15g90w2aq_large.jpg" 
         textColor="black"
         links={[
             { label: 'Tìm hiểu thêm', url: '#', primary: true },
@@ -20,7 +21,7 @@ const Watch: React.FC = () => {
         <GridItem 
             title="Apple Watch Ultra 2"
             subtitle="Phiêu lưu đỉnh cao."
-            imageUrl="https://picsum.photos/seed/watchultra/1000/1000"
+            imageUrl="https://www.apple.com/v/apple-watch-ultra-2/d/images/overview/hero/hero_static__c9d15g90w2aq_large.jpg"
             textColor="white"
             links={[
                 { label: 'Tìm hiểu thêm', url: '#' },
@@ -30,7 +31,7 @@ const Watch: React.FC = () => {
         <GridItem 
             title="Apple Watch SE"
             subtitle="Nhiều tính năng. Giá nhẹ nhàng."
-            imageUrl="https://picsum.photos/seed/watchse/1000/1000"
+            imageUrl="https://www.apple.com/v/apple-watch-se/k/images/overview/hero/hero_static__c9d15g90w2aq_large.jpg"
             textColor="black"
             links={[
                 { label: 'Tìm hiểu thêm', url: '#' },

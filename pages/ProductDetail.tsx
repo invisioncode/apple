@@ -27,8 +27,37 @@ const ProductDetail: React.FC = () => {
   const title = formatTitle(productSlug || '');
   const categoryTitle = formatTitle(category || '');
   
-  // Deterministic seed for images based on slug
-  const imageSeed = productSlug?.replace(/[^a-z0-9]/g, '') || 'apple';
+  // Real Image Mapping
+  const getProductImage = (slug: string, type: 'hero' | 'thumb' | 'feature') => {
+      const map: Record<string, any> = {
+          'iphone-16-pro': {
+              hero: 'https://www.apple.com/v/iphone-16-pro/c/images/overview/welcome/hero_endframe__b3cjfkquc2s2_large.jpg',
+              thumb: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-natural-titanium-select-202409?wid=940&hei=1112&fmt=png-alpha&.v=1724342813959',
+              feature: 'https://www.apple.com/v/iphone-16-pro/c/images/overview/chip/chip_performance__c9g2p81x810m_large.jpg'
+          },
+          'macbook-air': {
+              hero: 'https://www.apple.com/v/macbook-air/s/images/overview/hero_mba_13_15__8083041y1qyq_large.jpg',
+              thumb: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-midnight-select-202402?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1708367688034',
+              feature: 'https://www.apple.com/v/macbook-air/s/images/overview/design/design_top__d7240c15s942_large.jpg'
+          },
+          'apple-watch-series-10': {
+              hero: 'https://www.apple.com/v/apple-watch-series-10/a/images/overview/hero/hero_static__c9d15g90w2aq_large.jpg',
+              thumb: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/watch-s10-jetblack-select-202409?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1725515328330',
+              feature: 'https://www.apple.com/v/apple-watch-series-10/a/images/overview/design/design_hero_static__d9k43u7n7yau_large.jpg'
+          }
+      };
+      
+      const productImages = map[slug];
+      if (productImages) return productImages[type];
+
+      // Fallback
+      const imageSeed = slug?.replace(/[^a-z0-9]/g, '') || 'apple';
+      return `https://picsum.photos/seed/${imageSeed}${type}/1000/1000`;
+  };
+
+  const heroImage = getProductImage(productSlug || '', 'hero');
+  const thumbImage = getProductImage(productSlug || '', 'thumb');
+  const featureImage = getProductImage(productSlug || '', 'feature');
   
   const PRODUCT_PRICE = 24999000;
   const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(PRODUCT_PRICE);
@@ -57,7 +86,7 @@ const ProductDetail: React.FC = () => {
         id: productSlug || 'unknown-product',
         name: title,
         price: PRODUCT_PRICE,
-        image: `https://picsum.photos/seed/${imageSeed}buy/100/100`,
+        image: thumbImage,
         quantity: 1,
         slug: productSlug || ''
     };
@@ -105,7 +134,7 @@ const ProductDetail: React.FC = () => {
         title={title}
         subtitle={`Sản phẩm ${categoryTitle} mới nhất.`}
         description="Mạnh mẽ. Tuyệt đẹp. Được thiết kế cho bạn."
-        imageUrl={`https://picsum.photos/seed/${imageSeed}hero/1920/1080`} 
+        imageUrl={heroImage}
         textColor="black"
         links={[
             { label: 'Mua ngay', url: '#buy', primary: true },
@@ -149,8 +178,8 @@ const ProductDetail: React.FC = () => {
                {title} mang đến hiệu suất đáng kinh ngạc và thời lượng pin cả ngày, giúp bạn làm việc, giải trí và sáng tạo mọi lúc mọi nơi.
            </p>
            <img 
-              src={`https://picsum.photos/seed/${imageSeed}feature1/1200/600`} 
-              alt="Feature 1" 
+              src={featureImage}
+              alt="Feature" 
               className="mt-12 rounded-3xl shadow-2xl mx-auto transition-transform hover:scale-[1.01] duration-700"
            />
       </div>
@@ -160,14 +189,14 @@ const ProductDetail: React.FC = () => {
         <GridItem 
             title="Hiệu năng"
             subtitle="Nhanh hơn bao giờ hết."
-            imageUrl={`https://picsum.photos/seed/${imageSeed}perf/1000/1000?grayscale`}
+            imageUrl="https://www.apple.com/v/macbook-pro/ak/images/overview/chips/chip_m3_pro_large.jpg"
             textColor="white"
             large
         />
         <GridItem 
             title="Thiết kế"
             subtitle="Mỏng. Nhẹ. Bền bỉ."
-            imageUrl={`https://picsum.photos/seed/${imageSeed}design/1000/1000`}
+            imageUrl="https://www.apple.com/v/macbook-air/s/images/overview/design/design_top__d7240c15s942_large.jpg"
             textColor="black"
             large
         />
@@ -181,7 +210,7 @@ const ProductDetail: React.FC = () => {
            </p>
            <div className="max-w-4xl mx-auto">
                 <img 
-                    src={`https://picsum.photos/seed/${imageSeed}screen/1000/600`} 
+                    src="https://www.apple.com/v/macbook-air/s/images/overview/display/display_hero__dd0s3s58h72q_large.jpg"
                     alt="Screen" 
                     className="rounded-xl border border-gray-800 shadow-lg shadow-white/10"
                 />
@@ -217,9 +246,9 @@ const ProductDetail: React.FC = () => {
         <div className="max-w-4xl mx-auto bg-white rounded-3xl overflow-hidden shadow-lg flex flex-col md:flex-row">
             <div className="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-8">
                 <img 
-                    src={`https://picsum.photos/seed/${imageSeed}buy/500/500`} 
+                    src={thumbImage}
                     alt={title}
-                    className="max-w-full h-auto rounded-xl shadow-md mix-blend-multiply"
+                    className="max-w-full h-auto rounded-xl shadow-md object-contain"
                 />
             </div>
             <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
@@ -290,9 +319,9 @@ const ProductDetail: React.FC = () => {
                     
                     <div className="mt-6 flex gap-4 w-full items-center border p-3 rounded-xl border-gray-100 bg-gray-50">
                         <img 
-                            src={`https://picsum.photos/seed/${imageSeed}buy/100/100`} 
+                            src={thumbImage}
                             alt={title}
-                            className="w-16 h-16 rounded-md object-cover mix-blend-multiply"
+                            className="w-16 h-16 rounded-md object-contain"
                         />
                         <div className="text-left">
                             <p className="font-semibold text-sm text-gray-900">{title}</p>

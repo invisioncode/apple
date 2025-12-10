@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Hero from '../components/Hero';
 import GridItem from '../components/GridItem';
@@ -8,7 +9,7 @@ const Ipad: React.FC = () => {
       <Hero 
         title="iPad Pro"
         subtitle="Mỏng không tưởng. Mạnh không ngờ."
-        imageUrl="https://picsum.photos/seed/ipadhero/1920/1080" 
+        imageUrl="https://www.apple.com/v/ipad-pro/aq/images/overview/hero/hero_endframe__ovj8dbnra82q_large.jpg" 
         textColor="white"
         links={[
             { label: 'Tìm hiểu thêm', url: '#', primary: true },
@@ -20,7 +21,7 @@ const Ipad: React.FC = () => {
         <GridItem 
             title="iPad Air"
             subtitle="Hai kích cỡ. Chip M2. Tuyệt đẹp."
-            imageUrl="https://picsum.photos/seed/ipadair/1000/1000"
+            imageUrl="https://www.apple.com/v/ipad-air/w/images/overview/hero/hero_endframe__b3cjfkquc2s2_large.jpg"
             textColor="black"
             links={[
                 { label: 'Tìm hiểu thêm', url: '#' },
@@ -30,7 +31,7 @@ const Ipad: React.FC = () => {
         <GridItem 
             title="iPad"
             subtitle="Yêu vẽ. Yêu viết. Yêu luôn."
-            imageUrl="https://picsum.photos/seed/ipadbase/1000/1000"
+            imageUrl="https://www.apple.com/v/ipad-10.9/d/images/overview/hero/hero__e3j42m33506u_large.jpg"
             textColor="black"
             links={[
                 { label: 'Tìm hiểu thêm', url: '#' },
@@ -40,7 +41,7 @@ const Ipad: React.FC = () => {
         <GridItem 
             title="iPad mini"
             subtitle="Nhỏ gọn. Đầy sức mạnh."
-            imageUrl="https://picsum.photos/seed/ipadmini/1000/1000"
+            imageUrl="https://www.apple.com/v/ipad-mini/q/images/overview/hero/hero__d110k4u310aa_large.jpg"
             textColor="black"
             links={[
                 { label: 'Tìm hiểu thêm', url: '#' },
@@ -50,8 +51,8 @@ const Ipad: React.FC = () => {
         <GridItem 
             title="Apple Pencil"
             subtitle="Mơ gì, viết nấy."
-            imageUrl="https://picsum.photos/seed/applepencil/1000/1000?grayscale"
-            textColor="black"
+            imageUrl="https://www.apple.com/v/apple-pencil/e/images/overview/hero/hero_endframe__b3cjfkquc2s2_large.jpg"
+            textColor="white"
             links={[
                 { label: 'Tìm hiểu thêm', url: '#' },
                 { label: 'Mua', url: '#' }

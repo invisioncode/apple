@@ -8,7 +8,8 @@ const Hero: React.FC<ProductHeroProps> = ({
   description,
   imageUrl, 
   textColor, 
-  links 
+  links,
+  imagePosition
 }) => {
   const [loadingBtnIndex, setLoadingBtnIndex] = useState<number | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -67,7 +68,12 @@ const Hero: React.FC<ProductHeroProps> = ({
   };
   
   const textColorClass = textColor === 'white' ? 'text-white' : 'text-[#1d1d1f]';
-  const overlayClass = textColor === 'white' ? 'bg-gradient-to-t from-black/20 to-transparent' : '';
+  
+  // Updated overlay for better text readability at the top
+  const overlayClass = textColor === 'white' 
+    ? 'bg-gradient-to-b from-black/60 via-transparent to-transparent' 
+    : '';
+    
   const bgColorClass = textColor === 'white' ? 'bg-black' : 'bg-[#f5f5f7]';
 
   return (
@@ -84,8 +90,11 @@ const Hero: React.FC<ProductHeroProps> = ({
         style={{ willChange: 'transform' }}
       >
         <div 
-            className="w-full h-full bg-cover bg-center bg-no-repeat transition-transform duration-[2000ms] ease-out group-hover:scale-105"
-            style={{ backgroundImage: `url(${imageUrl})` }}
+            className={`w-full h-full bg-cover bg-no-repeat transition-transform duration-[2000ms] ease-out group-hover:scale-105 ${!imagePosition ? 'bg-center' : ''}`}
+            style={{ 
+                backgroundImage: `url(${imageUrl})`,
+                backgroundPosition: imagePosition
+            }}
             role="img"
             aria-label={title + " background"}
         />

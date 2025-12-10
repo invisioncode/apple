@@ -9,7 +9,7 @@ const Mac: React.FC = () => {
       <Hero 
         title="MacBook Air"
         subtitle="Mỏng. Nhẹ. Mạnh mẽ với M3."
-        imageUrl="https://picsum.photos/seed/macbookairhero/1920/1080?grayscale" 
+        imageUrl="https://www.apple.com/v/macbook-air/s/images/overview/hero_mba_13_15__8083041y1qyq_large.jpg" 
         textColor="black"
         links={[
             { label: 'Tìm hiểu thêm', url: '#', primary: true },
@@ -29,7 +29,7 @@ const Mac: React.FC = () => {
             <GridItem 
                 title="MacBook Pro"
                 subtitle="Sức mạnh tối thượng."
-                imageUrl="https://picsum.photos/seed/macbookpro/1000/1000"
+                imageUrl="https://www.apple.com/v/macbook-pro/ak/images/overview/hero_14_16__r1j05o65t0i2_large.jpg"
                 imageAlt="MacBook Pro displaying a vibrant, professional workspace on its Liquid Retina XDR display."
                 textColor="white"
                 large
@@ -44,7 +44,7 @@ const Mac: React.FC = () => {
             <GridItem 
                 title="Mac Studio"
                 subtitle="Sức mạnh sáng tạo chuyên nghiệp."
-                imageUrl="https://picsum.photos/seed/macstudio/1000/1000"
+                imageUrl="https://www.apple.com/v/mac-studio/f/images/overview/hero/hero_static__d110k4u310aa_large.jpg"
                 imageAlt="Front view of the Mac Studio showing ports and its compact aluminum design."
                 textColor="black"
                 links={[
@@ -58,7 +58,7 @@ const Mac: React.FC = () => {
             <GridItem 
                 title="Studio Display"
                 subtitle="Màn hình 5K Retina tuyệt đẹp."
-                imageUrl="https://picsum.photos/seed/studiodisplay/1000/1000"
+                imageUrl="https://www.apple.com/v/studio-display/c/images/overview/hero/hero__conf0462060u_large.jpg"
                 imageAlt="Studio Display monitor showing a colorful abstract wallpaper."
                 textColor="black"
                 links={[
@@ -72,7 +72,7 @@ const Mac: React.FC = () => {
             <GridItem 
                 title="iMac"
                 subtitle="Màu sắc rực rỡ. Hiệu năng đỉnh cao."
-                imageUrl="https://picsum.photos/seed/imac/1000/1000"
+                imageUrl="https://www.apple.com/v/imac/p/images/overview/hero/hero__e3j42m33506u_large.jpg"
                 imageAlt="iMac 24-inch in blue, showing the thin side profile and matching keyboard."
                 textColor="black"
                 links={[
@@ -86,7 +86,7 @@ const Mac: React.FC = () => {
             <GridItem 
                 title="Mac mini"
                 subtitle="Nhỏ hơn. Mạnh hơn."
-                imageUrl="https://picsum.photos/seed/macmini/1000/1000?grayscale"
+                imageUrl="https://www.apple.com/v/mac-mini/u/images/overview/hero/hero__x8n6j33506u_large.jpg"
                 imageAlt="Top-down view of the silver Mac mini showing the Apple logo."
                 textColor="black"
                 large

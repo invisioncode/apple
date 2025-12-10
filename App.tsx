@@ -13,6 +13,7 @@ import Airpods from './pages/Airpods';
 import TvHome from './pages/TvHome';
 import Entertainment from './pages/Entertainment';
 import ProductDetail from './pages/ProductDetail';
+import StoreProductDetail from './pages/StoreProductDetail';
 import OrderStatus from './pages/OrderStatus';
 
 // Scroll to top wrapper
@@ -46,7 +47,10 @@ function App() {
                 <Route path="/tv-home" element={<TvHome />} />
                 <Route path="/entertainment" element={<Entertainment />} />
                 
-                {/* Dynamic Product Page for Submenu Links */}
+                {/* Specific Transactional Product Page (like Watch Bands) */}
+                <Route path="/store/product/:productSlug" element={<StoreProductDetail />} />
+
+                {/* Dynamic Marketing Product Page for Submenu Links */}
                 <Route path="/:category/:productSlug" element={<ProductDetail />} />
                 
                 {/* Fallback */}

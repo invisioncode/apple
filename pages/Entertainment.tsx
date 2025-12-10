@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Hero from '../components/Hero';
 import GridItem from '../components/GridItem';
@@ -14,7 +15,7 @@ const Entertainment: React.FC = () => {
         <GridItem 
             title="Apple Music"
             subtitle="Hơn 100 triệu bài hát. Không quảng cáo."
-            imageUrl="https://picsum.photos/seed/applemusic/1000/1000?grayscale"
+            imageUrl="https://www.apple.com/v/apple-music/aa/images/overview/hero/hero_c__c935k5c6axeu_large.jpg"
             textColor="white"
             links={[
                 { label: 'Dùng thử miễn phí', url: '#' },
@@ -23,7 +24,7 @@ const Entertainment: React.FC = () => {
         <GridItem 
             title="Apple TV+"
             subtitle="Các Apple Original độc quyền."
-            imageUrl="https://picsum.photos/seed/appletvplus/1000/1000"
+            imageUrl="https://www.apple.com/v/apple-tv-plus/ag/images/overview/hero/hero_startframe__ea64m580i26q_large.jpg"
             textColor="white"
             links={[
                 { label: 'Xem ngay', url: '#' },
@@ -32,7 +33,7 @@ const Entertainment: React.FC = () => {
         <GridItem 
             title="Apple Arcade"
             subtitle="Hơn 200 trò chơi cực hay. Không quảng cáo."
-            imageUrl="https://picsum.photos/seed/applearcade/1000/1000"
+            imageUrl="https://www.apple.com/v/apple-arcade/p/images/overview/hero/hero_endframe__d6g0j31n5n6q_large.jpg"
             textColor="black"
             links={[
                 { label: 'Chơi ngay', url: '#' },
@@ -41,7 +42,7 @@ const Entertainment: React.FC = () => {
         <GridItem 
             title="Apple One"
             subtitle="Gói dịch vụ tất cả trong một."
-            imageUrl="https://picsum.photos/seed/appleone/1000/1000"
+            imageUrl="https://www.apple.com/v/apple-one/f/images/overview/hero/hero__gn7u1o1n506u_large.jpg"
             textColor="black"
             links={[
                 { label: 'Tìm hiểu thêm', url: '#' },

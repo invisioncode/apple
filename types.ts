@@ -12,6 +12,7 @@ export interface ProductHeroProps {
   textColor: 'black' | 'white';
   links: { label: string; url: string; primary?: boolean }[];
   position?: 'top' | 'bottom' | 'center';
+  imagePosition?: string;
 }
 
 export interface GridItemProps {

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import Hero from '../components/Hero';
 import GridItem from '../components/GridItem';
@@ -8,7 +9,7 @@ const TvHome: React.FC = () => {
       <Hero 
         title="TV & Nhà"
         subtitle="Giải trí tại gia. Thông minh hơn."
-        imageUrl="https://picsum.photos/seed/tvhomehero/1920/1080" 
+        imageUrl="https://www.apple.com/v/tv-home/k/images/overview/hero/hero_endframe__b3cjfkquc2s2_large.jpg" 
         textColor="white"
         links={[
             { label: 'Khám phá TV & Nhà', url: '#', primary: true },
@@ -19,7 +20,7 @@ const TvHome: React.FC = () => {
         <GridItem 
             title="Apple TV 4K"
             subtitle="Trải nghiệm điện ảnh đỉnh cao."
-            imageUrl="https://picsum.photos/seed/appletv/1000/1000"
+            imageUrl="https://www.apple.com/v/apple-tv-4k/ah/images/overview/hero/hero_endframe__b3cjfkquc2s2_large.jpg"
             textColor="white"
             links={[
                 { label: 'Tìm hiểu thêm', url: '#' },
@@ -29,7 +30,7 @@ const TvHome: React.FC = () => {
         <GridItem 
             title="HomePod"
             subtitle="Âm thanh sống động. Thông minh vượt trội."
-            imageUrl="https://picsum.photos/seed/homepod/1000/1000"
+            imageUrl="https://www.apple.com/v/homepod-2nd-generation/d/images/overview/hero/hero_endframe__b3cjfkquc2s2_large.jpg"
             textColor="black"
             links={[
                 { label: 'Tìm hiểu thêm', url: '#' },
@@ -39,7 +40,7 @@ const TvHome: React.FC = () => {
         <GridItem 
             title="HomePod mini"
             subtitle="Nhỏ nhắn. Đầy sắc màu."
-            imageUrl="https://picsum.photos/seed/homepodmini/1000/1000"
+            imageUrl="https://www.apple.com/v/homepod-mini/j/images/overview/hero/hero_endframe__b3cjfkquc2s2_large.jpg"
             textColor="black"
             links={[
                 { label: 'Tìm hiểu thêm', url: '#' },
@@ -49,7 +50,7 @@ const TvHome: React.FC = () => {
         <GridItem 
             title="Ứng dụng Nhà"
             subtitle="Điều khiển nhà thông minh dễ dàng."
-            imageUrl="https://picsum.photos/seed/homeapp/1000/1000?grayscale"
+            imageUrl="https://www.apple.com/v/home-app/g/images/overview/hero/hero__cic32850u6qu_large.jpg"
             textColor="black"
             links={[
                 { label: 'Tìm hiểu thêm', url: '#' },
