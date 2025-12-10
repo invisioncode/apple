@@ -1,12 +1,13 @@
-
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, Search, ShoppingBag } from 'lucide-react';
+import { Menu, X, Search, ShoppingBag, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { NAV_ITEMS, NAV_SUBMENUS } from '../constants';
+import { getNavItems, getNavSubmenus } from '../constants';
 import SmartSearch from './SmartSearch';
 import AppleLogo from './AppleLogo';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Navbar: React.FC = () => {
+  const { language, toggleLanguage, t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -14,6 +15,9 @@ const Navbar: React.FC = () => {
   // State for submenus
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const NAV_ITEMS = getNavItems(language);
+  const NAV_SUBMENUS = getNavSubmenus(language);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,6 +39,29 @@ const Navbar: React.FC = () => {
     hoverTimeoutRef.current = setTimeout(() => {
         setHoveredLabel(null);
     }, 200); // Slight delay to allow moving mouse from link to submenu
+  };
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, to: string) => {
+    // Always close menus
+    setIsMobileMenuOpen(false);
+    setHoveredLabel(null);
+
+    // Smooth scroll for hash links on the same page
+    if (to.startsWith('#')) {
+      e.preventDefault();
+      const id = to.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        const headerOffset = 48; // 44px navbar + breathing room
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }
   };
 
   const activeSubMenu = hoveredLabel ? NAV_SUBMENUS[hoveredLabel] : null;
@@ -69,7 +96,7 @@ const Navbar: React.FC = () => {
                 to="/" 
                 className="text-[#e8e8ed] hover:opacity-80 transition-opacity flex items-center h-full" 
                 aria-label="Apple" 
-                onClick={closeMobileMenu}
+                onClick={(e) => handleLinkClick(e, '/')}
                 onMouseEnter={() => handleMouseEnter('')} // Close submenu when hovering logo
                 onMouseLeave={handleMouseLeave}
              >
@@ -89,6 +116,7 @@ const Navbar: React.FC = () => {
                 >
                     <Link 
                         to={item.href}
+                        onClick={(e) => handleLinkClick(e, item.href)}
                         className={`
                             text-[12px] transition-all duration-300 tracking-tight px-2 hover:underline hover:underline-offset-4 decoration-white/50
                             ${hoveredLabel && hoveredLabel !== item.label ? 'text-gray-500' : 'text-[#e8e8ed]/80 hover:text-white'}
@@ -103,11 +131,21 @@ const Navbar: React.FC = () => {
 
           {/* Right Icons */}
           <div className="flex items-center gap-4 z-50 text-[#e8e8ed]">
+             {/* Desktop Language Switcher - Mini */}
+             <button
+                type="button"
+                onClick={toggleLanguage}
+                className="hidden md:flex items-center gap-1 text-[10px] uppercase font-semibold text-[#e8e8ed]/80 hover:text-white transition-colors"
+                aria-label="Switch Language"
+             >
+               {language}
+             </button>
+
             <button 
                 type="button"
                 onClick={() => setIsSearchOpen(true)}
                 className="hover:opacity-80 transition-opacity p-1"
-                aria-label="Search apple.com"
+                aria-label={t('search.placeholder')}
                 onMouseEnter={() => handleMouseEnter('')} // Close submenu
                 onMouseLeave={handleMouseLeave}
             >
@@ -116,7 +154,8 @@ const Navbar: React.FC = () => {
             <Link 
                 to="/store" 
                 className="hover:opacity-80 transition-opacity p-1" 
-                aria-label="Shopping Bag"
+                aria-label={t('bag.title')}
+                onClick={(e) => handleLinkClick(e, '/store')}
                 onMouseEnter={() => handleMouseEnter('')} // Close submenu
                 onMouseLeave={handleMouseLeave}
             >
@@ -154,7 +193,7 @@ const Navbar: React.FC = () => {
                                                 block hover:text-white leading-tight
                                                 ${group.title ? 'text-[12px] font-semibold text-[#e8e8ed]' : 'text-[24px] font-semibold text-[#e8e8ed] mb-1'} 
                                             `}
-                                            onClick={() => setHoveredLabel(null)}
+                                            onClick={(e) => handleLinkClick(e, link.href)}
                                         >
                                             {link.label}
                                         </Link>
@@ -181,9 +220,9 @@ const Navbar: React.FC = () => {
                 <Search className="absolute left-3 text-gray-500 w-5 h-5" aria-hidden="true" />
                 <input 
                     type="text" 
-                    placeholder="Tìm kiếm trên apple.com" 
+                    placeholder={t('search.placeholder')} 
                     className="w-full bg-[#1d1d1f] text-white rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-white/50"
-                    aria-label="Search apple.com"
+                    aria-label={t('search.placeholder')}
                     onFocus={() => {
                         setIsMobileMenuOpen(false);
                         setIsSearchOpen(true);
@@ -196,7 +235,7 @@ const Navbar: React.FC = () => {
                     <li key={item.label}>
                         <Link 
                         to={item.href}
-                        onClick={closeMobileMenu}
+                        onClick={(e) => handleLinkClick(e, item.href)}
                         className="block text-[#e8e8ed] text-[28px] font-semibold py-2 border-b border-gray-800 hover:text-white transition-colors animate-fade-in"
                         style={{ animationDelay: `${index * 50}ms` }}
                         >
@@ -206,6 +245,17 @@ const Navbar: React.FC = () => {
                 ))}
                 </ul>
             </nav>
+            
+            {/* Mobile Language Switcher */}
+            <div className="mt-8 border-t border-gray-800 pt-8 animate-fade-in" style={{ animationDelay: '500ms' }}>
+                 <button 
+                    onClick={toggleLanguage}
+                    className="flex items-center gap-2 text-[#e8e8ed] text-sm font-medium hover:text-white"
+                 >
+                    <Globe size={16} />
+                    <span>{language === 'vi' ? 'English' : 'Tiếng Việt'}</span>
+                 </button>
+            </div>
           </div>
         </div>
         

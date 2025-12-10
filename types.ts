@@ -23,9 +23,14 @@ export interface GridItemProps {
   large?: boolean;
 }
 
+export interface FooterLinkItem {
+  label: string;
+  href: string;
+}
+
 export interface FooterSection {
   title: string;
-  links: string[];
+  links: FooterLinkItem[];
 }
 
 // New Types for Submenus
@@ -42,3 +47,5 @@ export interface SubMenuGroup {
 export interface SubMenuData {
   [key: string]: SubMenuGroup[]; // key matches the NavItem label (e.g., "Mac")
 }
+
+export type Language = 'vi' | 'en';

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ShoppingBag, Check, X, Truck, Store as StoreIcon } from 'lucide-react';
 import Hero from '../components/Hero';
@@ -10,6 +10,7 @@ const ProductDetail: React.FC = () => {
   const { category, productSlug } = useParams<{ category: string; productSlug: string }>();
   const [isAddingToBag, setIsAddingToBag] = useState(false);
   const [isBagModalOpen, setIsBagModalOpen] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   // Helper to format slug to title (e.g., "macbook-air" -> "MacBook Air")
   const formatTitle = (slug: string) => {
@@ -48,11 +49,39 @@ const ProductDetail: React.FC = () => {
     setTimeout(() => {
         setIsAddingToBag(false);
         setIsBagModalOpen(true);
+        setShowToast(true);
     }, 800);
   };
 
+  // Auto-dismiss toast
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(false);
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
+
   return (
     <div className="pt-[44px] relative">
+      {/* Toast Notification */}
+       <div 
+          className={`
+            fixed top-6 left-1/2 -translate-x-1/2 z-[80] 
+            bg-white/90 backdrop-blur-md border border-gray-200 shadow-xl rounded-full 
+            px-6 py-3 flex items-center gap-3 transition-all duration-500 ease-out
+            ${showToast ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'}
+          `}
+          role="status"
+          aria-live="polite"
+       >
+          <div className="bg-green-100 text-green-600 rounded-full p-1">
+             <Check size={14} strokeWidth={3} />
+          </div>
+          <span className="text-sm font-medium text-gray-900">Đã thêm vào giỏ hàng</span>
+       </div>
+
       {/* Product Hero */}
       <Hero 
         title={title}
