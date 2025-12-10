@@ -340,52 +340,6 @@ const Navbar: React.FC = () => {
           </div>
         </div>
 
-        {/* Desktop Submenu Overlay */}
-        <div 
-            id="desktop-submenu-overlay"
-            ref={submenuRef}
-            className={`
-                fixed top-[44px] left-0 w-full bg-[#161617] text-white transition-all duration-300 ease-out z-50
-                ${activeSubMenu && !isBagOpen ? 'opacity-100 visible max-h-[calc(100vh-44px)] overflow-y-auto border-b border-gray-700/50 shadow-2xl pb-12 pt-4' : 'opacity-0 invisible max-h-0 pt-0 pb-0 overflow-hidden'}
-            `}
-            onMouseEnter={() => {
-                if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-            }}
-            onMouseLeave={handleMouseLeave}
-            role="region"
-            aria-label={hoveredLabel ? `${hoveredLabel} submenu` : 'Submenu'}
-        >
-            <div className="max-w-[1024px] mx-auto px-4">
-                <div className="flex flex-row justify-start gap-x-12 pl-4 animate-fade-in"> 
-                    {activeSubMenu && activeSubMenu.map((group, idx) => (
-                        <div key={idx} className="flex flex-col gap-3 min-w-[140px]">
-                            {group.title && (
-                                <span className="text-[12px] text-gray-400 font-normal mb-1 block">
-                                    {group.title}
-                                </span>
-                            )}
-                            <ul className="space-y-2">
-                                {group.links.map((link, lIdx) => (
-                                    <li key={lIdx}>
-                                        <Link 
-                                            to={link.href}
-                                            className={`
-                                                block hover:text-white leading-tight focus:outline-none focus:text-white focus:underline
-                                                ${group.title ? 'text-[12px] font-semibold text-[#e8e8ed]' : 'text-[24px] font-semibold text-[#e8e8ed] mb-1'} 
-                                            `}
-                                            onClick={(e) => handleLinkClick(e, link.href)}
-                                        >
-                                            {link.label}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
-
         {/* Mobile Menu Content */}
         <div 
             id="mobile-menu"
@@ -445,8 +399,55 @@ const Navbar: React.FC = () => {
             </div>
           </div>
         </div>
-        
-        {/* Blur Overlay for Page Content when Menu is Open */}
+      </nav>
+
+        {/* Desktop Submenu Overlay - Moved outside NAV to prevent clipping and proper layering */}
+        <div 
+            id="desktop-submenu-overlay"
+            ref={submenuRef}
+            className={`
+                fixed top-[44px] left-0 w-full bg-[#161617] text-white transition-all duration-300 ease-out z-[60]
+                ${activeSubMenu && !isBagOpen ? 'opacity-100 visible max-h-[calc(100vh-44px)] overflow-y-auto border-b border-gray-700/50 shadow-2xl pb-12 pt-4' : 'opacity-0 invisible max-h-0 pt-0 pb-0 overflow-hidden'}
+            `}
+            onMouseEnter={() => {
+                if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+            }}
+            onMouseLeave={handleMouseLeave}
+            role="region"
+            aria-label={hoveredLabel ? `${hoveredLabel} submenu` : 'Submenu'}
+        >
+            <div className="max-w-[1024px] mx-auto px-4">
+                <div className="flex flex-row justify-start gap-x-12 pl-4 animate-fade-in"> 
+                    {activeSubMenu && activeSubMenu.map((group, idx) => (
+                        <div key={idx} className="flex flex-col gap-3 min-w-[140px]">
+                            {group.title && (
+                                <span className="text-[12px] text-gray-400 font-normal mb-1 block">
+                                    {group.title}
+                                </span>
+                            )}
+                            <ul className="space-y-2">
+                                {group.links.map((link, lIdx) => (
+                                    <li key={lIdx}>
+                                        <Link 
+                                            to={link.href}
+                                            className={`
+                                                block hover:text-white leading-tight focus:outline-none focus:text-white focus:underline
+                                                ${group.title ? 'text-[12px] font-semibold text-[#e8e8ed]' : 'text-[24px] font-semibold text-[#e8e8ed] mb-1'} 
+                                            `}
+                                            onClick={(e) => handleLinkClick(e, link.href)}
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+
+        {/* Blur Overlay for Page Content when Menu is Open - Moved outside NAV */}
         <div 
             className={`
                 fixed inset-0 bg-black/40 backdrop-blur-sm z-30 transition-opacity duration-500 pointer-events-none md:pointer-events-auto
@@ -455,8 +456,6 @@ const Navbar: React.FC = () => {
             style={{ top: '44px', height: 'calc(100vh - 44px)' }}
             aria-hidden="true"
         />
-
-      </nav>
 
       <SmartSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>

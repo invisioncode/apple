@@ -52,7 +52,7 @@ const GridItem: React.FC<GridItemProps> = ({
                 label={link.label} 
                 href={link.url} 
                 variant="link" 
-                className={textColor === 'white' ? '!text-white hover:!text-gray-200' : ''}
+                className={`${textColor === 'white' ? '!text-white hover:!text-gray-200' : ''} hover:scale-105`}
                 ariaLabel={`${link.label} ${title}`}
                />
            ))}

@@ -15,6 +15,7 @@ import Entertainment from './pages/Entertainment';
 import ProductDetail from './pages/ProductDetail';
 import StoreProductDetail from './pages/StoreProductDetail';
 import OrderStatus from './pages/OrderStatus';
+import Accessories from './pages/Accessories';
 
 // Scroll to top wrapper
 const ScrollToTop = () => {
@@ -46,6 +47,11 @@ function App() {
                 <Route path="/airpods" element={<Airpods />} />
                 <Route path="/tv-home" element={<TvHome />} />
                 <Route path="/entertainment" element={<Entertainment />} />
+                
+                {/* Accessories Pages */}
+                <Route path="/store/accessories" element={<Accessories />} />
+                <Route path="/accessories" element={<Accessories />} />
+                <Route path="/store/buy-mac" element={<Mac />} /> {/* Fallback redirects to main pages for now */}
                 
                 {/* Specific Transactional Product Page (like Watch Bands) */}
                 <Route path="/store/product/:productSlug" element={<StoreProductDetail />} />

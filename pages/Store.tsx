@@ -148,6 +148,9 @@ const Store: React.FC = () => {
                 <Link to="/store/financing" className="px-6 py-3 bg-white rounded-full font-medium text-gray-900 shadow-sm border border-gray-200 hover:bg-gray-50 whitespace-nowrap">
                     Tài chính
                 </Link>
+                <Link to="/store/accessories" className="px-6 py-3 bg-white rounded-full font-medium text-gray-900 shadow-sm border border-gray-200 hover:bg-gray-50 whitespace-nowrap">
+                    Mua tất cả phụ kiện
+                </Link>
            </div>
         </div>
 
