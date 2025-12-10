@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, Search, ShoppingBag, Trash2, Box, User, Heart, Settings } from 'lucide-react';
+import { Menu, X, Search, ShoppingBag, Trash2, Box, User, Heart, Settings, Sun, Moon } from 'lucide-react';
 import * as ReactRouterDOM from 'react-router-dom';
 import { getNavItems, getNavSubmenus } from '../constants';
 import SmartSearch from './SmartSearch';
@@ -7,12 +7,14 @@ import AppleLogo from './AppleLogo';
 import Button from './Button';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useCart } from '../contexts/CartContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { Link } = ReactRouterDOM as any;
 
 const Navbar: React.FC = () => {
   const { language, t, dir, localePrefix } = useLanguage();
   const { cartItems, totalItems, removeFromCart } = useCart();
+  const { theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -218,13 +220,6 @@ const Navbar: React.FC = () => {
                 onMouseLeave={handleMouseLeave}
             >
                <Search size={18} aria-hidden="true" />
-               <span 
-                   className="absolute top-[120%] left-1/2 -translate-x-1/2 px-2 py-1 bg-white text-[#1d1d1f] text-xs rounded shadow-md opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 border border-gray-100"
-                   role="tooltip"
-                   aria-hidden="true"
-               >
-                   {t('search.title')}
-               </span>
             </button>
 
             {/* Shopping Bag Icon with Dropdown Trigger */}
@@ -250,15 +245,15 @@ const Navbar: React.FC = () => {
                 <div 
                     className={`
                         absolute top-full right-[-10px] rtl:right-auto rtl:left-[-10px] mt-3 w-[290px] md:w-[320px] 
-                        bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden
-                        transition-all duration-300 origin-top-right rtl:origin-top-left text-apple-dark
+                        bg-white dark:bg-[#1d1d1f] dark:border-gray-700 rounded-xl shadow-xl border border-gray-200 overflow-hidden
+                        transition-all duration-300 origin-top-right rtl:origin-top-left text-apple-dark dark:text-gray-200
                         ${isBagOpen ? 'opacity-100 scale-100 visible' : 'opacity-0 scale-95 invisible'}
                     `}
                 >
                     {/* Triangle Arrow */}
-                    <div className="absolute -top-2 right-4 rtl:left-4 rtl:right-auto w-4 h-4 bg-white transform rotate-45 border-l border-t border-gray-200"></div>
+                    <div className="absolute -top-2 right-4 rtl:left-4 rtl:right-auto w-4 h-4 bg-white dark:bg-[#1d1d1f] transform rotate-45 border-l border-t border-gray-200 dark:border-gray-700"></div>
 
-                    <div className="p-4 md:p-6 bg-white relative z-10 text-start">
+                    <div className="p-4 md:p-6 bg-white dark:bg-[#1d1d1f] relative z-10 text-start">
                         {cartItems.length === 0 ? (
                             <div className="text-center py-8">
                                 <p className="text-gray-500 mb-4 text-sm">{language === 'vi' ? 'Giỏ hàng của bạn đang trống.' : 'Your bag is empty.'}</p>
@@ -267,17 +262,17 @@ const Navbar: React.FC = () => {
                         ) : (
                             <div className="space-y-4">
                                 <p className="text-sm text-gray-500 font-medium text-center">{t('bag.title')}</p>
-                                <div className="max-h-[300px] overflow-y-auto no-scrollbar space-y-4 border-b border-gray-200 pb-4">
+                                <div className="max-h-[300px] overflow-y-auto no-scrollbar space-y-4 border-b border-gray-200 dark:border-gray-700 pb-4">
                                     {cartItems.map((item) => (
                                         <div key={item.id} className="flex gap-3 items-start">
-                                            <div className="w-12 h-12 flex-shrink-0">
+                                            <div className="w-12 h-12 flex-shrink-0 bg-white rounded-md p-1">
                                                 <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <Link 
                                                     to={`${localePrefix}/store/product/${item.slug}`} 
                                                     onClick={() => setIsBagOpen(false)}
-                                                    className="text-sm font-semibold text-apple-dark hover:text-apple-blue truncate block"
+                                                    className="text-sm font-semibold text-apple-dark dark:text-white hover:text-apple-blue truncate block"
                                                 >
                                                     {item.name}
                                                 </Link>
@@ -308,20 +303,20 @@ const Navbar: React.FC = () => {
                         )}
                         
                         {/* Profile Links */}
-                        <div className="mt-4 pt-4 border-t border-gray-100 space-y-1">
-                            <Link to={`${localePrefix}/store/order-status`} onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 rounded-lg group">
+                        <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 space-y-1">
+                            <Link to={`${localePrefix}/store/order-status`} onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg group">
                                 <Box size={16} className="text-gray-400 group-hover:text-apple-blue" />
                                 <span>{language === 'vi' ? 'Đơn hàng' : 'Orders'}</span>
                             </Link>
-                            <Link to={`${localePrefix}/saved`} onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 rounded-lg group">
+                            <Link to={`${localePrefix}/saved`} onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg group">
                                 <Heart size={16} className="text-gray-400 group-hover:text-apple-blue" />
                                 <span>{language === 'vi' ? 'Mục đã lưu' : 'Saved'}</span>
                             </Link>
-                            <Link to={`${localePrefix}/account`} onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 rounded-lg group">
+                            <Link to={`${localePrefix}/account`} onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg group">
                                 <User size={16} className="text-gray-400 group-hover:text-apple-blue" />
                                 <span>{language === 'vi' ? 'Tài khoản' : 'Account'}</span>
                             </Link>
-                            <Link to={`${localePrefix}/signin`} onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 rounded-lg group">
+                            <Link to={`${localePrefix}/signin`} onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg group">
                                 <Settings size={16} className="text-gray-400 group-hover:text-apple-blue" />
                                 <span>{language === 'vi' ? 'Đăng nhập' : 'Sign in'}</span>
                             </Link>
@@ -329,6 +324,16 @@ const Navbar: React.FC = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Dark Mode Toggle */}
+            <button 
+                type="button"
+                onClick={toggleTheme}
+                className="hover:opacity-80 transition-opacity p-1"
+                aria-label="Toggle Dark Mode"
+            >
+                {theme === 'dark' ? <Sun size={18} aria-hidden="true" /> : <Moon size={18} aria-hidden="true" />}
+            </button>
 
           </div>
         </div>
@@ -377,6 +382,26 @@ const Navbar: React.FC = () => {
                 ))}
                 </ul>
             </nav>
+            {/* Mobile Dark Mode Toggle */}
+            <div className="mt-8 flex items-center justify-between text-[#e8e8ed] animate-fade-in" style={{ animationDelay: '500ms' }}>
+                <span className="text-xl font-medium">Giao diện</span>
+                <button 
+                    onClick={toggleTheme}
+                    className="flex items-center gap-2 px-4 py-2 bg-[#1d1d1f] rounded-lg border border-gray-700"
+                >
+                    {theme === 'dark' ? (
+                        <>
+                            <Sun size={20} />
+                            <span>Sáng</span>
+                        </>
+                    ) : (
+                        <>
+                            <Moon size={20} />
+                            <span>Tối</span>
+                        </>
+                    )}
+                </button>
+            </div>
           </div>
         </div>
       </nav>
