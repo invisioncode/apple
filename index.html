@@ -19,19 +19,31 @@
             },
             fontFamily: {
               sans: [
+                '"SF Pro Display"',
                 '"SF Pro Text"',
-                '"SF Pro Icons"',
                 '"Helvetica Neue"',
                 'Helvetica',
                 'Arial',
                 'sans-serif',
               ],
             },
+            letterSpacing: {
+              tightest: '-.03em',
+            },
+            scale: {
+              '102': '1.02',
+            }
           },
         },
       };
     </script>
     <style>
+      /* Modern Font Smoothing */
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
       /* Custom scrollbar hiding for clean UI */
       .no-scrollbar::-webkit-scrollbar {
         display: none;
@@ -43,11 +55,21 @@
       
       /* Smooth fade in */
       @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
+        from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
       }
       .animate-fade-in {
-        animation: fadeIn 0.8s ease-out forwards;
+        animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; /* Apple's eased curve */
+      }
+      
+      /* Bento Grid Gap Utility */
+      .gap-grid {
+        gap: 12px;
+      }
+      @media (min-width: 768px) {
+        .gap-grid {
+          gap: 20px;
+        }
       }
     </style>
   <script type="importmap">
@@ -64,7 +86,7 @@
 }
 </script>
 </head>
-  <body class="bg-white text-apple-dark dark:bg-black dark:text-[#f5f5f7] transition-colors duration-300 antialiased">
+  <body class="bg-white text-[#1d1d1f] dark:bg-black dark:text-[#f5f5f7] transition-colors duration-500 antialiased selection:bg-apple-blue/20">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>
