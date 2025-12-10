@@ -1,8 +1,9 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import * as ReactRouterDOM from 'react-router-dom';
 import { Search, ChevronRight, MessageCircle, Wrench, Lock, CreditCard, Users, ShieldAlert } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+
+const { Link } = ReactRouterDOM as any;
 
 const SUPPORT_PRODUCTS = [
   { id: 'iphone', label: 'iPhone', image: 'https://www.apple.com/v/support/home/an/images/homepage/product-nav/product-nav_iphone_icon__cnj82l621oq6_large.png' },

@@ -1,6 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import * as ReactRouterDOM from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
+
+const { Link } = ReactRouterDOM as any;
 
 interface ButtonProps {
   label: string;
@@ -33,6 +36,8 @@ const Button: React.FC<ButtonProps> = ({
   'aria-haspopup': ariaHasPopup,
   'aria-pressed': ariaPressed,
 }) => {
+  const { localePrefix } = useLanguage();
+  
   const baseStyles = "inline-flex items-center justify-center rounded-full transition-all duration-300 font-medium cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#0071e3] disabled:opacity-50 disabled:cursor-not-allowed";
   
   const variants = {
@@ -47,7 +52,6 @@ const Button: React.FC<ButtonProps> = ({
     lg: "px-8 py-3 text-base",
   };
 
-  // Link variant ignores size usually, but we keep it safe
   const appliedSize = variant === 'link' ? '' : sizes[size];
   const combinedClassName = `${baseStyles} ${variants[variant]} ${appliedSize} ${className} ${isLoading ? 'opacity-80 cursor-wait' : ''}`;
 
@@ -92,9 +96,13 @@ const Button: React.FC<ButtonProps> = ({
         </a>
       );
     }
+
+    // Apply locale prefix for internal routing
+    const targetHref = `${localePrefix}${href}`;
+
     return (
       <Link 
-        to={href} 
+        to={targetHref} 
         onClick={isInteractive ? onClick : (e) => e.preventDefault()}
         className={combinedClassName}
         {...commonAriaProps}

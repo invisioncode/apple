@@ -8,6 +8,7 @@ interface LanguageContextType {
   toggleLanguage: () => void;
   t: (key: string) => string;
   dir: 'ltr' | 'rtl';
+  localePrefix: string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -40,8 +41,8 @@ const translations: Record<string, Record<Language, string>> = {
   },
   'footer.country': {
     vi: 'Việt Nam',
-    en: 'Vietnam',
-    ar: 'الإمارات العربية المتحدة (العربية)'
+    en: 'United States',
+    ar: 'عمان' 
   },
   'footer.copyright': {
     vi: 'Copyright © 2024 Apple Inc. Bảo lưu mọi quyền.',
@@ -103,37 +104,39 @@ const translations: Record<string, Record<Language, string>> = {
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('vi');
 
-  useEffect(() => {
-    const savedLang = localStorage.getItem('app-language') as Language;
-    if (savedLang) {
-      handleSetLanguage(savedLang);
-    } else {
-      handleSetLanguage('vi');
-    }
-  }, []);
-
-  const handleSetLanguage = (lang: Language) => {
-    setLanguage(lang);
-    localStorage.setItem('app-language', lang);
-    
-    // Handle Direction (RTL/LTR)
-    const direction = lang === 'ar' ? 'rtl' : 'ltr';
-    document.documentElement.dir = direction;
-    document.documentElement.lang = lang;
-  };
-
+  // We rely on the URL to set the language via App.tsx, 
+  // but we provide a setter for internal state updates if needed.
+  
   const toggleLanguage = () => {
-    if (language === 'vi') handleSetLanguage('en');
-    else if (language === 'en') handleSetLanguage('ar');
-    else handleSetLanguage('vi');
+    // Deprecated in favor of routing
+    if (language === 'vi') setLanguage('en');
+    else if (language === 'en') setLanguage('ar');
+    else setLanguage('vi');
   };
 
   const t = (key: string): string => {
     return translations[key]?.[language] || key;
   };
 
+  // Determine URL prefix based on language
+  const localePrefix = language === 'vi' ? '/vn' : language === 'ar' ? '/om-ar' : '';
+
+  // Update document direction and lang attribute
+  useEffect(() => {
+    const direction = language === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.dir = direction;
+    document.documentElement.lang = language;
+  }, [language]);
+
   return (
-    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, toggleLanguage, t, dir: language === 'ar' ? 'rtl' : 'ltr' }}>
+    <LanguageContext.Provider value={{ 
+      language, 
+      setLanguage, 
+      toggleLanguage, 
+      t, 
+      dir: language === 'ar' ? 'rtl' : 'ltr',
+      localePrefix
+    }}>
       {children}
     </LanguageContext.Provider>
   );

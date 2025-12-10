@@ -1,8 +1,10 @@
-
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import * as ReactRouterDOM from 'react-router-dom';
 import { ChevronDown, ChevronRight, SlidersHorizontal } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import Button from '../components/Button';
+
+const { Link } = ReactRouterDOM as any;
 
 // Consolidated list matching StoreProductDetail.tsx keys
 const ACCESSORIES_DATA = [
@@ -171,7 +173,7 @@ const CATEGORIES = [
 ];
 
 const Accessories: React.FC = () => {
-  const { language } = useLanguage();
+  const { language, localePrefix } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const isVi = language === 'vi';
 
@@ -231,7 +233,7 @@ const Accessories: React.FC = () => {
                 {filteredProducts.map((product) => (
                     <Link 
                         key={product.id} 
-                        to={`/store/product/${product.id}`}
+                        to={`${localePrefix}/store/product/${product.id}`}
                         className="group flex flex-col gap-4 p-4 rounded-2xl hover:bg-[#f5f5f7] transition-colors"
                     >
                         {/* Image Container */}
@@ -284,6 +286,38 @@ const Accessories: React.FC = () => {
             )}
         </div>
       </div>
+
+      {/* New Find Accessories CTA Section */}
+      <section className="py-24 px-6 bg-[#f5f5f7] border-t border-gray-200">
+          <div className="max-w-5xl mx-auto text-center">
+              <h2 className="text-4xl md:text-5xl font-semibold text-[#1d1d1f] mb-6 tracking-tight">
+                  {isVi ? 'Tìm phụ kiện hoàn hảo.' : 'Find the perfect accessory.'}
+              </h2>
+              <p className="text-xl text-gray-500 mb-10 max-w-2xl mx-auto font-light">
+                  {isVi 
+                      ? 'Nâng cao trải nghiệm với các phụ kiện được thiết kế riêng cho thiết bị Apple của bạn.' 
+                      : 'Enhance your experience with accessories designed specifically for your Apple devices.'}
+              </p>
+              
+              <div className="relative rounded-3xl overflow-hidden shadow-xl group cursor-pointer aspect-[16/9] md:aspect-[21/9]">
+                   <img 
+                      src="https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/accessory-topic-mag-safe-202309?wid=1200&hei=400&fmt=jpeg&qlt=95&.v=1692906806950" 
+                      alt="Accessories Lifestyle" 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                   />
+                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
+                   <div className="absolute inset-0 flex items-center justify-center">
+                        <Button 
+                            label={isVi ? 'Khám phá tất cả phụ kiện' : 'Find Accessories'} 
+                            href="/store/accessories"
+                            variant="primary"
+                            size="lg"
+                            className="bg-white text-black hover:bg-gray-100 !border-none scale-100 hover:scale-105"
+                        />
+                   </div>
+              </div>
+          </div>
+      </section>
     </div>
   );
 };

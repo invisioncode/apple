@@ -1,8 +1,10 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import * as ReactRouterDOM from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import Button from '../components/Button';
+import { useLanguage } from '../contexts/LanguageContext';
+
+const { Link } = ReactRouterDOM as any;
 
 // Mock Data for "The Latest" Shelf
 const LATEST_PRODUCTS = [
@@ -48,6 +50,8 @@ const CATEGORIES = [
 ];
 
 const Store: React.FC = () => {
+  const { localePrefix } = useLanguage();
+
   return (
     <div className="pt-[44px] bg-[#f5f5f7] min-h-screen pb-20">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -77,7 +81,7 @@ const Store: React.FC = () => {
              {CATEGORIES.map((cat, idx) => (
                <Link 
                  key={idx} 
-                 to={cat.url}
+                 to={`${localePrefix}${cat.url}`}
                  className="flex flex-col gap-3 group w-[136px]"
                >
                  <div className="w-[136px] h-[100px] md:h-[136px] md:w-[200px] lg:w-[136px] lg:h-[100px]">
@@ -139,16 +143,16 @@ const Store: React.FC = () => {
                Liên kết nhanh
            </h2>
            <div className="flex gap-4 overflow-x-auto no-scrollbar pb-4">
-                <Link to="/store/order-status" className="px-6 py-3 bg-white rounded-full font-medium text-gray-900 shadow-sm border border-gray-200 hover:bg-gray-50 whitespace-nowrap">
+                <Link to={`${localePrefix}/store/order-status`} className="px-6 py-3 bg-white rounded-full font-medium text-gray-900 shadow-sm border border-gray-200 hover:bg-gray-50 whitespace-nowrap">
                     Tình trạng đơn hàng
                 </Link>
-                <Link to="/store/find" className="px-6 py-3 bg-white rounded-full font-medium text-gray-900 shadow-sm border border-gray-200 hover:bg-gray-50 whitespace-nowrap">
+                <Link to={`${localePrefix}/store/find`} className="px-6 py-3 bg-white rounded-full font-medium text-gray-900 shadow-sm border border-gray-200 hover:bg-gray-50 whitespace-nowrap">
                     Tìm cửa hàng
                 </Link>
-                <Link to="/store/financing" className="px-6 py-3 bg-white rounded-full font-medium text-gray-900 shadow-sm border border-gray-200 hover:bg-gray-50 whitespace-nowrap">
+                <Link to={`${localePrefix}/store/financing`} className="px-6 py-3 bg-white rounded-full font-medium text-gray-900 shadow-sm border border-gray-200 hover:bg-gray-50 whitespace-nowrap">
                     Tài chính
                 </Link>
-                <Link to="/store/accessories" className="px-6 py-3 bg-white rounded-full font-medium text-gray-900 shadow-sm border border-gray-200 hover:bg-gray-50 whitespace-nowrap">
+                <Link to={`${localePrefix}/store/accessories`} className="px-6 py-3 bg-white rounded-full font-medium text-gray-900 shadow-sm border border-gray-200 hover:bg-gray-50 whitespace-nowrap">
                     Mua tất cả phụ kiện
                 </Link>
            </div>

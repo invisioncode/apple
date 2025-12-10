@@ -15,7 +15,7 @@ const Hero: React.FC<ProductHeroProps> = ({
   const [loadingBtnIndex, setLoadingBtnIndex] = useState<number | null>(null);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLElement>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
 
@@ -70,25 +70,35 @@ const Hero: React.FC<ProductHeroProps> = ({
 
   // Parallax Effect
   useEffect(() => {
+    let animationFrameId: number;
+
     const handleScroll = () => {
-      if (!containerRef.current || !parallaxRef.current) return;
-      
-      const rect = containerRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      
-      // Only animate if element is in view (with some buffer)
-      if (rect.bottom > 0 && rect.top < windowHeight) {
-        const speed = 0.15;
-        const offset = rect.top * speed * -1;
-        parallaxRef.current.style.transform = `translate3d(0, ${offset}px, 0)`;
-      }
+      // Use requestAnimationFrame for smoother performance
+      animationFrameId = window.requestAnimationFrame(() => {
+        if (!containerRef.current || !parallaxRef.current) return;
+        
+        const rect = containerRef.current.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        // Only animate if element is in view (with some buffer)
+        if (rect.bottom > 0 && rect.top < windowHeight) {
+          const speed = 0.12; // Subtle parallax speed
+          const offset = rect.top * speed * -1;
+          parallaxRef.current.style.transform = `translate3d(0, ${offset}px, 0)`;
+        }
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     // Initial calculation
     handleScroll();
     
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, []);
   
   const handleButtonClick = (index: number) => {

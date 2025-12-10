@@ -1,11 +1,12 @@
-
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import * as ReactRouterDOM from 'react-router-dom';
 import { ShoppingBag, Check, X, Truck, Store as StoreIcon } from 'lucide-react';
 import Hero from '../components/Hero';
 import GridItem from '../components/GridItem';
 import Button from '../components/Button';
 import { useCart } from '../contexts/CartContext';
+
+const { useParams, Link } = ReactRouterDOM as any;
 
 // Configuration Data Types
 interface ProductOption {

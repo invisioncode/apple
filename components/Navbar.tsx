@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, Search, ShoppingBag, Globe, Trash2, Box, User, Heart, Settings } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Menu, X, Search, ShoppingBag, Trash2, Box, User, Heart, Settings } from 'lucide-react';
+import * as ReactRouterDOM from 'react-router-dom';
 import { getNavItems, getNavSubmenus } from '../constants';
 import SmartSearch from './SmartSearch';
 import AppleLogo from './AppleLogo';
@@ -9,8 +8,10 @@ import Button from './Button';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useCart } from '../contexts/CartContext';
 
+const { Link } = ReactRouterDOM as any;
+
 const Navbar: React.FC = () => {
-  const { language, toggleLanguage, t, dir } = useLanguage();
+  const { language, t, dir, localePrefix } = useLanguage();
   const { cartItems, totalItems, removeFromCart } = useCart();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -19,7 +20,7 @@ const Navbar: React.FC = () => {
   
   // State for submenus
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const bagRef = useRef<HTMLDivElement>(null);
 
   // Refs for Accessibility Focus Management
@@ -131,7 +132,7 @@ const Navbar: React.FC = () => {
   const activeSubMenu = hoveredLabel ? NAV_SUBMENUS[hoveredLabel] : null;
 
   const bagTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const formatPrice = (price: number) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+  const formatPrice = (price: number) => new Intl.NumberFormat(language === 'vi' ? 'vi-VN' : 'en-US', { style: 'currency', currency: language === 'vi' ? 'VND' : 'USD' }).format(price);
 
   return (
     <>
@@ -161,7 +162,7 @@ const Navbar: React.FC = () => {
           {/* Logo */}
           <div className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 rtl:md:translate-x-0 z-50 h-full flex items-center">
              <Link 
-                to="/" 
+                to={`${localePrefix}/`} 
                 className="text-[#e8e8ed] hover:opacity-80 transition-opacity flex items-center h-full" 
                 aria-label="Apple" 
                 onClick={(e) => handleLinkClick(e, '/')}
@@ -186,7 +187,7 @@ const Navbar: React.FC = () => {
                     >
                         <Link 
                             ref={(el) => { navLinksRef.current[item.label] = el; }}
-                            to={item.href}
+                            to={`${localePrefix}${item.href}`}
                             onClick={(e) => handleLinkClick(e, item.href)}
                             onKeyDown={(e) => handleNavLinkKeyDown(e, item.label)}
                             className={`
@@ -207,16 +208,7 @@ const Navbar: React.FC = () => {
 
           {/* Right Icons */}
           <div className="flex items-center gap-4 z-50 text-[#e8e8ed]">
-             {/* Desktop Language Switcher - Mini */}
-             <button
-                type="button"
-                onClick={toggleLanguage}
-                className="hidden md:flex items-center gap-1 text-[10px] uppercase font-semibold text-[#e8e8ed]/80 hover:text-white transition-colors"
-                aria-label="Switch Language"
-             >
-               {language}
-             </button>
-
+            
             <button 
                 type="button"
                 onClick={() => setIsSearchOpen(true)}
@@ -269,12 +261,12 @@ const Navbar: React.FC = () => {
                     <div className="p-4 md:p-6 bg-white relative z-10 text-start">
                         {cartItems.length === 0 ? (
                             <div className="text-center py-8">
-                                <p className="text-gray-500 mb-4 text-sm">Giỏ hàng của bạn đang trống.</p>
-                                <Link to="/store" onClick={() => setIsBagOpen(false)} className="text-apple-blue hover:underline text-sm font-medium">Mua sắm ngay</Link>
+                                <p className="text-gray-500 mb-4 text-sm">{language === 'vi' ? 'Giỏ hàng của bạn đang trống.' : 'Your bag is empty.'}</p>
+                                <Link to={`${localePrefix}/store`} onClick={() => setIsBagOpen(false)} className="text-apple-blue hover:underline text-sm font-medium">{language === 'vi' ? 'Mua sắm ngay' : 'Shop today'}</Link>
                             </div>
                         ) : (
                             <div className="space-y-4">
-                                <p className="text-sm text-gray-500 font-medium text-center">Giỏ hàng</p>
+                                <p className="text-sm text-gray-500 font-medium text-center">{t('bag.title')}</p>
                                 <div className="max-h-[300px] overflow-y-auto no-scrollbar space-y-4 border-b border-gray-200 pb-4">
                                     {cartItems.map((item) => (
                                         <div key={item.id} className="flex gap-3 items-start">
@@ -283,7 +275,7 @@ const Navbar: React.FC = () => {
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <Link 
-                                                    to={`/store/product/${item.slug}`} 
+                                                    to={`${localePrefix}/store/product/${item.slug}`} 
                                                     onClick={() => setIsBagOpen(false)}
                                                     className="text-sm font-semibold text-apple-dark hover:text-apple-blue truncate block"
                                                 >
@@ -302,11 +294,11 @@ const Navbar: React.FC = () => {
                                     ))}
                                 </div>
                                 <div className="flex justify-between items-center pt-2">
-                                    <span className="text-sm text-gray-500">Tổng cộng:</span>
+                                    <span className="text-sm text-gray-500">{language === 'vi' ? 'Tổng cộng:' : 'Total:'}</span>
                                     <span className="text-sm font-bold">{formatPrice(bagTotal)}</span>
                                 </div>
                                 <Button 
-                                    label="Thanh toán" 
+                                    label={language === 'vi' ? 'Thanh toán' : 'Checkout'} 
                                     href="/store"
                                     onClick={() => setIsBagOpen(false)}
                                     className="w-full" 
@@ -317,21 +309,21 @@ const Navbar: React.FC = () => {
                         
                         {/* Profile Links */}
                         <div className="mt-4 pt-4 border-t border-gray-100 space-y-1">
-                            <Link to="/store/order-status" onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 rounded-lg group">
+                            <Link to={`${localePrefix}/store/order-status`} onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 rounded-lg group">
                                 <Box size={16} className="text-gray-400 group-hover:text-apple-blue" />
-                                <span>Đơn hàng</span>
+                                <span>{language === 'vi' ? 'Đơn hàng' : 'Orders'}</span>
                             </Link>
-                            <Link to="/saved" onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 rounded-lg group">
+                            <Link to={`${localePrefix}/saved`} onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 rounded-lg group">
                                 <Heart size={16} className="text-gray-400 group-hover:text-apple-blue" />
-                                <span>Mục đã lưu</span>
+                                <span>{language === 'vi' ? 'Mục đã lưu' : 'Saved'}</span>
                             </Link>
-                            <Link to="/account" onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 rounded-lg group">
+                            <Link to={`${localePrefix}/account`} onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 rounded-lg group">
                                 <User size={16} className="text-gray-400 group-hover:text-apple-blue" />
-                                <span>Tài khoản</span>
+                                <span>{language === 'vi' ? 'Tài khoản' : 'Account'}</span>
                             </Link>
-                            <Link to="/signin" onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 rounded-lg group">
+                            <Link to={`${localePrefix}/signin`} onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 rounded-lg group">
                                 <Settings size={16} className="text-gray-400 group-hover:text-apple-blue" />
-                                <span>Đăng nhập</span>
+                                <span>{language === 'vi' ? 'Đăng nhập' : 'Sign in'}</span>
                             </Link>
                         </div>
                     </div>
@@ -371,7 +363,7 @@ const Navbar: React.FC = () => {
                 {NAV_ITEMS.map((item, index) => (
                     <li key={item.label}>
                         <Link 
-                        to={item.href}
+                        to={`${localePrefix}${item.href}`}
                         onClick={(e) => handleLinkClick(e, item.href)}
                         className={`
                             block text-[#e8e8ed] text-[28px] font-semibold py-2 border-b border-gray-800 hover:text-white transition-colors text-start
@@ -385,21 +377,6 @@ const Navbar: React.FC = () => {
                 ))}
                 </ul>
             </nav>
-            
-            <div 
-                className={`mt-8 border-t border-gray-800 pt-8 ${isMobileMenuOpen ? 'animate-fade-in' : ''}`} 
-                style={{ animationDelay: '500ms', opacity: 0, animationFillMode: 'forwards' }}
-            >
-                 <button 
-                    onClick={toggleLanguage}
-                    className="flex items-center gap-2 text-[#e8e8ed] text-sm font-medium hover:text-white"
-                 >
-                    <Globe size={16} />
-                    <span>
-                        {language === 'vi' ? 'English' : language === 'en' ? 'العربية' : 'Tiếng Việt'}
-                    </span>
-                 </button>
-            </div>
           </div>
         </div>
       </nav>
@@ -438,7 +415,7 @@ const Navbar: React.FC = () => {
                                 {group.links.map((link, lIdx) => (
                                     <li key={lIdx}>
                                         <Link 
-                                            to={link.href}
+                                            to={`${localePrefix}${link.href}`}
                                             className={`
                                                 block hover:text-white leading-tight focus:outline-none focus:text-white focus:underline
                                                 ${group.title ? 'text-[12px] font-semibold text-[#e8e8ed]' : 'text-[24px] font-semibold text-[#e8e8ed] mb-1'} 

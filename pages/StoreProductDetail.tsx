@@ -1,10 +1,11 @@
-
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import * as ReactRouterDOM from 'react-router-dom';
 import { ShoppingBag, Check, Truck, Store as StoreIcon, ChevronDown, Package, Heart, Share, ChevronLeft, ChevronRight, Star, Loader2 } from 'lucide-react';
 import Button from '../components/Button';
 import { useCart } from '../contexts/CartContext';
 import { useLanguage } from '../contexts/LanguageContext';
+
+const { useParams, Link } = ReactRouterDOM as any;
 
 // Comprehensive Mock Product Database matching Apple Store Inventory
 const PRODUCT_DB: Record<string, any> = {

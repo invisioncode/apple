@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { getFooterColumns } from '../constants';
 import { ChevronDown, ChevronRight, Globe } from 'lucide-react';
-import { useLocation, Link } from 'react-router-dom';
+import * as ReactRouterDOM from 'react-router-dom';
 import AppleLogo from './AppleLogo';
 import { useLanguage } from '../contexts/LanguageContext';
 
+const { useLocation, Link } = ReactRouterDOM as any;
+
 const Footer: React.FC = () => {
-  const { language, toggleLanguage, t, dir } = useLanguage();
+  const { language, t, dir, localePrefix } = useLanguage();
   const [openSection, setOpenSection] = useState<string | null>(null);
   const location = useLocation();
 
@@ -15,12 +17,14 @@ const Footer: React.FC = () => {
   };
 
   const getBreadcrumbName = (path: string) => {
-    if (path === '/') return null;
+    if (path === '/' || path === '/vn' || path === '/om-ar') return null;
     const segments = path.split('/').filter(Boolean);
-    if (segments.length === 0) return null;
+    // Remove locale segment if present
+    const cleanSegments = segments.filter(s => s !== 'vn' && s !== 'om-ar');
+    if (cleanSegments.length === 0) return null;
     
     // Capitalize first letter of last segment as fallback
-    const last = segments[segments.length - 1];
+    const last = cleanSegments[cleanSegments.length - 1];
     return last.charAt(0).toUpperCase() + last.slice(1);
   };
 
@@ -35,7 +39,7 @@ const Footer: React.FC = () => {
         );
     }
     return (
-        <Link to={href} className={className}>
+        <Link to={`${localePrefix}${href}`} className={className}>
             {label}
         </Link>
     );
@@ -58,7 +62,7 @@ const Footer: React.FC = () => {
 
         {/* Breadcrumbs */}
         <nav aria-label="Breadcrumbs" className="flex items-center gap-2 py-4 mb-4 text-gray-500 border-b border-gray-300 md:border-b-0 h-[50px]">
-            <Link to="/" className="text-gray-800 hover:text-black" aria-label="Apple Home">
+            <Link to={`${localePrefix}/`} className="text-gray-800 hover:text-black" aria-label="Apple Home">
                 <AppleLogo className="fill-current h-[44px] w-[14px]" />
             </Link>
             {currentPathName && (
@@ -124,7 +128,7 @@ const Footer: React.FC = () => {
         {/* Bottom Section */}
         <section className="pt-8 pb-10 border-t border-gray-300 md:border-t-0 md:pt-2 flex flex-col md:flex-row-reverse md:justify-between gap-4">
              <div className="flex items-center gap-2 mb-2 md:mb-0 whitespace-nowrap">
-                 <p className="text-gray-500">{t('footer.waysToBuy')} <Link to="/store/find" className="text-apple-blue hover:underline">{t('footer.findStore')}</Link> {t('footer.nearYou')} {t('footer.orCall')} <span className="text-apple-blue">1800-1192</span>.</p>
+                 <p className="text-gray-500">{t('footer.waysToBuy')} <Link to={`${localePrefix}/store/find`} className="text-apple-blue hover:underline">{t('footer.findStore')}</Link> {t('footer.nearYou')} {t('footer.orCall')} <span className="text-apple-blue">1800-1192</span>.</p>
              </div>
         </section>
 
@@ -132,18 +136,17 @@ const Footer: React.FC = () => {
              <div className="flex flex-col md:flex-row gap-4 md:items-center">
                  <p className="text-gray-500">{t('footer.copyright')}</p>
                  <div className="flex flex-wrap gap-2 md:gap-4 text-gray-600">
-                     <Link to="/privacy" className="hover:underline border-r border-gray-400 pr-2 md:pr-4 last:border-0">{t('footer.privacy')}</Link>
-                     <Link to="/legal" className="hover:underline border-r border-gray-400 pr-2 md:pr-4 last:border-0">{t('footer.terms')}</Link>
-                     <Link to="/legal/sales" className="hover:underline border-r border-gray-400 pr-2 md:pr-4 last:border-0">{t('footer.sales')}</Link>
-                     <Link to="/legal/web" className="hover:underline border-r border-gray-400 pr-2 md:pr-4 last:border-0">{t('footer.legal')}</Link>
-                     <Link to="/sitemap" className="hover:underline border-r border-gray-400 pr-2 md:pr-4 last:border-0">{t('footer.sitemap')}</Link>
+                     <Link to={`${localePrefix}/privacy`} className="hover:underline border-r border-gray-400 pr-2 md:pr-4 last:border-0">{t('footer.privacy')}</Link>
+                     <Link to={`${localePrefix}/legal`} className="hover:underline border-r border-gray-400 pr-2 md:pr-4 last:border-0">{t('footer.terms')}</Link>
+                     <Link to={`${localePrefix}/legal/sales`} className="hover:underline border-r border-gray-400 pr-2 md:pr-4 last:border-0">{t('footer.sales')}</Link>
+                     <Link to={`${localePrefix}/legal/web`} className="hover:underline border-r border-gray-400 pr-2 md:pr-4 last:border-0">{t('footer.legal')}</Link>
+                     <Link to={`${localePrefix}/sitemap`} className="hover:underline border-r border-gray-400 pr-2 md:pr-4 last:border-0">{t('footer.sitemap')}</Link>
                  </div>
              </div>
              <div className="flex items-center gap-2 whitespace-nowrap">
-                 <button className="text-gray-600 hover:underline flex items-center gap-1" onClick={toggleLanguage}>
-                     <Globe size={16} />
-                     <span>{t('footer.country')}</span>
-                 </button>
+                 <Link to="/choose-country-region" className="text-gray-600 hover:underline flex items-center gap-1">
+                     <span className="font-medium text-[#1d1d1f]">{t('footer.country')}</span>
+                 </Link>
              </div>
         </section>
       </div>
