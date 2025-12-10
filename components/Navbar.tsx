@@ -401,13 +401,18 @@ const Navbar: React.FC = () => {
         </div>
       </nav>
 
-        {/* Desktop Submenu Overlay - Moved outside NAV to prevent clipping and proper layering */}
+        {/* Desktop Submenu Overlay */}
         <div 
             id="desktop-submenu-overlay"
             ref={submenuRef}
             className={`
-                fixed top-[44px] left-0 w-full bg-[#161617] text-white transition-all duration-300 ease-out z-[60]
-                ${activeSubMenu && !isBagOpen ? 'opacity-100 visible max-h-[calc(100vh-44px)] overflow-y-auto border-b border-gray-700/50 shadow-2xl pb-12 pt-4' : 'opacity-0 invisible max-h-0 pt-0 pb-0 overflow-hidden'}
+                fixed top-[44px] left-0 w-full bg-[#161617] text-white z-[60]
+                transition-all duration-300 ease-out border-b border-gray-700/50 shadow-2xl pb-12 pt-4
+                max-h-[calc(100vh-44px)] overflow-y-auto
+                ${activeSubMenu && !isBagOpen 
+                    ? 'opacity-100 visible translate-y-0' 
+                    : 'opacity-0 invisible -translate-y-2 pointer-events-none'
+                }
             `}
             onMouseEnter={() => {
                 if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
@@ -447,7 +452,7 @@ const Navbar: React.FC = () => {
             </div>
         </div>
 
-        {/* Blur Overlay for Page Content when Menu is Open - Moved outside NAV */}
+        {/* Blur Overlay for Page Content when Menu is Open */}
         <div 
             className={`
                 fixed inset-0 bg-black/40 backdrop-blur-sm z-30 transition-opacity duration-500 pointer-events-none md:pointer-events-auto

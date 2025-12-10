@@ -6,13 +6,9 @@ import Button from '../components/Button';
 import { useCart } from '../contexts/CartContext';
 import { useLanguage } from '../contexts/LanguageContext';
 
-const StoreProductDetail: React.FC = () => {
-  const { productSlug } = useParams<{ productSlug: string }>();
-  const { addToCart } = useCart();
-  const { t } = useLanguage();
-  
-  // Real Milanese Loop Data
-  const productData = {
+// Mock Product Database
+const PRODUCT_DB: Record<string, any> = {
+  '46mm-gold-milanese-loop': {
     title: "46mm Gold Milanese Loop",
     price: 2499000,
     isNew: true,
@@ -23,7 +19,6 @@ const StoreProductDetail: React.FC = () => {
       { id: 'slate', name: 'Slate', hex: '#3C3C3D' },
     ],
     sizes: ['42mm', '46mm'],
-    bandSizes: ['S/M', 'M/L'],
     images: {
       gold: [
         'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYAR3ref?wid=800&hei=800&fmt=jpeg&qlt=90&.v=1724479536965',
@@ -41,20 +36,65 @@ const StoreProductDetail: React.FC = () => {
         'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYAS3_AV2?wid=800&hei=800&fmt=jpeg&qlt=90&.v=1724479533355',
       ]
     },
-    compatibility: [
-        "Apple Watch Series 10",
-        "Apple Watch Ultra 2",
-        "Apple Watch Series 9",
-        "Apple Watch SE"
-    ]
-  };
+    compatibility: ["Apple Watch Series 10", "Apple Watch Ultra 2", "Apple Watch Series 9", "Apple Watch SE"]
+  },
+  'case-16-pro': {
+      title: 'Ốp Lưng Silicon MagSafe cho iPhone 16 Pro',
+      price: 1699000,
+      isNew: true,
+      description: "Designed by Apple to complement iPhone 16 Pro, the Silicone Case with MagSafe is a delightful way to protect your iPhone. The silky, soft-touch finish of the silicone exterior feels great in your hand. And on the inside, there’s a soft microfiber lining for even more protection.",
+      colors: [
+          { id: 'black', name: 'Đen', hex: '#353535' },
+          { id: 'denim', name: 'Xanh Denim', hex: '#a6c5e3' },
+          { id: 'stone', name: 'Xám Đá', hex: '#f4e5ce' },
+          { id: 'cypress', name: 'Xanh Bách', hex: '#9fcfbf' }
+      ],
+      sizes: ['iPhone 16 Pro', 'iPhone 16 Pro Max'],
+      images: {
+          black: ['https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MA7E4?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1723162035543'],
+          denim: ['https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MA7F4?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1723162036066'],
+          stone: ['https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MA7G4?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1723162035658'],
+          cypress: ['https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MA7H4?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1723162035824']
+      },
+      compatibility: ["iPhone 16 Pro"]
+  },
+  'pencil-pro': {
+      title: 'Apple Pencil Pro',
+      price: 3499000,
+      isNew: true,
+      description: "Apple Pencil Pro adds even more magical capabilities to help bring your ideas to life. Advanced features like squeeze, barrel roll, and haptic feedback make marking up, taking notes, and creating a masterpiece more intuitive than ever.",
+      colors: [{ id: 'white', name: 'White', hex: '#ffffff' }],
+      sizes: ['One Size'],
+      images: {
+          white: ['https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MX2D3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1713841707336']
+      },
+      compatibility: ["iPad Pro 13-inch (M4)", "iPad Pro 11-inch (M4)", "iPad Air 13-inch (M2)", "iPad Air 11-inch (M2)"]
+  }
+};
+
+const StoreProductDetail: React.FC = () => {
+  const { productSlug } = useParams<{ productSlug: string }>();
+  const { addToCart } = useCart();
+  const { t } = useLanguage();
+  
+  // Fetch product data or fallback
+  const productData = PRODUCT_DB[productSlug || ''] || PRODUCT_DB['46mm-gold-milanese-loop'];
 
   const [selectedColor, setSelectedColor] = useState(productData.colors[0]);
-  const [selectedSize, setSelectedSize] = useState(productData.sizes[1]);
+  const [selectedSize, setSelectedSize] = useState(productData.sizes[0]);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const [showToast, setShowToast] = useState(false);
+
+  // Reset state when product changes
+  useEffect(() => {
+    setSelectedColor(productData.colors[0]);
+    setSelectedSize(productData.sizes[0]);
+    setActiveImageIndex(0);
+    setIsAdding(false);
+    setIsAdded(false);
+  }, [productSlug, productData]);
 
   // Auto-dismiss toast
   useEffect(() => {
@@ -64,7 +104,7 @@ const StoreProductDetail: React.FC = () => {
     }
   }, [showToast]);
 
-  const currentImages = productData.images[selectedColor.id as keyof typeof productData.images];
+  const currentImages = productData.images[selectedColor.id] || productData.images[Object.keys(productData.images)[0]];
   const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(productData.price);
 
   const handleNextImage = () => {
@@ -80,7 +120,7 @@ const StoreProductDetail: React.FC = () => {
     setIsAdding(true);
     const item = {
         id: `${productSlug}-${selectedColor.id}-${selectedSize}`,
-        name: `${selectedColor.name} Milanese Loop - ${selectedSize}`,
+        name: `${productData.title} (${selectedColor.name}, ${selectedSize})`,
         price: productData.price,
         image: currentImages[0],
         quantity: 1,
@@ -96,7 +136,7 @@ const StoreProductDetail: React.FC = () => {
         setTimeout(() => {
           setIsAdded(false);
         }, 2000);
-    }, 600);
+    }, 1000);
   };
 
   return (
@@ -152,20 +192,22 @@ const StoreProductDetail: React.FC = () => {
                      </div>
                      
                      {/* Thumbnails */}
-                     <div className="flex justify-center gap-4 overflow-x-auto py-2 no-scrollbar">
-                         {currentImages.map((img, idx) => (
-                             <button
-                                key={idx}
-                                onClick={() => setActiveImageIndex(idx)}
-                                className={`
-                                    w-16 h-16 md:w-20 md:h-20 rounded-xl border-2 overflow-hidden bg-gray-50 flex-shrink-0 transition-all
-                                    ${activeImageIndex === idx ? 'border-apple-blue opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}
-                                `}
-                             >
-                                 <img src={img} alt="" className="w-full h-full object-cover mix-blend-multiply" />
-                             </button>
-                         ))}
-                     </div>
+                     {currentImages.length > 1 && (
+                        <div className="flex justify-center gap-4 overflow-x-auto py-2 no-scrollbar">
+                            {currentImages.map((img: string, idx: number) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => setActiveImageIndex(idx)}
+                                    className={`
+                                        w-16 h-16 md:w-20 md:h-20 rounded-xl border-2 overflow-hidden bg-gray-50 flex-shrink-0 transition-all
+                                        ${activeImageIndex === idx ? 'border-apple-blue opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}
+                                    `}
+                                >
+                                    <img src={img} alt="" className="w-full h-full object-cover mix-blend-multiply" />
+                                </button>
+                            ))}
+                        </div>
+                     )}
                  </div>
             </div>
 
@@ -182,53 +224,57 @@ const StoreProductDetail: React.FC = () => {
                 </div>
 
                 {/* Color Selector */}
-                <div>
-                    <span className="text-sm font-semibold text-gray-900 block mb-3">Finish <span className="text-gray-500 font-normal">- {selectedColor.name}</span></span>
-                    <div className="flex flex-wrap gap-3">
-                        {productData.colors.map((color) => (
-                            <button
-                                key={color.id}
-                                onClick={() => {
-                                    setSelectedColor(color);
-                                    setActiveImageIndex(0); // Reset carousel on color change
-                                }}
-                                className={`
-                                    w-10 h-10 rounded-full shadow-sm border border-gray-200 relative focus:outline-none transition-transform hover:scale-105
-                                    ${selectedColor.id === color.id ? 'ring-2 ring-offset-2 ring-apple-blue' : ''}
-                                `}
-                                style={{ backgroundColor: color.hex }}
-                                aria-label={`Select color ${color.name}`}
-                            />
-                        ))}
+                {productData.colors.length > 0 && (
+                    <div>
+                        <span className="text-sm font-semibold text-gray-900 block mb-3">Color <span className="text-gray-500 font-normal">- {selectedColor.name}</span></span>
+                        <div className="flex flex-wrap gap-3">
+                            {productData.colors.map((color: any) => (
+                                <button
+                                    key={color.id}
+                                    onClick={() => {
+                                        setSelectedColor(color);
+                                        setActiveImageIndex(0);
+                                    }}
+                                    className={`
+                                        w-10 h-10 rounded-full shadow-sm border border-gray-200 relative focus:outline-none transition-transform hover:scale-105
+                                        ${selectedColor.id === color.id ? 'ring-2 ring-offset-2 ring-apple-blue' : ''}
+                                    `}
+                                    style={{ backgroundColor: color.hex }}
+                                    aria-label={`Select color ${color.name}`}
+                                />
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* Size Selector */}
-                <div>
-                    <span className="text-sm font-semibold text-gray-900 block mb-3">Case Size</span>
-                    <div className="grid grid-cols-2 gap-3">
-                        {productData.sizes.map((size) => (
-                            <button
-                                key={size}
-                                onClick={() => setSelectedSize(size)}
-                                className={`
-                                    py-3 px-4 rounded-xl border text-sm font-medium transition-all
-                                    ${selectedSize === size 
-                                        ? 'border-apple-blue ring-1 ring-apple-blue text-apple-blue' 
-                                        : 'border-gray-300 text-gray-700 hover:border-gray-400'
-                                    }
-                                `}
-                            >
-                                {size}
-                            </button>
-                        ))}
+                {productData.sizes.length > 0 && (
+                    <div>
+                        <span className="text-sm font-semibold text-gray-900 block mb-3">Size</span>
+                        <div className="grid grid-cols-2 gap-3">
+                            {productData.sizes.map((size: string) => (
+                                <button
+                                    key={size}
+                                    onClick={() => setSelectedSize(size)}
+                                    className={`
+                                        py-3 px-4 rounded-xl border text-sm font-medium transition-all
+                                        ${selectedSize === size 
+                                            ? 'border-apple-blue ring-1 ring-apple-blue text-apple-blue' 
+                                            : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                                        }
+                                    `}
+                                >
+                                    {size}
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* Action Buttons */}
                 <div className="pt-6 border-t border-gray-200 space-y-4">
                     <Button 
-                        label={isAdded ? "Added!" : (isAdding ? "Adding..." : "Add to Bag")}
+                        label={isAdded ? "Added!" : "Add to Bag"}
                         variant="primary"
                         size="lg"
                         className={`w-full transition-all duration-300 ${isAdded ? '!bg-green-600 hover:!bg-green-700 !border-green-600' : ''}`}
@@ -270,7 +316,6 @@ const StoreProductDetail: React.FC = () => {
                         </summary>
                         <div className="pt-4 text-gray-600 text-sm leading-relaxed animate-fade-in">
                             <p>{productData.description}</p>
-                            <p className="mt-2 font-semibold">Material: Stainless Steel</p>
                         </div>
                     </details>
                     
@@ -281,24 +326,26 @@ const StoreProductDetail: React.FC = () => {
                         </summary>
                         <div className="pt-4 text-gray-600 text-sm animate-fade-in flex items-center gap-3">
                             <Package className="w-6 h-6 text-gray-400" />
-                            <span>Apple Watch Milanese Loop</span>
+                            <span>{productData.title}</span>
                         </div>
                     </details>
 
-                    <details className="group py-4 border-b border-gray-200 cursor-pointer">
-                        <summary className="flex justify-between items-center font-semibold text-gray-900 list-none">
-                            Compatibility
-                            <ChevronDown className="w-5 h-5 text-gray-500 transition-transform group-open:rotate-180" />
-                        </summary>
-                        <div className="pt-4 text-gray-600 text-sm animate-fade-in">
-                            <h4 className="font-medium text-gray-900 mb-2">Apple Watch Models</h4>
-                            <ul className="list-disc pl-5 space-y-1">
-                                {productData.compatibility.map(model => (
-                                    <li key={model}>{model}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    </details>
+                    {productData.compatibility && (
+                        <details className="group py-4 border-b border-gray-200 cursor-pointer">
+                            <summary className="flex justify-between items-center font-semibold text-gray-900 list-none">
+                                Compatibility
+                                <ChevronDown className="w-5 h-5 text-gray-500 transition-transform group-open:rotate-180" />
+                            </summary>
+                            <div className="pt-4 text-gray-600 text-sm animate-fade-in">
+                                <h4 className="font-medium text-gray-900 mb-2">Compatible Models</h4>
+                                <ul className="list-disc pl-5 space-y-1">
+                                    {productData.compatibility.map((model: string) => (
+                                        <li key={model}>{model}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </details>
+                    )}
                 </div>
 
             </div>
