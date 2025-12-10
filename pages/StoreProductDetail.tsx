@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ShoppingBag, Check, Truck, Store as StoreIcon, ChevronDown, Package, Heart, Share, Star } from 'lucide-react';
+import { ShoppingBag, Check, Truck, Store as StoreIcon, ChevronDown, Package, Heart, Share, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import Button from '../components/Button';
 import { useCart } from '../contexts/CartContext';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -67,6 +67,14 @@ const StoreProductDetail: React.FC = () => {
   const currentImages = productData.images[selectedColor.id as keyof typeof productData.images];
   const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(productData.price);
 
+  const handleNextImage = () => {
+    setActiveImageIndex((prev) => (prev + 1) % currentImages.length);
+  };
+
+  const handlePrevImage = () => {
+    setActiveImageIndex((prev) => (prev - 1 + currentImages.length) % currentImages.length);
+  };
+
   const handleAddToBag = () => {
     if (isAdding || isAdded) return;
     setIsAdding(true);
@@ -114,13 +122,33 @@ const StoreProductDetail: React.FC = () => {
             {/* LEFT COLUMN: Gallery (Sticky on Desktop) */}
             <div className="w-full md:w-2/3 md:min-h-screen bg-white md:sticky md:top-[44px] p-6 md:p-12 flex flex-col items-center">
                  <div className="w-full max-w-2xl">
-                     {/* Main Image */}
-                     <div className="aspect-square w-full rounded-3xl overflow-hidden mb-6 md:mb-10 bg-gray-50 flex items-center justify-center">
+                     {/* Main Image Carousel */}
+                     <div className="relative aspect-square w-full rounded-3xl overflow-hidden mb-6 md:mb-10 bg-gray-50 flex items-center justify-center group">
                          <img 
                             src={currentImages[activeImageIndex]} 
                             alt={`${productData.title} view ${activeImageIndex + 1}`}
-                            className="w-full h-full object-contain mix-blend-multiply hover:scale-105 transition-transform duration-500"
+                            className="w-full h-full object-contain mix-blend-multiply transition-transform duration-500"
                          />
+                         
+                         {/* Navigation Buttons */}
+                         {currentImages.length > 1 && (
+                            <>
+                                <button
+                                    onClick={handlePrevImage}
+                                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-black transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
+                                    aria-label="Previous image"
+                                >
+                                    <ChevronLeft size={24} />
+                                </button>
+                                <button
+                                    onClick={handleNextImage}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-black transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
+                                    aria-label="Next image"
+                                >
+                                    <ChevronRight size={24} />
+                                </button>
+                            </>
+                         )}
                      </div>
                      
                      {/* Thumbnails */}
@@ -160,7 +188,10 @@ const StoreProductDetail: React.FC = () => {
                         {productData.colors.map((color) => (
                             <button
                                 key={color.id}
-                                onClick={() => setSelectedColor(color)}
+                                onClick={() => {
+                                    setSelectedColor(color);
+                                    setActiveImageIndex(0); // Reset carousel on color change
+                                }}
                                 className={`
                                     w-10 h-10 rounded-full shadow-sm border border-gray-200 relative focus:outline-none transition-transform hover:scale-105
                                     ${selectedColor.id === color.id ? 'ring-2 ring-offset-2 ring-apple-blue' : ''}

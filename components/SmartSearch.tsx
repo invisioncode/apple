@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Search, ChevronRight } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface SmartSearchProps {
   isOpen: boolean;
@@ -12,6 +13,7 @@ const SmartSearch: React.FC<SmartSearchProps> = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -75,9 +77,9 @@ const SmartSearch: React.FC<SmartSearchProps> = ({ isOpen, onClose }) => {
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Tìm iPhone, Mac, iPad..."
+                    placeholder={t('search.placeholder')}
                     className="w-full text-lg md:text-2xl p-4 md:p-6 pr-12 md:pr-16 bg-gray-100 rounded-2xl outline-none focus:ring-4 focus:ring-apple-blue/20 transition-all placeholder:text-gray-400"
-                    aria-label="Search Query"
+                    aria-label={t('search.placeholder')}
                 />
                 <button 
                     type="submit"

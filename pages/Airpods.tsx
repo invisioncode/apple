@@ -2,10 +2,19 @@
 import React from 'react';
 import Hero from '../components/Hero';
 import GridItem from '../components/GridItem';
+import ProductNav, { ProductNavItem } from '../components/ProductNav';
+
+const AIRPODS_NAV_ITEMS: ProductNavItem[] = [
+    { id: 'airpods4', label: 'AirPods 4', image: 'https://www.apple.com/v/airpods/shared/compare/b/images/overview/compare_airpods_4__e3j42m33506u_large.png', url: '/airpods/airpods-4', isNew: true },
+    { id: 'pro', label: 'AirPods Pro 2', image: 'https://www.apple.com/v/airpods/shared/compare/b/images/overview/compare_airpods_pro__e6drk27f2in6_large.png', url: '/airpods/airpods-pro-2' },
+    { id: 'max', label: 'AirPods Max', image: 'https://www.apple.com/v/airpods/shared/compare/b/images/overview/compare_airpods_max__e3j42m33506u_large.png', url: '/airpods/airpods-max' },
+];
 
 const Airpods: React.FC = () => {
   return (
     <div className="pt-[44px]">
+      <ProductNav items={AIRPODS_NAV_ITEMS} />
+
       <Hero 
         title="AirPods 4"
         subtitle="Biểu tượng âm thanh. Nay đã lột xác."

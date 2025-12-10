@@ -2,10 +2,22 @@
 import React from 'react';
 import Hero from '../components/Hero';
 import GridItem from '../components/GridItem';
+import ProductNav, { ProductNavItem } from '../components/ProductNav';
+
+const IPAD_NAV_ITEMS: ProductNavItem[] = [
+    { id: 'pro', label: 'iPad Pro', image: 'https://www.apple.com/v/ipad/home/ck/images/chapternav/ipadpro_light__cdf60f3w5q2q_large.svg', url: '/ipad/ipad-pro', isNew: true },
+    { id: 'air', label: 'iPad Air', image: 'https://www.apple.com/v/ipad/home/ck/images/chapternav/ipadair_light__f9z26y85un6u_large.svg', url: '/ipad/ipad-air', isNew: true },
+    { id: 'ipad', label: 'iPad', image: 'https://www.apple.com/v/ipad/home/ck/images/chapternav/ipad_light__gan6yv9ae56q_large.svg', url: '/ipad/ipad-10th-gen' },
+    { id: 'mini', label: 'iPad mini', image: 'https://www.apple.com/v/ipad/home/ck/images/chapternav/ipadmini_light__bxpwa95j0e7m_large.svg', url: '/ipad/ipad-mini' },
+    { id: 'pencil', label: 'Apple Pencil', image: 'https://www.apple.com/v/ipad/home/ck/images/chapternav/apple_pencil_light__e9zorbynwqie_large.svg', url: '/ipad/apple-pencil' },
+    { id: 'keyboard', label: 'Keyboards', image: 'https://www.apple.com/v/ipad/home/ck/images/chapternav/keyboard_light__cjbr6d6i2vbm_large.svg', url: '/ipad/keyboards' },
+];
 
 const Ipad: React.FC = () => {
   return (
     <div className="pt-[44px]">
+      <ProductNav items={IPAD_NAV_ITEMS} />
+
       <Hero 
         title="iPad Pro"
         subtitle="Mỏng không tưởng. Mạnh không ngờ."

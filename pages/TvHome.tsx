@@ -2,10 +2,20 @@
 import React from 'react';
 import Hero from '../components/Hero';
 import GridItem from '../components/GridItem';
+import ProductNav, { ProductNavItem } from '../components/ProductNav';
+
+const TV_NAV_ITEMS: ProductNavItem[] = [
+    { id: 'tv4k', label: 'Apple TV 4K', image: 'https://www.apple.com/v/tv-home/k/images/chapternav/apple_tv_4k_light__c21g76w3182u_large.svg', url: '/tv-home/apple-tv-4k' },
+    { id: 'homepod', label: 'HomePod', image: 'https://www.apple.com/v/tv-home/k/images/chapternav/homepod_light__b517ntk20v2q_large.svg', url: '/tv-home/homepod' },
+    { id: 'mini', label: 'HomePod mini', image: 'https://www.apple.com/v/tv-home/k/images/chapternav/homepod_mini_light__c517ntk20v2q_large.svg', url: '/tv-home/homepod-mini' },
+    { id: 'home', label: 'Home App', image: 'https://www.apple.com/v/tv-home/k/images/chapternav/home_app_light__d517ntk20v2q_large.svg', url: '/tv-home/home-app' },
+];
 
 const TvHome: React.FC = () => {
   return (
     <div className="pt-[44px]">
+      <ProductNav items={TV_NAV_ITEMS} />
+
       <Hero 
         title="TV & Nhà"
         subtitle="Giải trí tại gia. Thông minh hơn."
@@ -46,15 +56,6 @@ const TvHome: React.FC = () => {
             links={[
                 { label: 'Tìm hiểu thêm', url: '/tv-home/homepod-mini' },
                 { label: 'Mua', url: '/store/product/homepod-mini' }
-            ]}
-        />
-        <GridItem 
-            title="Ứng dụng Nhà"
-            subtitle="Điều khiển nhà thông minh dễ dàng."
-            imageUrl="https://www.apple.com/v/home-app/g/images/overview/hero/hero__cic32850u6qu_large.jpg"
-            textColor="black"
-            links={[
-                { label: 'Tìm hiểu thêm', url: '/tv-home/home-app' },
             ]}
         />
       </div>

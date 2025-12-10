@@ -22,6 +22,10 @@ const Navbar: React.FC = () => {
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const bagRef = useRef<HTMLDivElement>(null);
 
+  // Refs for Accessibility Focus Management
+  const navLinksRef = useRef<{ [key: string]: HTMLAnchorElement | null }>({});
+  const submenuRef = useRef<HTMLDivElement>(null);
+
   const NAV_ITEMS = getNavItems(language);
   const NAV_SUBMENUS = getNavSubmenus(language);
 
@@ -44,6 +48,26 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Global Keydown Handler for Escape
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (hoveredLabel) {
+           const labelToFocus = hoveredLabel;
+           setHoveredLabel(null);
+           // Return focus to the trigger
+           navLinksRef.current[labelToFocus]?.focus();
+        } else if (isBagOpen) {
+            setIsBagOpen(false);
+        } else if (isMobileMenuOpen) {
+            setIsMobileMenuOpen(false);
+        }
+      }
+    };
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [hoveredLabel, isBagOpen, isMobileMenuOpen]);
+
   // Handle Desktop Hover Logic
   const handleMouseEnter = (label: string) => {
     if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
@@ -55,6 +79,23 @@ const Navbar: React.FC = () => {
     hoverTimeoutRef.current = setTimeout(() => {
         setHoveredLabel(null);
     }, 200);
+  };
+
+  // Handle Keyboard Navigation for Top Level Links
+  const handleNavLinkKeyDown = (e: React.KeyboardEvent, label: string) => {
+      if (e.key === 'ArrowDown') {
+          // Check if this item has a submenu
+          if (NAV_SUBMENUS[label]) {
+              e.preventDefault();
+              setHoveredLabel(label);
+              setIsBagOpen(false);
+              // Focus the first link in the submenu after it renders
+              setTimeout(() => {
+                  const firstLink = submenuRef.current?.querySelector('a');
+                  if (firstLink) (firstLink as HTMLElement).focus();
+              }, 50);
+          }
+      }
   };
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, to: string) => {
@@ -133,25 +174,33 @@ const Navbar: React.FC = () => {
           {/* Desktop Nav Items */}
           <div className="hidden md:flex justify-between items-center w-full px-8 h-full">
             <ul className="flex justify-between items-center w-full list-none m-0 p-0 h-full">
-                {NAV_ITEMS.map((item) => (
-                <li 
-                    key={item.label} 
-                    className="h-full flex items-center"
-                    onMouseEnter={() => handleMouseEnter(item.label)}
-                    onMouseLeave={handleMouseLeave}
-                >
-                    <Link 
-                        to={item.href}
-                        onClick={(e) => handleLinkClick(e, item.href)}
-                        className={`
-                            text-[12px] transition-all duration-300 tracking-tight px-2 hover:underline hover:underline-offset-4 decoration-white/50
-                            ${hoveredLabel && hoveredLabel !== item.label ? 'text-gray-500' : 'text-[#e8e8ed]/80 hover:text-white'}
-                        `}
+                {NAV_ITEMS.map((item) => {
+                  const hasSubmenu = !!NAV_SUBMENUS[item.label];
+                  return (
+                    <li 
+                        key={item.label} 
+                        className="h-full flex items-center"
+                        onMouseEnter={() => handleMouseEnter(item.label)}
+                        onMouseLeave={handleMouseLeave}
                     >
-                        {item.label}
-                    </Link>
-                </li>
-                ))}
+                        <Link 
+                            ref={(el) => { navLinksRef.current[item.label] = el; }}
+                            to={item.href}
+                            onClick={(e) => handleLinkClick(e, item.href)}
+                            onKeyDown={(e) => handleNavLinkKeyDown(e, item.label)}
+                            className={`
+                                text-[12px] transition-all duration-300 tracking-tight px-2 hover:underline hover:underline-offset-4 decoration-white/50
+                                ${hoveredLabel && hoveredLabel !== item.label ? 'text-gray-500' : 'text-[#e8e8ed]/80 hover:text-white'}
+                            `}
+                            aria-haspopup={hasSubmenu ? "true" : undefined}
+                            aria-expanded={hasSubmenu ? hoveredLabel === item.label : undefined}
+                            aria-controls={hasSubmenu ? "desktop-submenu-overlay" : undefined}
+                        >
+                            {item.label}
+                        </Link>
+                    </li>
+                  );
+                })}
             </ul>
           </div>
 
@@ -170,12 +219,19 @@ const Navbar: React.FC = () => {
             <button 
                 type="button"
                 onClick={() => setIsSearchOpen(true)}
-                className="hover:opacity-80 transition-opacity p-1"
+                className="hover:opacity-80 transition-opacity p-1 group relative focus:outline-none"
                 aria-label={t('search.placeholder')}
                 onMouseEnter={() => handleMouseEnter('')}
                 onMouseLeave={handleMouseLeave}
             >
                <Search size={18} aria-hidden="true" />
+               <span 
+                   className="absolute top-[120%] left-1/2 -translate-x-1/2 px-2 py-1 bg-white text-[#1d1d1f] text-xs rounded shadow-md opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 border border-gray-100"
+                   role="tooltip"
+                   aria-hidden="true"
+               >
+                   {t('search.title')}
+               </span>
             </button>
 
             {/* Shopping Bag Icon with Dropdown Trigger */}
@@ -184,6 +240,8 @@ const Navbar: React.FC = () => {
                     type="button"
                     className={`hover:opacity-80 transition-opacity p-1 relative ${isBagOpen ? 'opacity-50' : ''}`}
                     aria-label={t('bag.title')}
+                    aria-expanded={isBagOpen}
+                    aria-haspopup="true"
                     onClick={toggleBag}
                     onMouseEnter={() => handleMouseEnter('')} 
                 >
@@ -284,6 +342,8 @@ const Navbar: React.FC = () => {
 
         {/* Desktop Submenu Overlay */}
         <div 
+            id="desktop-submenu-overlay"
+            ref={submenuRef}
             className={`
                 fixed top-[44px] left-0 w-full bg-[#161617] text-white transition-all duration-300 ease-out z-50
                 ${activeSubMenu && !isBagOpen ? 'opacity-100 visible max-h-[calc(100vh-44px)] overflow-y-auto border-b border-gray-700/50 shadow-2xl pb-12 pt-4' : 'opacity-0 invisible max-h-0 pt-0 pb-0 overflow-hidden'}
@@ -292,6 +352,8 @@ const Navbar: React.FC = () => {
                 if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
             }}
             onMouseLeave={handleMouseLeave}
+            role="region"
+            aria-label={hoveredLabel ? `${hoveredLabel} submenu` : 'Submenu'}
         >
             <div className="max-w-[1024px] mx-auto px-4">
                 <div className="flex flex-row justify-start gap-x-12 pl-4 animate-fade-in"> 
@@ -308,7 +370,7 @@ const Navbar: React.FC = () => {
                                         <Link 
                                             to={link.href}
                                             className={`
-                                                block hover:text-white leading-tight
+                                                block hover:text-white leading-tight focus:outline-none focus:text-white focus:underline
                                                 ${group.title ? 'text-[12px] font-semibold text-[#e8e8ed]' : 'text-[24px] font-semibold text-[#e8e8ed] mb-1'} 
                                             `}
                                             onClick={(e) => handleLinkClick(e, link.href)}
