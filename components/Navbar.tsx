@@ -1,26 +1,40 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, Search, ShoppingBag, Globe } from 'lucide-react';
+import { Menu, X, Search, ShoppingBag, Globe, Trash2, Box, User, Heart, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getNavItems, getNavSubmenus } from '../constants';
 import SmartSearch from './SmartSearch';
 import AppleLogo from './AppleLogo';
+import Button from './Button';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useCart } from '../contexts/CartContext';
 
 const Navbar: React.FC = () => {
   const { language, toggleLanguage, t } = useLanguage();
-  const { totalItems } = useCart();
+  const { cartItems, totalItems, removeFromCart } = useCart();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isBagOpen, setIsBagOpen] = useState(false);
   
   // State for submenus
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const bagRef = useRef<HTMLDivElement>(null);
 
   const NAV_ITEMS = getNavItems(language);
   const NAV_SUBMENUS = getNavSubmenus(language);
+
+  // Close bag on click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (bagRef.current && !bagRef.current.contains(event.target as Node)) {
+        setIsBagOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,24 +44,24 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const closeMobileMenu = () => setIsMobileMenuOpen(false);
-
   // Handle Desktop Hover Logic
   const handleMouseEnter = (label: string) => {
     if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
     setHoveredLabel(label);
+    setIsBagOpen(false); // Close bag if opening submenu
   };
 
   const handleMouseLeave = () => {
     hoverTimeoutRef.current = setTimeout(() => {
         setHoveredLabel(null);
-    }, 200); // Slight delay to allow moving mouse from link to submenu
+    }, 200);
   };
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, to: string) => {
     // Always close menus
     setIsMobileMenuOpen(false);
     setHoveredLabel(null);
+    setIsBagOpen(false);
 
     // Smooth scroll for hash links on the same page
     if (to.startsWith('#')) {
@@ -55,7 +69,7 @@ const Navbar: React.FC = () => {
       const id = to.replace('#', '');
       const element = document.getElementById(id);
       if (element) {
-        const headerOffset = 48; // 44px navbar + breathing room
+        const headerOffset = 48;
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.scrollY - headerOffset;
 
@@ -67,13 +81,22 @@ const Navbar: React.FC = () => {
     }
   };
 
+  const toggleBag = (e: React.MouseEvent) => {
+      e.preventDefault();
+      setIsBagOpen(!isBagOpen);
+      setHoveredLabel(null); // Close submenus
+  };
+
   const activeSubMenu = hoveredLabel ? NAV_SUBMENUS[hoveredLabel] : null;
+
+  const bagTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const formatPrice = (price: number) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
 
   return (
     <>
       <nav 
         className={`fixed top-0 w-full z-40 transition-all duration-300 ${
-          isMobileMenuOpen || hoveredLabel ? 'bg-[#161617]' : (isScrolled ? 'bg-[#161617]/80 backdrop-blur-md' : 'bg-[#161617]/90')
+          isMobileMenuOpen || hoveredLabel || isBagOpen ? 'bg-[#161617]' : (isScrolled ? 'bg-[#161617]/80 backdrop-blur-md' : 'bg-[#161617]/90')
         }`}
         aria-label="Global"
       >
@@ -100,7 +123,7 @@ const Navbar: React.FC = () => {
                 className="text-[#e8e8ed] hover:opacity-80 transition-opacity flex items-center h-full" 
                 aria-label="Apple" 
                 onClick={(e) => handleLinkClick(e, '/')}
-                onMouseEnter={() => handleMouseEnter('')} // Close submenu when hovering logo
+                onMouseEnter={() => handleMouseEnter('')}
                 onMouseLeave={handleMouseLeave}
              >
                 <AppleLogo className="fill-current h-[44px] w-[14px]" aria-hidden="true" />
@@ -149,34 +172,121 @@ const Navbar: React.FC = () => {
                 onClick={() => setIsSearchOpen(true)}
                 className="hover:opacity-80 transition-opacity p-1"
                 aria-label={t('search.placeholder')}
-                onMouseEnter={() => handleMouseEnter('')} // Close submenu
+                onMouseEnter={() => handleMouseEnter('')}
                 onMouseLeave={handleMouseLeave}
             >
                <Search size={18} aria-hidden="true" />
             </button>
-            <Link 
-                to="/store" 
-                className="hover:opacity-80 transition-opacity p-1 relative" 
-                aria-label={t('bag.title')}
-                onClick={(e) => handleLinkClick(e, '/store')}
-                onMouseEnter={() => handleMouseEnter('')} // Close submenu
-                onMouseLeave={handleMouseLeave}
-            >
-               <ShoppingBag size={18} aria-hidden="true" />
-               {totalItems > 0 && (
-                 <span className="absolute -top-1 -right-1 bg-white text-black text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
-                    {totalItems}
-                 </span>
-               )}
-            </Link>
+
+            {/* Shopping Bag Icon with Dropdown Trigger */}
+            <div className="relative" ref={bagRef}>
+                <button 
+                    type="button"
+                    className={`hover:opacity-80 transition-opacity p-1 relative ${isBagOpen ? 'opacity-50' : ''}`}
+                    aria-label={t('bag.title')}
+                    onClick={toggleBag}
+                    onMouseEnter={() => handleMouseEnter('')} 
+                >
+                <ShoppingBag size={18} aria-hidden="true" />
+                {totalItems > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-white text-black text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center pointer-events-none">
+                        {totalItems}
+                    </span>
+                )}
+                </button>
+
+                {/* Bag Dropdown */}
+                <div 
+                    className={`
+                        absolute top-full right-[-10px] mt-3 w-[290px] md:w-[320px] 
+                        bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden
+                        transition-all duration-300 origin-top-right text-apple-dark
+                        ${isBagOpen ? 'opacity-100 scale-100 visible' : 'opacity-0 scale-95 invisible'}
+                    `}
+                >
+                    {/* Triangle Arrow */}
+                    <div className="absolute -top-2 right-4 w-4 h-4 bg-white transform rotate-45 border-l border-t border-gray-200"></div>
+
+                    <div className="p-4 md:p-6 bg-white relative z-10">
+                        {cartItems.length === 0 ? (
+                            <div className="text-center py-8">
+                                <p className="text-gray-500 mb-4 text-sm">Giỏ hàng của bạn đang trống.</p>
+                                <Link to="/store" onClick={() => setIsBagOpen(false)} className="text-apple-blue hover:underline text-sm font-medium">Mua sắm ngay</Link>
+                            </div>
+                        ) : (
+                            <div className="space-y-4">
+                                <p className="text-sm text-gray-500 font-medium text-center">Giỏ hàng</p>
+                                <div className="max-h-[300px] overflow-y-auto no-scrollbar space-y-4 border-b border-gray-200 pb-4">
+                                    {cartItems.map((item) => (
+                                        <div key={item.id} className="flex gap-3 items-start">
+                                            <div className="w-12 h-12 flex-shrink-0">
+                                                <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <Link 
+                                                    to={`/store/product/${item.slug}`} 
+                                                    onClick={() => setIsBagOpen(false)}
+                                                    className="text-sm font-semibold text-apple-dark hover:text-apple-blue truncate block"
+                                                >
+                                                    {item.name}
+                                                </Link>
+                                                <p className="text-xs text-gray-500 mt-0.5">{formatPrice(item.price)}</p>
+                                            </div>
+                                            <button 
+                                                onClick={() => removeFromCart(item.id)}
+                                                className="text-gray-400 hover:text-red-500 transition-colors"
+                                                aria-label="Remove item"
+                                            >
+                                                <Trash2 size={14} />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="flex justify-between items-center pt-2">
+                                    <span className="text-sm text-gray-500">Tổng cộng:</span>
+                                    <span className="text-sm font-bold">{formatPrice(bagTotal)}</span>
+                                </div>
+                                <Button 
+                                    label="Thanh toán" 
+                                    href="/store"
+                                    onClick={() => setIsBagOpen(false)}
+                                    className="w-full" 
+                                    size="sm"
+                                />
+                            </div>
+                        )}
+                        
+                        {/* Profile Links */}
+                        <div className="mt-4 pt-4 border-t border-gray-100 space-y-1">
+                            <Link to="/store/order-status" onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 rounded-lg group">
+                                <Box size={16} className="text-gray-400 group-hover:text-apple-blue" />
+                                <span>Đơn hàng</span>
+                            </Link>
+                            <Link to="/saved" onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 rounded-lg group">
+                                <Heart size={16} className="text-gray-400 group-hover:text-apple-blue" />
+                                <span>Mục đã lưu</span>
+                            </Link>
+                            <Link to="/account" onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 rounded-lg group">
+                                <User size={16} className="text-gray-400 group-hover:text-apple-blue" />
+                                <span>Tài khoản</span>
+                            </Link>
+                            <Link to="/signin" onClick={() => setIsBagOpen(false)} className="flex items-center gap-3 px-2 py-2 text-sm text-apple-blue hover:bg-gray-50 rounded-lg group">
+                                <Settings size={16} className="text-gray-400 group-hover:text-apple-blue" />
+                                <span>Đăng nhập</span>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
           </div>
         </div>
 
         {/* Desktop Submenu Overlay */}
         <div 
             className={`
-                absolute top-full left-0 w-full bg-[#161617] text-white overflow-hidden transition-all duration-300 ease-out z-50
-                ${activeSubMenu ? 'opacity-100 visible max-h-[500px] border-b border-gray-700/50 shadow-2xl pb-12 pt-4' : 'opacity-0 invisible max-h-0 pt-0 pb-0'}
+                fixed top-[44px] left-0 w-full bg-[#161617] text-white transition-all duration-300 ease-out z-50
+                ${activeSubMenu && !isBagOpen ? 'opacity-100 visible max-h-[calc(100vh-44px)] overflow-y-auto border-b border-gray-700/50 shadow-2xl pb-12 pt-4' : 'opacity-0 invisible max-h-0 pt-0 pb-0 overflow-hidden'}
             `}
             onMouseEnter={() => {
                 if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
@@ -218,9 +328,11 @@ const Navbar: React.FC = () => {
         <div 
             id="mobile-menu"
             className={`
-            fixed inset-0 bg-black z-40 pt-[44px] px-8 transition-all duration-500 ease-in-out md:hidden
-            ${isMobileMenuOpen ? 'opacity-100 translate-y-0 visible' : 'opacity-0 -translate-y-10 invisible'}
+            fixed inset-0 bg-black z-40 pt-[44px] px-8 md:hidden
+            transition-all duration-[600ms]
+            ${isMobileMenuOpen ? 'opacity-100 translate-y-0 visible pointer-events-auto' : 'opacity-0 -translate-y-2 invisible pointer-events-none'}
             `}
+            style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
             aria-hidden={!isMobileMenuOpen}
         >
           <div className="flex flex-col h-full pb-20 overflow-y-auto">
@@ -238,14 +350,17 @@ const Navbar: React.FC = () => {
                 />
             </div>
             <nav aria-label="Mobile">
-                <ul className="flex flex-col space-y-1 list-none p-0">
+                <ul key={isMobileMenuOpen ? 'open' : 'closed'} className="flex flex-col space-y-1 list-none p-0">
                 {NAV_ITEMS.map((item, index) => (
                     <li key={item.label}>
                         <Link 
                         to={item.href}
                         onClick={(e) => handleLinkClick(e, item.href)}
-                        className="block text-[#e8e8ed] text-[28px] font-semibold py-2 border-b border-gray-800 hover:text-white transition-colors animate-fade-in"
-                        style={{ animationDelay: `${index * 50}ms` }}
+                        className={`
+                            block text-[#e8e8ed] text-[28px] font-semibold py-2 border-b border-gray-800 hover:text-white transition-colors
+                            ${isMobileMenuOpen ? 'animate-fade-in' : ''}
+                        `}
+                        style={{ animationDelay: `${index * 50}ms`, opacity: 0, animationFillMode: 'forwards' }}
                         >
                         {item.label}
                         </Link>
@@ -254,8 +369,10 @@ const Navbar: React.FC = () => {
                 </ul>
             </nav>
             
-            {/* Mobile Language Switcher */}
-            <div className="mt-8 border-t border-gray-800 pt-8 animate-fade-in" style={{ animationDelay: '500ms' }}>
+            <div 
+                className={`mt-8 border-t border-gray-800 pt-8 ${isMobileMenuOpen ? 'animate-fade-in' : ''}`} 
+                style={{ animationDelay: '500ms', opacity: 0, animationFillMode: 'forwards' }}
+            >
                  <button 
                     onClick={toggleLanguage}
                     className="flex items-center gap-2 text-[#e8e8ed] text-sm font-medium hover:text-white"
@@ -271,7 +388,7 @@ const Navbar: React.FC = () => {
         <div 
             className={`
                 fixed inset-0 bg-black/40 backdrop-blur-sm z-30 transition-opacity duration-500 pointer-events-none md:pointer-events-auto
-                ${hoveredLabel ? 'opacity-100 visible' : 'opacity-0 invisible'}
+                ${hoveredLabel || isBagOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}
             `} 
             style={{ top: '44px', height: 'calc(100vh - 44px)' }}
             aria-hidden="true"
@@ -279,7 +396,6 @@ const Navbar: React.FC = () => {
 
       </nav>
 
-      {/* Smart Search Modal */}
       <SmartSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );

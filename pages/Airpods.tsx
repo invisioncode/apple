@@ -12,8 +12,8 @@ const Airpods: React.FC = () => {
         imageUrl="https://www.apple.com/v/airpods-4/a/images/overview/hero__dbq22u8m0a2q_large.jpg" 
         textColor="black"
         links={[
-            { label: 'Tìm hiểu thêm', url: '#', primary: true },
-            { label: 'Mua', url: '#', primary: false }
+            { label: 'Tìm hiểu thêm', url: '/airpods/airpods-4', primary: false },
+            { label: 'Mua', url: '/store/product/airpods-4', primary: true }
         ]}
       />
 
@@ -24,8 +24,8 @@ const Airpods: React.FC = () => {
             imageUrl="https://www.apple.com/v/airpods-pro/h/images/overview/hero/hero_endframe__b3cjfkquc2s2_large.jpg"
             textColor="white"
             links={[
-                { label: 'Tìm hiểu thêm', url: '#' },
-                { label: 'Mua', url: '#' }
+                { label: 'Tìm hiểu thêm', url: '/airpods/airpods-pro-2' },
+                { label: 'Mua', url: '/store/product/airpods-pro-2' }
             ]}
         />
         <GridItem 
@@ -34,8 +34,8 @@ const Airpods: React.FC = () => {
             imageUrl="https://www.apple.com/v/airpods-max/f/images/overview/hero/hero__d110k4u310aa_large.jpg"
             textColor="black"
             links={[
-                { label: 'Tìm hiểu thêm', url: '#' },
-                { label: 'Mua', url: '#' }
+                { label: 'Tìm hiểu thêm', url: '/airpods/airpods-max' },
+                { label: 'Mua', url: '/store/product/airpods-max' }
             ]}
         />
       </div>

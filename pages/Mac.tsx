@@ -12,8 +12,8 @@ const Mac: React.FC = () => {
         imageUrl="https://www.apple.com/v/macbook-air/s/images/overview/hero_mba_13_15__8083041y1qyq_large.jpg" 
         textColor="black"
         links={[
-            { label: 'Tìm hiểu thêm', url: '#', primary: true },
-            { label: 'Mua', url: '#', primary: false }
+            { label: 'Tìm hiểu thêm', url: '/mac/macbook-air', primary: false },
+            { label: 'Mua', url: '/store/product/macbook-air', primary: true }
         ]}
       />
 
@@ -34,8 +34,8 @@ const Mac: React.FC = () => {
                 textColor="white"
                 large
                 links={[
-                    { label: 'Tìm hiểu thêm', url: '#' },
-                    { label: 'Mua', url: '#' }
+                    { label: 'Tìm hiểu thêm', url: '/mac/macbook-pro' },
+                    { label: 'Mua', url: '/store/product/macbook-pro' }
                 ]}
             />
           </div>
@@ -48,8 +48,8 @@ const Mac: React.FC = () => {
                 imageAlt="Front view of the Mac Studio showing ports and its compact aluminum design."
                 textColor="black"
                 links={[
-                    { label: 'Tìm hiểu thêm', url: '#' },
-                    { label: 'Mua', url: '#' }
+                    { label: 'Tìm hiểu thêm', url: '/mac/mac-studio' },
+                    { label: 'Mua', url: '/store/product/mac-studio' }
                 ]}
             />
           </div>
@@ -62,8 +62,8 @@ const Mac: React.FC = () => {
                 imageAlt="Studio Display monitor showing a colorful abstract wallpaper."
                 textColor="black"
                 links={[
-                    { label: 'Tìm hiểu thêm', url: '#' },
-                    { label: 'Mua', url: '#' }
+                    { label: 'Tìm hiểu thêm', url: '/mac/studio-display' },
+                    { label: 'Mua', url: '/store/product/studio-display' }
                 ]}
             />
           </div>
@@ -76,8 +76,8 @@ const Mac: React.FC = () => {
                 imageAlt="iMac 24-inch in blue, showing the thin side profile and matching keyboard."
                 textColor="black"
                 links={[
-                    { label: 'Tìm hiểu thêm', url: '#' },
-                    { label: 'Mua', url: '#' }
+                    { label: 'Tìm hiểu thêm', url: '/mac/imac' },
+                    { label: 'Mua', url: '/store/product/imac' }
                 ]}
             />
           </div>
@@ -91,8 +91,8 @@ const Mac: React.FC = () => {
                 textColor="black"
                 large
                 links={[
-                    { label: 'Tìm hiểu thêm', url: '#' },
-                    { label: 'Mua', url: '#' }
+                    { label: 'Tìm hiểu thêm', url: '/mac/mac-mini' },
+                    { label: 'Mua', url: '/store/product/mac-mini' }
                 ]}
             />
           </div>

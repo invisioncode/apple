@@ -12,8 +12,8 @@ const Ipad: React.FC = () => {
         imageUrl="https://www.apple.com/v/ipad-pro/aq/images/overview/hero/hero_endframe__ovj8dbnra82q_large.jpg" 
         textColor="white"
         links={[
-            { label: 'Tìm hiểu thêm', url: '#', primary: true },
-            { label: 'Mua', url: '#', primary: false }
+            { label: 'Tìm hiểu thêm', url: '/ipad/ipad-pro', primary: false },
+            { label: 'Mua', url: '/store/product/ipad-pro', primary: true }
         ]}
       />
 
@@ -24,8 +24,8 @@ const Ipad: React.FC = () => {
             imageUrl="https://www.apple.com/v/ipad-air/w/images/overview/hero/hero_endframe__b3cjfkquc2s2_large.jpg"
             textColor="black"
             links={[
-                { label: 'Tìm hiểu thêm', url: '#' },
-                { label: 'Mua', url: '#' }
+                { label: 'Tìm hiểu thêm', url: '/ipad/ipad-air' },
+                { label: 'Mua', url: '/store/product/ipad-air' }
             ]}
         />
         <GridItem 
@@ -34,8 +34,8 @@ const Ipad: React.FC = () => {
             imageUrl="https://www.apple.com/v/ipad-10.9/d/images/overview/hero/hero__e3j42m33506u_large.jpg"
             textColor="black"
             links={[
-                { label: 'Tìm hiểu thêm', url: '#' },
-                { label: 'Mua', url: '#' }
+                { label: 'Tìm hiểu thêm', url: '/ipad/ipad-10th-gen' },
+                { label: 'Mua', url: '/store/product/ipad-10th-gen' }
             ]}
         />
         <GridItem 
@@ -44,8 +44,8 @@ const Ipad: React.FC = () => {
             imageUrl="https://www.apple.com/v/ipad-mini/q/images/overview/hero/hero__d110k4u310aa_large.jpg"
             textColor="black"
             links={[
-                { label: 'Tìm hiểu thêm', url: '#' },
-                { label: 'Mua', url: '#' }
+                { label: 'Tìm hiểu thêm', url: '/ipad/ipad-mini' },
+                { label: 'Mua', url: '/store/product/ipad-mini' }
             ]}
         />
         <GridItem 
@@ -54,8 +54,8 @@ const Ipad: React.FC = () => {
             imageUrl="https://www.apple.com/v/apple-pencil/e/images/overview/hero/hero_endframe__b3cjfkquc2s2_large.jpg"
             textColor="white"
             links={[
-                { label: 'Tìm hiểu thêm', url: '#' },
-                { label: 'Mua', url: '#' }
+                { label: 'Tìm hiểu thêm', url: '/ipad/apple-pencil' },
+                { label: 'Mua', url: '/store/product/apple-pencil' }
             ]}
         />
       </div>

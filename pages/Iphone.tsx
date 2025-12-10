@@ -13,8 +13,8 @@ const Iphone: React.FC = () => {
         textColor="white"
         imagePosition="center bottom"
         links={[
-            { label: 'Tìm hiểu thêm', url: '#', primary: true },
-            { label: 'Mua', url: '#', primary: false }
+            { label: 'Tìm hiểu thêm', url: '/iphone/iphone-16-pro', primary: false },
+            { label: 'Mua', url: '/store/product/iphone-16-pro', primary: true }
         ]}
       />
 
@@ -25,8 +25,8 @@ const Iphone: React.FC = () => {
             imageUrl="https://www.apple.com/v/iphone-16/c/images/overview/welcome/hero_large.jpg" 
             textColor="black"
             links={[
-                { label: 'Tìm hiểu thêm', url: '#', primary: true },
-                { label: 'Mua', url: '#', primary: false }
+                { label: 'Tìm hiểu thêm', url: '/iphone/iphone-16', primary: false },
+                { label: 'Mua', url: '/store/product/iphone-16', primary: true }
             ]}
         />
       </div>
@@ -38,8 +38,8 @@ const Iphone: React.FC = () => {
             imageUrl="https://www.apple.com/v/iphone-15/c/images/overview/design/design_startframe__d478w07y3u6u_large.jpg"
             textColor="black"
             links={[
-                { label: 'Tìm hiểu thêm', url: '#' },
-                { label: 'Mua', url: '#' }
+                { label: 'Tìm hiểu thêm', url: '/iphone/iphone-15' },
+                { label: 'Mua', url: '/store/product/iphone-15' }
             ]}
         />
         <GridItem 
@@ -48,8 +48,8 @@ const Iphone: React.FC = () => {
             imageUrl="https://www.apple.com/v/iphone-se/d/images/overview/hero/hero__e3j42m33506u_large.jpg"
             textColor="black"
             links={[
-                { label: 'Tìm hiểu thêm', url: '#' },
-                { label: 'Mua', url: '#' }
+                { label: 'Tìm hiểu thêm', url: '/iphone/iphone-se' },
+                { label: 'Mua', url: '/store/product/iphone-se' }
             ]}
         />
       </div>

@@ -12,7 +12,8 @@ const TvHome: React.FC = () => {
         imageUrl="https://www.apple.com/v/tv-home/k/images/overview/hero/hero_endframe__b3cjfkquc2s2_large.jpg" 
         textColor="white"
         links={[
-            { label: 'Khám phá TV & Nhà', url: '#', primary: true },
+            { label: 'Khám phá TV & Nhà', url: '#', primary: false },
+            { label: 'Mua', url: '/store', primary: true },
         ]}
       />
 
@@ -23,8 +24,8 @@ const TvHome: React.FC = () => {
             imageUrl="https://www.apple.com/v/apple-tv-4k/ah/images/overview/hero/hero_endframe__b3cjfkquc2s2_large.jpg"
             textColor="white"
             links={[
-                { label: 'Tìm hiểu thêm', url: '#' },
-                { label: 'Mua', url: '#' }
+                { label: 'Tìm hiểu thêm', url: '/tv-home/apple-tv-4k' },
+                { label: 'Mua', url: '/store/product/apple-tv-4k' }
             ]}
         />
         <GridItem 
@@ -33,8 +34,8 @@ const TvHome: React.FC = () => {
             imageUrl="https://www.apple.com/v/homepod-2nd-generation/d/images/overview/hero/hero_endframe__b3cjfkquc2s2_large.jpg"
             textColor="black"
             links={[
-                { label: 'Tìm hiểu thêm', url: '#' },
-                { label: 'Mua', url: '#' }
+                { label: 'Tìm hiểu thêm', url: '/tv-home/homepod' },
+                { label: 'Mua', url: '/store/product/homepod' }
             ]}
         />
         <GridItem 
@@ -43,8 +44,8 @@ const TvHome: React.FC = () => {
             imageUrl="https://www.apple.com/v/homepod-mini/j/images/overview/hero/hero_endframe__b3cjfkquc2s2_large.jpg"
             textColor="black"
             links={[
-                { label: 'Tìm hiểu thêm', url: '#' },
-                { label: 'Mua', url: '#' }
+                { label: 'Tìm hiểu thêm', url: '/tv-home/homepod-mini' },
+                { label: 'Mua', url: '/store/product/homepod-mini' }
             ]}
         />
         <GridItem 
@@ -53,7 +54,7 @@ const TvHome: React.FC = () => {
             imageUrl="https://www.apple.com/v/home-app/g/images/overview/hero/hero__cic32850u6qu_large.jpg"
             textColor="black"
             links={[
-                { label: 'Tìm hiểu thêm', url: '#' },
+                { label: 'Tìm hiểu thêm', url: '/tv-home/home-app' },
             ]}
         />
       </div>

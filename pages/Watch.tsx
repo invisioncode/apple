@@ -12,8 +12,8 @@ const Watch: React.FC = () => {
         imageUrl="https://www.apple.com/v/apple-watch-series-10/a/images/overview/hero/hero_static__c9d15g90w2aq_large.jpg" 
         textColor="black"
         links={[
-            { label: 'Tìm hiểu thêm', url: '#', primary: true },
-            { label: 'Mua', url: '#', primary: false }
+            { label: 'Tìm hiểu thêm', url: '/watch/apple-watch-series-10', primary: false },
+            { label: 'Mua', url: '/store/product/apple-watch-series-10', primary: true }
         ]}
       />
 
@@ -24,8 +24,8 @@ const Watch: React.FC = () => {
             imageUrl="https://www.apple.com/v/apple-watch-ultra-2/d/images/overview/hero/hero_static__c9d15g90w2aq_large.jpg"
             textColor="white"
             links={[
-                { label: 'Tìm hiểu thêm', url: '#' },
-                { label: 'Mua', url: '#' }
+                { label: 'Tìm hiểu thêm', url: '/watch/apple-watch-ultra-2' },
+                { label: 'Mua', url: '/store/product/apple-watch-ultra-2' }
             ]}
         />
         <GridItem 
@@ -34,8 +34,8 @@ const Watch: React.FC = () => {
             imageUrl="https://www.apple.com/v/apple-watch-se/k/images/overview/hero/hero_static__c9d15g90w2aq_large.jpg"
             textColor="black"
             links={[
-                { label: 'Tìm hiểu thêm', url: '#' },
-                { label: 'Mua', url: '#' }
+                { label: 'Tìm hiểu thêm', url: '/watch/apple-watch-se' },
+                { label: 'Mua', url: '/store/product/apple-watch-se' }
             ]}
         />
       </div>

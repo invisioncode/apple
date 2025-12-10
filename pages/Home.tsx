@@ -13,8 +13,8 @@ const Home: React.FC = () => {
         imageUrl="https://www.apple.com/v/iphone-16-pro/c/images/overview/welcome/hero_endframe__b3cjfkquc2s2_large.jpg" 
         textColor="white"
         links={[
-          { label: 'Tìm hiểu thêm', url: '/iphone', primary: true },
-          { label: 'Mua', url: '/store', primary: false }
+          { label: 'Tìm hiểu thêm', url: '/iphone/iphone-16-pro', primary: false },
+          { label: 'Mua', url: '/store/product/iphone-16-pro', primary: true }
         ]}
       />
 
@@ -26,8 +26,8 @@ const Home: React.FC = () => {
           imageUrl="https://www.apple.com/v/iphone-16/c/images/overview/welcome/hero_large.jpg" 
           textColor="black"
           links={[
-              { label: 'Tìm hiểu thêm', url: '/iphone', primary: true },
-              { label: 'Mua', url: '/store', primary: false }
+              { label: 'Tìm hiểu thêm', url: '/iphone/iphone-16', primary: false },
+              { label: 'Mua', url: '/store/product/iphone-16', primary: true }
           ]}
           />
       </div>
@@ -41,8 +41,8 @@ const Home: React.FC = () => {
           imageUrl="https://www.apple.com/v/apple-watch-series-10/a/images/overview/hero/hero_static__c9d15g90w2aq_large.jpg" 
           textColor="black"
           links={[
-              { label: 'Tìm hiểu thêm', url: '/watch', primary: true },
-              { label: 'Mua', url: '/store', primary: false }
+              { label: 'Tìm hiểu thêm', url: '/watch/apple-watch-series-10', primary: false },
+              { label: 'Mua', url: '/store/product/apple-watch-series-10', primary: true }
           ]}
           />
       </div>
@@ -56,8 +56,8 @@ const Home: React.FC = () => {
               imageAlt="iPad Pro displaying vibrant graphics"
               textColor="white"
               links={[
-                  { label: 'Tìm hiểu thêm', url: '/ipad' },
-                  { label: 'Mua', url: '/store' }
+                  { label: 'Tìm hiểu thêm', url: '/ipad/ipad-pro' },
+                  { label: 'Mua', url: '/store/product/ipad-pro' }
               ]}
           />
            <GridItem 
@@ -67,8 +67,8 @@ const Home: React.FC = () => {
               imageAlt="MacBook Air M3 in midnight color"
               textColor="black"
               links={[
-                  { label: 'Tìm hiểu thêm', url: '/mac' },
-                  { label: 'Mua', url: '/store' }
+                  { label: 'Tìm hiểu thêm', url: '/mac/macbook-air' },
+                  { label: 'Mua', url: '/store/product/macbook-air' }
               ]}
           />
            <GridItem 
@@ -78,8 +78,8 @@ const Home: React.FC = () => {
               imageAlt="AirPods 4 charging case and earbuds"
               textColor="black"
               links={[
-                  { label: 'Tìm hiểu thêm', url: '/airpods' },
-                  { label: 'Mua', url: '/store' }
+                  { label: 'Tìm hiểu thêm', url: '/airpods/airpods-4' },
+                  { label: 'Mua', url: '/store/product/airpods-4' }
               ]}
           />
            <GridItem 
@@ -89,7 +89,7 @@ const Home: React.FC = () => {
               imageAlt="Abstract Apple Intelligence glowing icon"
               textColor="white"
               links={[
-                  { label: 'Tìm hiểu thêm về Apple Intelligence', url: '#' },
+                  { label: 'Tìm hiểu thêm về Apple Intelligence', url: '/apple-intelligence' },
               ]}
           />
       </div>

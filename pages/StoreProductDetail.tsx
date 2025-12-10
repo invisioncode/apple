@@ -53,6 +53,7 @@ const StoreProductDetail: React.FC = () => {
   const [selectedSize, setSelectedSize] = useState(productData.sizes[1]);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
   // Auto-dismiss toast
@@ -67,6 +68,7 @@ const StoreProductDetail: React.FC = () => {
   const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(productData.price);
 
   const handleAddToBag = () => {
+    if (isAdding || isAdded) return;
     setIsAdding(true);
     const item = {
         id: `${productSlug}-${selectedColor.id}-${selectedSize}`,
@@ -80,7 +82,12 @@ const StoreProductDetail: React.FC = () => {
     setTimeout(() => {
         addToCart(item);
         setIsAdding(false);
+        setIsAdded(true);
         setShowToast(true);
+
+        setTimeout(() => {
+          setIsAdded(false);
+        }, 2000);
     }, 600);
   };
 
@@ -190,12 +197,13 @@ const StoreProductDetail: React.FC = () => {
                 {/* Action Buttons */}
                 <div className="pt-6 border-t border-gray-200 space-y-4">
                     <Button 
-                        label={isAdding ? "Adding..." : "Add to Bag"}
+                        label={isAdded ? "Added!" : (isAdding ? "Adding..." : "Add to Bag")}
                         variant="primary"
                         size="lg"
-                        className="w-full"
+                        className={`w-full transition-all duration-300 ${isAdded ? '!bg-green-600 hover:!bg-green-700 !border-green-600' : ''}`}
                         onClick={handleAddToBag}
                         isLoading={isAdding}
+                        disabled={isAdded}
                     />
                     <div className="flex justify-end gap-4 text-apple-blue text-sm font-medium">
                         <button className="flex items-center gap-1 hover:underline"><Heart size={16} /> Save for later</button>

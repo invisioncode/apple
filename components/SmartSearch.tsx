@@ -41,7 +41,7 @@ const SmartSearch: React.FC<SmartSearchProps> = ({ isOpen, onClose }) => {
 
   return (
     <div 
-        className="fixed inset-0 z-50 flex flex-col bg-white/95 backdrop-blur-xl animate-fade-in"
+        className="fixed inset-0 z-[110] flex flex-col bg-white/95 backdrop-blur-xl animate-fade-in"
         role="dialog"
         aria-modal="true"
         aria-labelledby="smart-search-title"

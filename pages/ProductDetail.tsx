@@ -7,13 +7,103 @@ import GridItem from '../components/GridItem';
 import Button from '../components/Button';
 import { useCart } from '../contexts/CartContext';
 
+// Configuration Data Types
+interface ProductOption {
+  id: string;
+  label: string;
+  priceModifier: number;
+}
+
+interface ProductColor {
+  id: string;
+  name: string;
+  hex: string;
+  image: string;
+}
+
+interface ProductConfig {
+  basePrice: number;
+  colors: ProductColor[];
+  options: ProductOption[];
+  optionLabel: string;
+}
+
+// Mock Configuration Data
+const PRODUCT_CONFIGS: Record<string, ProductConfig> = {
+  'iphone-16-pro': {
+    basePrice: 28999000,
+    colors: [
+      { id: 'natural', name: 'Titan Tự Nhiên', hex: '#d4d2cf', image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-natural-titanium-select-202409?wid=940&hei=1112&fmt=png-alpha&.v=1724342813959' },
+      { id: 'desert', name: 'Titan Sa Mạc', hex: '#bfa48f', image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-desert-titanium-select-202409?wid=940&hei=1112&fmt=png-alpha&.v=1724342813959' },
+      { id: 'white', name: 'Titan Trắng', hex: '#f2f1ed', image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-white-titanium-select-202409?wid=940&hei=1112&fmt=png-alpha&.v=1724342813959' },
+      { id: 'black', name: 'Titan Đen', hex: '#3c3c3d', image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-black-titanium-select-202409?wid=940&hei=1112&fmt=png-alpha&.v=1724342813959' },
+    ],
+    options: [
+      { id: '128gb', label: '128GB', priceModifier: 0 },
+      { id: '256gb', label: '256GB', priceModifier: 3000000 },
+      { id: '512gb', label: '512GB', priceModifier: 9000000 },
+      { id: '1tb', label: '1TB', priceModifier: 15000000 },
+    ],
+    optionLabel: 'Dung lượng'
+  },
+  'macbook-air': {
+    basePrice: 27999000,
+    colors: [
+      { id: 'midnight', name: 'Xanh Đen', hex: '#2e3642', image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-midnight-select-202402?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1708367688034' },
+      { id: 'starlight', name: 'Ánh Sao', hex: '#f0e5d3', image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-starlight-select-202402?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1708367688034' },
+      { id: 'spacegray', name: 'Xám Không Gian', hex: '#7d7e80', image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-spacegray-select-202402?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1708367688034' },
+      { id: 'silver', name: 'Bạc', hex: '#e3e4e5', image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mba13-silver-select-202402?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1708367688034' },
+    ],
+    options: [
+      { id: '8gb', label: '8GB Unified Memory', priceModifier: 0 },
+      { id: '16gb', label: '16GB Unified Memory', priceModifier: 5000000 },
+    ],
+    optionLabel: 'Bộ nhớ'
+  },
+  'apple-watch-series-10': {
+    basePrice: 10999000,
+    colors: [
+      { id: 'jetblack', name: 'Đen Jet Black', hex: '#000000', image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/watch-s10-jetblack-select-202409?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1725515328330' },
+      { id: 'rosegold', name: 'Vàng Hồng', hex: '#e6c7c2', image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/watch-s10-rosegold-select-202409?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1725515328330' },
+      { id: 'silver', name: 'Bạc', hex: '#e3e4e5', image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/watch-s10-silver-select-202409?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1725515328330' },
+    ],
+    options: [
+      { id: 'gps', label: 'GPS', priceModifier: 0 },
+      { id: 'cellular', label: 'GPS + Cellular', priceModifier: 3000000 },
+    ],
+    optionLabel: 'Kết nối'
+  },
+  'default': {
+     basePrice: 24999000,
+     colors: [
+         { id: 'default', name: 'Tiêu chuẩn', hex: '#cccccc', image: '' }
+     ],
+     options: [
+         { id: 'standard', label: 'Tiêu chuẩn', priceModifier: 0 }
+     ],
+     optionLabel: 'Tùy chọn'
+  }
+};
+
 const ProductDetail: React.FC = () => {
   const { category, productSlug } = useParams<{ category: string; productSlug: string }>();
   const [isAddingToBag, setIsAddingToBag] = useState(false);
-  const [isBagModalOpen, setIsBagModalOpen] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
   const [showToast, setShowToast] = useState(false);
   
   const { addToCart } = useCart();
+
+  // Configuration State
+  const config = PRODUCT_CONFIGS[productSlug || ''] || PRODUCT_CONFIGS['default'];
+  const [selectedColor, setSelectedColor] = useState<ProductColor>(config.colors[0]);
+  const [selectedOption, setSelectedOption] = useState<ProductOption>(config.options[0]);
+
+  // Reset selection when slug changes
+  useEffect(() => {
+    const newConfig = PRODUCT_CONFIGS[productSlug || ''] || PRODUCT_CONFIGS['default'];
+    setSelectedColor(newConfig.colors[0]);
+    setSelectedOption(newConfig.options[0]);
+  }, [productSlug]);
 
   // Helper to format slug to title (e.g., "macbook-air" -> "MacBook Air")
   const formatTitle = (slug: string) => {
@@ -27,7 +117,7 @@ const ProductDetail: React.FC = () => {
   const title = formatTitle(productSlug || '');
   const categoryTitle = formatTitle(category || '');
   
-  // Real Image Mapping
+  // Real Image Mapping for Marketing Sections
   const getProductImage = (slug: string, type: 'hero' | 'thumb' | 'feature') => {
       const map: Record<string, any> = {
           'iphone-16-pro': {
@@ -56,11 +146,13 @@ const ProductDetail: React.FC = () => {
   };
 
   const heroImage = getProductImage(productSlug || '', 'hero');
-  const thumbImage = getProductImage(productSlug || '', 'thumb');
   const featureImage = getProductImage(productSlug || '', 'feature');
   
-  const PRODUCT_PRICE = 24999000;
-  const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(PRODUCT_PRICE);
+  // Use specific color image if available, else fallback
+  const displayImage = selectedColor.image || getProductImage(productSlug || '', 'thumb');
+  
+  const totalPrice = config.basePrice + selectedOption.priceModifier;
+  const formattedPrice = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice);
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement> | React.MouseEvent<HTMLButtonElement>, id: string) => {
     e.preventDefault();
@@ -79,14 +171,15 @@ const ProductDetail: React.FC = () => {
   };
 
   const handleAddToBag = () => {
+    if (isAddingToBag || isAdded) return;
     setIsAddingToBag(true);
     
     // Construct cart item
     const newItem = {
-        id: productSlug || 'unknown-product',
-        name: title,
-        price: PRODUCT_PRICE,
-        image: thumbImage,
+        id: `${productSlug}-${selectedColor.id}-${selectedOption.id}`,
+        name: `${title} - ${selectedColor.name} (${selectedOption.label})`,
+        price: totalPrice,
+        image: displayImage,
         quantity: 1,
         slug: productSlug || ''
     };
@@ -95,8 +188,13 @@ const ProductDetail: React.FC = () => {
     setTimeout(() => {
         addToCart(newItem);
         setIsAddingToBag(false);
-        setIsBagModalOpen(true);
+        setIsAdded(true);
         setShowToast(true);
+
+        // Reset button state after 2 seconds
+        setTimeout(() => {
+          setIsAdded(false);
+        }, 2000);
     }, 800);
   };
 
@@ -115,18 +213,23 @@ const ProductDetail: React.FC = () => {
       {/* Toast Notification */}
        <div 
           className={`
-            fixed top-6 left-1/2 -translate-x-1/2 z-[80] 
+            fixed top-24 left-1/2 -translate-x-1/2 z-[80] 
             bg-white/90 backdrop-blur-md border border-gray-200 shadow-xl rounded-full 
-            px-6 py-3 flex items-center gap-3 transition-all duration-500 ease-out
-            ${showToast ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'}
+            pl-4 pr-6 py-3 flex items-center gap-3 transition-all duration-500 ease-out
+            ${showToast ? 'translate-y-0 opacity-100' : '-translate-y-8 opacity-0 pointer-events-none'}
           `}
           role="status"
           aria-live="polite"
        >
-          <div className="bg-green-100 text-green-600 rounded-full p-1">
-             <Check size={14} strokeWidth={3} />
+          <div className="bg-green-500 text-white rounded-full p-1 shadow-sm">
+             <Check size={16} strokeWidth={3} />
           </div>
-          <span className="text-sm font-medium text-gray-900">Đã thêm vào giỏ hàng</span>
+          <div className="flex flex-col">
+            <span className="text-sm font-semibold text-gray-900">Đã thêm vào giỏ hàng</span>
+            <Link to="/store" className="text-xs text-apple-blue hover:underline font-medium">
+              Xem giỏ hàng &gt;
+            </Link>
+          </div>
        </div>
 
       {/* Product Hero */}
@@ -243,21 +346,72 @@ const ProductDetail: React.FC = () => {
 
       {/* Buy Section */}
       <div id="buy" className="bg-[#f5f5f7] py-24 px-6 scroll-mt-20">
-        <div className="max-w-4xl mx-auto bg-white rounded-3xl overflow-hidden shadow-lg flex flex-col md:flex-row">
-            <div className="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-8">
-                <img 
-                    src={thumbImage}
-                    alt={title}
-                    className="max-w-full h-auto rounded-xl shadow-md object-contain"
+        <div className="max-w-5xl mx-auto bg-white rounded-3xl overflow-hidden shadow-lg flex flex-col md:flex-row">
+            <div className="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-8 relative">
+                 <img 
+                    src={displayImage}
+                    alt={`${title} - ${selectedColor.name}`}
+                    className="max-w-full h-auto rounded-xl shadow-sm object-contain animate-fade-in transition-all duration-500"
+                    key={selectedColor.id} // Forces re-animation on color change
                 />
             </div>
             <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-                <h2 className="text-3xl font-semibold text-gray-900 mb-2">Mua {title}</h2>
-                <p className="text-gray-500 mb-6 text-sm">Giao hàng miễn phí. Trả lại dễ dàng.</p>
+                <span className="text-orange-600 font-bold text-xs uppercase tracking-wide mb-1">Mới</span>
+                <h2 className="text-3xl font-semibold text-gray-900 mb-6">Mua {title}</h2>
                 
+                {/* Configuration: Colors */}
+                <div className="mb-6">
+                    <span className="text-sm font-semibold text-gray-900 block mb-3">
+                        Màu sắc: <span className="text-gray-500 font-normal">{selectedColor.name}</span>
+                    </span>
+                    <div className="flex flex-wrap gap-3">
+                        {config.colors.map((color) => (
+                            <button
+                                key={color.id}
+                                onClick={() => setSelectedColor(color)}
+                                className={`
+                                    w-10 h-10 rounded-full shadow-sm border border-gray-200 relative focus:outline-none transition-transform hover:scale-105
+                                    ${selectedColor.id === color.id ? 'ring-2 ring-offset-2 ring-apple-blue' : ''}
+                                `}
+                                style={{ backgroundColor: color.hex }}
+                                aria-label={`Select color ${color.name}`}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+                {/* Configuration: Options (Storage/Size) */}
                 <div className="mb-8">
-                    <span className="text-2xl font-bold text-gray-900">{formattedPrice}</span>
-                    <p className="text-gray-500 text-sm mt-1">hoặc 1.041.000đ/tháng trong 24 tháng**</p>
+                     <span className="text-sm font-semibold text-gray-900 block mb-3">
+                        {config.optionLabel}
+                     </span>
+                     <div className="grid grid-cols-2 gap-3">
+                        {config.options.map((option) => (
+                            <button
+                                key={option.id}
+                                onClick={() => setSelectedOption(option)}
+                                className={`
+                                    py-3 px-4 rounded-xl border text-sm font-medium transition-all text-left
+                                    ${selectedOption.id === option.id 
+                                        ? 'border-apple-blue ring-1 ring-apple-blue text-apple-blue bg-blue-50/10' 
+                                        : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                                    }
+                                `}
+                            >
+                                <span className="block font-semibold">{option.label}</span>
+                                {option.priceModifier > 0 && (
+                                    <span className="text-xs text-gray-500">
+                                        + {new Intl.NumberFormat('vi-VN').format(option.priceModifier)}đ
+                                    </span>
+                                )}
+                            </button>
+                        ))}
+                     </div>
+                </div>
+
+                <div className="mb-8 border-t border-gray-100 pt-6">
+                    <span className="text-3xl font-bold text-gray-900">{formattedPrice}</span>
+                    <p className="text-gray-500 text-sm mt-1">hoặc {new Intl.NumberFormat('vi-VN').format(Math.round(totalPrice / 24))}đ/tháng trong 24 tháng**</p>
                 </div>
 
                 <div className="space-y-4 mb-8">
@@ -278,76 +432,16 @@ const ProductDetail: React.FC = () => {
                 </div>
 
                 <Button 
-                    label="Thêm vào Giỏ hàng" 
+                    label={isAdded ? "Đã thêm!" : "Thêm vào Giỏ hàng"} 
                     variant="primary" 
                     size="lg" 
-                    className="w-full text-base"
+                    className={`w-full text-base transition-all duration-300 ${isAdded ? '!bg-green-600 hover:!bg-green-700 !border-green-600' : ''}`}
                     onClick={handleAddToBag}
                     isLoading={isAddingToBag}
                 />
             </div>
         </div>
       </div>
-
-      {/* Added to Bag Modal */}
-      {isBagModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center px-4" role="dialog" aria-modal="true">
-            {/* Backdrop */}
-            <div 
-                className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in"
-                onClick={() => setIsBagModalOpen(false)}
-            />
-            
-            {/* Modal Content */}
-            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md relative z-10 overflow-hidden animate-fade-in p-6">
-                <button 
-                    onClick={() => setIsBagModalOpen(false)}
-                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-                    aria-label="Close modal"
-                >
-                    <X size={24} />
-                </button>
-
-                <div className="flex flex-col items-center text-center">
-                    <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
-                        <Check size={24} strokeWidth={3} />
-                    </div>
-                    
-                    <h3 className="text-xl font-semibold text-gray-900 mb-1">
-                        Đã thêm vào giỏ hàng
-                    </h3>
-                    
-                    <div className="mt-6 flex gap-4 w-full items-center border p-3 rounded-xl border-gray-100 bg-gray-50">
-                        <img 
-                            src={thumbImage}
-                            alt={title}
-                            className="w-16 h-16 rounded-md object-contain"
-                        />
-                        <div className="text-left">
-                            <p className="font-semibold text-sm text-gray-900">{title}</p>
-                            <p className="text-sm text-gray-500">256GB - Màu mặc định</p>
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col gap-3 w-full mt-8">
-                        <Link 
-                            to="/store" 
-                            className="w-full bg-apple-blue text-white py-3 rounded-full font-medium hover:bg-apple-blue-hover transition-colors flex items-center justify-center gap-2"
-                        >
-                            <ShoppingBag size={18} />
-                            Xem Giỏ hàng
-                        </Link>
-                        <button 
-                            onClick={() => setIsBagModalOpen(false)}
-                            className="text-apple-blue text-sm hover:underline font-medium"
-                        >
-                            Tiếp tục mua sắm
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-      )}
     </div>
   );
 };

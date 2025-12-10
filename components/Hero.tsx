@@ -12,6 +12,7 @@ const Hero: React.FC<ProductHeroProps> = ({
   imagePosition
 }) => {
   const [loadingBtnIndex, setLoadingBtnIndex] = useState<number | null>(null);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLElement>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
@@ -24,6 +25,20 @@ const Hero: React.FC<ProductHeroProps> = ({
       }
     };
   }, []);
+
+  // Image preloading logic
+  useEffect(() => {
+    setIsImageLoaded(false);
+    const img = new Image();
+    img.src = imageUrl;
+    img.onload = () => {
+      setIsImageLoaded(true);
+    };
+    // Handle cached images
+    if (img.complete) {
+      setIsImageLoaded(true);
+    }
+  }, [imageUrl]);
 
   // Parallax Effect
   useEffect(() => {
@@ -90,7 +105,7 @@ const Hero: React.FC<ProductHeroProps> = ({
         style={{ willChange: 'transform' }}
       >
         <div 
-            className={`w-full h-full bg-cover bg-no-repeat transition-transform duration-[2000ms] ease-out group-hover:scale-105 ${!imagePosition ? 'bg-center' : ''}`}
+            className={`w-full h-full bg-cover bg-no-repeat transition-all duration-[2000ms] ease-out group-hover:scale-105 ${!imagePosition ? 'bg-center' : ''} ${isImageLoaded ? 'opacity-100 blur-0 scale-100' : 'opacity-0 blur-xl scale-110'}`}
             style={{ 
                 backgroundImage: `url(${imageUrl})`,
                 backgroundPosition: imagePosition
