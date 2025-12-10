@@ -10,7 +10,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { useCart } from '../contexts/CartContext';
 
 const Navbar: React.FC = () => {
-  const { language, toggleLanguage, t } = useLanguage();
+  const { language, toggleLanguage, t, dir } = useLanguage();
   const { cartItems, totalItems, removeFromCart } = useCart();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -140,6 +140,7 @@ const Navbar: React.FC = () => {
           isMobileMenuOpen || hoveredLabel || isBagOpen ? 'bg-[#161617]' : (isScrolled ? 'bg-[#161617]/80 backdrop-blur-md' : 'bg-[#161617]/90')
         }`}
         aria-label="Global"
+        dir={dir}
       >
         <div className="max-w-[1024px] mx-auto px-4 h-[44px] flex items-center justify-between relative z-50">
           
@@ -148,7 +149,7 @@ const Navbar: React.FC = () => {
             <button 
                 type="button"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-                className="p-2 -ml-2"
+                className="p-2 -ml-2 rtl:-mr-2 rtl:ml-0"
                 aria-label="Menu"
                 aria-expanded={isMobileMenuOpen}
                 aria-controls="mobile-menu"
@@ -158,7 +159,7 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Logo */}
-          <div className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 z-50 h-full flex items-center">
+          <div className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 rtl:md:translate-x-0 z-50 h-full flex items-center">
              <Link 
                 to="/" 
                 className="text-[#e8e8ed] hover:opacity-80 transition-opacity flex items-center h-full" 
@@ -247,7 +248,7 @@ const Navbar: React.FC = () => {
                 >
                 <ShoppingBag size={18} aria-hidden="true" />
                 {totalItems > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-white text-black text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center pointer-events-none">
+                    <span className="absolute -top-1 -right-1 rtl:-left-1 rtl:right-auto bg-white text-black text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center pointer-events-none">
                         {totalItems}
                     </span>
                 )}
@@ -256,16 +257,16 @@ const Navbar: React.FC = () => {
                 {/* Bag Dropdown */}
                 <div 
                     className={`
-                        absolute top-full right-[-10px] mt-3 w-[290px] md:w-[320px] 
+                        absolute top-full right-[-10px] rtl:right-auto rtl:left-[-10px] mt-3 w-[290px] md:w-[320px] 
                         bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden
-                        transition-all duration-300 origin-top-right text-apple-dark
+                        transition-all duration-300 origin-top-right rtl:origin-top-left text-apple-dark
                         ${isBagOpen ? 'opacity-100 scale-100 visible' : 'opacity-0 scale-95 invisible'}
                     `}
                 >
                     {/* Triangle Arrow */}
-                    <div className="absolute -top-2 right-4 w-4 h-4 bg-white transform rotate-45 border-l border-t border-gray-200"></div>
+                    <div className="absolute -top-2 right-4 rtl:left-4 rtl:right-auto w-4 h-4 bg-white transform rotate-45 border-l border-t border-gray-200"></div>
 
-                    <div className="p-4 md:p-6 bg-white relative z-10">
+                    <div className="p-4 md:p-6 bg-white relative z-10 text-start">
                         {cartItems.length === 0 ? (
                             <div className="text-center py-8">
                                 <p className="text-gray-500 mb-4 text-sm">Giỏ hàng của bạn đang trống.</p>
@@ -353,11 +354,11 @@ const Navbar: React.FC = () => {
         >
           <div className="flex flex-col h-full pb-20 overflow-y-auto">
             <div className="flex relative items-center mt-4 mb-8">
-                <Search className="absolute left-3 text-gray-500 w-5 h-5" aria-hidden="true" />
+                <Search className="absolute left-3 rtl:right-3 rtl:left-auto text-gray-500 w-5 h-5" aria-hidden="true" />
                 <input 
                     type="text" 
                     placeholder={t('search.placeholder')} 
-                    className="w-full bg-[#1d1d1f] text-white rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-white/50"
+                    className="w-full bg-[#1d1d1f] text-white rounded-lg pl-10 pr-4 rtl:pr-10 rtl:pl-4 py-2 focus:outline-none focus:ring-1 focus:ring-white/50 text-start"
                     aria-label={t('search.placeholder')}
                     onFocus={() => {
                         setIsMobileMenuOpen(false);
@@ -373,7 +374,7 @@ const Navbar: React.FC = () => {
                         to={item.href}
                         onClick={(e) => handleLinkClick(e, item.href)}
                         className={`
-                            block text-[#e8e8ed] text-[28px] font-semibold py-2 border-b border-gray-800 hover:text-white transition-colors
+                            block text-[#e8e8ed] text-[28px] font-semibold py-2 border-b border-gray-800 hover:text-white transition-colors text-start
                             ${isMobileMenuOpen ? 'animate-fade-in' : ''}
                         `}
                         style={{ animationDelay: `${index * 50}ms`, opacity: 0, animationFillMode: 'forwards' }}
@@ -394,7 +395,9 @@ const Navbar: React.FC = () => {
                     className="flex items-center gap-2 text-[#e8e8ed] text-sm font-medium hover:text-white"
                  >
                     <Globe size={16} />
-                    <span>{language === 'vi' ? 'English' : 'Tiếng Việt'}</span>
+                    <span>
+                        {language === 'vi' ? 'English' : language === 'en' ? 'العربية' : 'Tiếng Việt'}
+                    </span>
                  </button>
             </div>
           </div>
@@ -405,6 +408,7 @@ const Navbar: React.FC = () => {
         <div 
             id="desktop-submenu-overlay"
             ref={submenuRef}
+            dir={dir}
             className={`
                 fixed top-[44px] left-0 w-full bg-[#161617] text-white z-[60]
                 transition-all duration-300 ease-out border-b border-gray-700/50 shadow-2xl pb-12 pt-4
@@ -422,7 +426,7 @@ const Navbar: React.FC = () => {
             aria-label={hoveredLabel ? `${hoveredLabel} submenu` : 'Submenu'}
         >
             <div className="max-w-[1024px] mx-auto px-4">
-                <div className="flex flex-row justify-start gap-x-12 pl-4 animate-fade-in"> 
+                <div className="flex flex-row justify-start gap-x-12 pl-4 rtl:pr-4 rtl:pl-0 animate-fade-in"> 
                     {activeSubMenu && activeSubMenu.map((group, idx) => (
                         <div key={idx} className="flex flex-col gap-3 min-w-[140px]">
                             {group.title && (

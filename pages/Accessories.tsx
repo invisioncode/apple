@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import { ChevronDown, ChevronRight, SlidersHorizontal } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
-// Mock Data for Accessories
+// Consolidated list matching StoreProductDetail.tsx keys
 const ACCESSORIES_DATA = [
+  // iPhone
   {
     id: 'case-16-pro',
     title: 'Ốp Lưng Silicon MagSafe cho iPhone 16 Pro - Đen',
@@ -16,6 +17,16 @@ const ACCESSORIES_DATA = [
     category: 'iphone'
   },
   {
+    id: 'wallet-magsafe',
+    title: 'Ví Vải Tinh Dệt MagSafe cho iPhone',
+    price: 1699000,
+    isNew: false,
+    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MT263?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1693012847146',
+    colors: ['#682b31', '#2f3422', '#8e8274'],
+    category: 'iphone'
+  },
+  // Power
+  {
     id: 'magsafe-charger',
     title: 'Bộ Sạc MagSafe',
     price: 1199000,
@@ -23,15 +34,6 @@ const ACCESSORIES_DATA = [
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MHXH3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1603996255000',
     colors: [],
     category: 'power'
-  },
-  {
-    id: 'airtag-1pack',
-    title: 'AirTag',
-    price: 849000,
-    isNew: false,
-    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MX532?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1618028912000',
-    colors: [],
-    category: 'airtag'
   },
   {
     id: '20w-adapter',
@@ -43,40 +45,13 @@ const ACCESSORIES_DATA = [
     category: 'power'
   },
   {
-    id: 'pencil-pro',
-    title: 'Apple Pencil Pro',
-    price: 3499000,
-    isNew: true,
-    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MX2D3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1713841707336',
-    colors: [],
-    category: 'ipad'
-  },
-  {
-    id: 'smart-folio-ipad',
-    title: 'Smart Folio cho iPad Air 13 inch (M2) - Tím Nhạt',
-    price: 2499000,
-    isNew: true,
-    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MNA63?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1713310769970',
-    colors: ['#e5dcef', '#353535', '#a8b5c9'],
-    category: 'ipad'
-  },
-  {
-    id: 'magic-keyboard',
-    title: 'Magic Keyboard cho iPad Pro 13 inch (M4) - Đen',
-    price: 9799000,
-    isNew: true,
-    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MWR53?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1713936663248',
-    colors: ['#353535', '#e3e4e5'],
-    category: 'ipad'
-  },
-  {
-    id: 'wallet-magsafe',
-    title: 'Ví Vải Tinh Dệt MagSafe cho iPhone - Xanh Mực',
+    id: '35w-adapter',
+    title: '35W Dual USB-C Port Power Adapter',
     price: 1699000,
     isNew: false,
-    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MT263?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1693012847146',
-    colors: ['#3e4f5c', '#682b31', '#2f3422'],
-    category: 'iphone'
+    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MNWP3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1652748058133',
+    colors: [],
+    category: 'power'
   },
   {
     id: 'cable-usbc',
@@ -86,6 +61,101 @@ const ACCESSORIES_DATA = [
     image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MM0A3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1632956386000',
     colors: [],
     category: 'power'
+  },
+  // Watch
+  {
+    id: '46mm-gold-milanese-loop',
+    title: '46mm Gold Milanese Loop',
+    price: 2499000,
+    isNew: true,
+    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYAR3ref?wid=800&hei=800&fmt=jpeg&qlt=90&.v=1724479536965',
+    colors: ['#E2C49D', '#D4D4D1', '#3C3C3D'],
+    category: 'watch'
+  },
+  {
+    id: 'ocean-band',
+    title: 'Ocean Band - Blue',
+    price: 2499000,
+    isNew: false,
+    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQED3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1660863032152',
+    colors: ['#203c52', '#f0f0f0', '#ff6900'],
+    category: 'watch'
+  },
+  // iPad
+  {
+    id: 'pencil-pro',
+    title: 'Apple Pencil Pro',
+    price: 3499000,
+    isNew: true,
+    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MX2D3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1713841707336',
+    colors: [],
+    category: 'ipad'
+  },
+  {
+    id: 'magic-keyboard-ipad',
+    title: 'Magic Keyboard for iPad Pro 13-inch (M4)',
+    price: 9799000,
+    isNew: true,
+    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MWR53?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1713936663248',
+    colors: ['#353535', '#e3e4e5'],
+    category: 'ipad'
+  },
+  // Mac
+  {
+    id: 'magic-mouse-black',
+    title: 'Magic Mouse - Black',
+    price: 2499000,
+    isNew: false,
+    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MMMQ3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1645138486301',
+    colors: ['#000000', '#f0f0f0'],
+    category: 'mac'
+  },
+  {
+    id: 'magic-keyboard-touchid',
+    title: 'Magic Keyboard with Touch ID',
+    price: 4499000,
+    isNew: false,
+    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MMMR3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1645719947833',
+    colors: ['#353535', '#e3e4e5'],
+    category: 'mac'
+  },
+  // AirTag
+  {
+    id: 'airtag-1pack',
+    title: 'AirTag',
+    price: 849000,
+    isNew: false,
+    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MX532?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1618028912000',
+    colors: [],
+    category: 'airtag'
+  },
+  {
+    id: 'airtag-leather-keyring',
+    title: 'AirTag Leather Key Ring',
+    price: 990000,
+    isNew: false,
+    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MX4M2?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1618028956000',
+    colors: ['#8b5742', '#2b3f54'],
+    category: 'airtag'
+  },
+  // Audio
+  {
+    id: 'airpods-pro-2',
+    title: 'AirPods Pro (2nd Gen)',
+    price: 6199000,
+    isNew: false,
+    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MTJV3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1694014871985',
+    colors: [],
+    category: 'airpods'
+  },
+  {
+    id: 'airpods-max',
+    title: 'AirPods Max - Midnight',
+    price: 13199000,
+    isNew: true,
+    image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MZOX3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1723843519890',
+    colors: ['#2e3642', '#42586e', '#665c82', '#e87c64'],
+    category: 'airpods'
   }
 ];
 
@@ -96,21 +166,19 @@ const CATEGORIES = [
   { id: 'iphone', label: 'iPhone' },
   { id: 'watch', label: 'Apple Watch' },
   { id: 'airpods', label: 'AirPods' },
-  { id: 'tv-home', label: 'TV & Nhà' },
-];
-
-const PRODUCT_TYPES = [
-  { id: 'cases', label: 'Ốp Lưng & Bảo Vệ' },
   { id: 'power', label: 'Sạc & Cáp' },
-  { id: 'headphones', label: 'Tai Nghe & Loa' },
-  { id: 'mice', label: 'Chuột & Bàn Phím' },
-  { id: 'creative', label: 'Sáng Tạo' },
+  { id: 'airtag', label: 'AirTag' },
 ];
 
 const Accessories: React.FC = () => {
   const { language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const isVi = language === 'vi';
+
+  // Filter Logic
+  const filteredProducts = selectedCategory === 'all' 
+    ? ACCESSORIES_DATA 
+    : ACCESSORIES_DATA.filter(p => p.category === selectedCategory);
 
   return (
     <div className="pt-[44px] min-h-screen bg-white">
@@ -148,21 +216,6 @@ const Accessories: React.FC = () => {
                     ))}
                  </ul>
               </div>
-
-              <div className="mb-8">
-                 <h3 className="font-semibold text-[#1d1d1f] mb-4 text-sm uppercase tracking-wide">
-                    {isVi ? 'Loại phụ kiện' : 'Accessory Type'}
-                 </h3>
-                 <ul className="space-y-2">
-                    {PRODUCT_TYPES.map(type => (
-                        <li key={type.id}>
-                            <Link to="#" className="text-sm text-[#1d1d1f] hover:text-apple-blue hover:underline block py-1">
-                                {type.label}
-                            </Link>
-                        </li>
-                    ))}
-                 </ul>
-              </div>
            </div>
         </div>
 
@@ -175,7 +228,7 @@ const Accessories: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
-                {ACCESSORIES_DATA.map((product) => (
+                {filteredProducts.map((product) => (
                     <Link 
                         key={product.id} 
                         to={`/store/product/${product.id}`}
@@ -223,6 +276,12 @@ const Accessories: React.FC = () => {
                     </Link>
                 ))}
             </div>
+            
+            {filteredProducts.length === 0 && (
+                <div className="text-center py-20">
+                    <p className="text-gray-500">Không tìm thấy sản phẩm trong danh mục này.</p>
+                </div>
+            )}
         </div>
       </div>
     </div>

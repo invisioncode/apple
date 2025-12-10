@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import Button from './Button';
 import { ProductHeroProps } from '../types';
@@ -13,6 +14,7 @@ const Hero: React.FC<ProductHeroProps> = ({
 }) => {
   const [loadingBtnIndex, setLoadingBtnIndex] = useState<number | null>(null);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLElement>(null);
   const parallaxRef = useRef<HTMLDivElement>(null);
@@ -26,19 +28,45 @@ const Hero: React.FC<ProductHeroProps> = ({
     };
   }, []);
 
+  // Intersection Observer for Lazy Loading
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Start loading when element is within 200px of viewport
+        if (entry.isIntersecting) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' } 
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   // Image preloading logic
   useEffect(() => {
+    if (!shouldLoad) return;
+
     setIsImageLoaded(false);
     const img = new Image();
     img.src = imageUrl;
     img.onload = () => {
       setIsImageLoaded(true);
     };
+    img.onerror = () => {
+        // Fallback to loaded state even on error to show content
+        setIsImageLoaded(true); 
+    };
     // Handle cached images
     if (img.complete) {
       setIsImageLoaded(true);
     }
-  }, [imageUrl]);
+  }, [imageUrl, shouldLoad]);
 
   // Parallax Effect
   useEffect(() => {
@@ -50,10 +78,6 @@ const Hero: React.FC<ProductHeroProps> = ({
       
       // Only animate if element is in view (with some buffer)
       if (rect.bottom > 0 && rect.top < windowHeight) {
-        // Calculate offset: 
-        // When rect.top is 0 (top of viewport), offset is 0.
-        // As element scrolls up (rect.top becomes negative), we move bg down (positive translateY)
-        // to create the "slower movement" effect.
         const speed = 0.15;
         const offset = rect.top * speed * -1;
         parallaxRef.current.style.transform = `translate3d(0, ${offset}px, 0)`;
@@ -68,15 +92,12 @@ const Hero: React.FC<ProductHeroProps> = ({
   }, []);
   
   const handleButtonClick = (index: number) => {
-    // Clear any existing timeout
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
 
     setLoadingBtnIndex(index);
 
-    // Reset loading state after a delay to ensure it doesn't spin forever
-    // if navigation is instant or if it's a hash link that doesn't unmount the component.
     timeoutRef.current = setTimeout(() => {
       setLoadingBtnIndex(null);
     }, 2000);
@@ -98,16 +119,20 @@ const Hero: React.FC<ProductHeroProps> = ({
         aria-label={title}
     >
       {/* Background Image Wrapper for Parallax */}
-      {/* Height is 120% and top is -10% to allow space for movement */}
       <div 
         ref={parallaxRef}
         className="absolute w-full left-0 h-[120%] -top-[10%] pointer-events-none"
         style={{ willChange: 'transform' }}
       >
+        {/* Placeholder / Blur-up Layer */}
         <div 
-            className={`w-full h-full bg-cover bg-no-repeat transition-all duration-[2000ms] ease-out group-hover:scale-105 ${!imagePosition ? 'bg-center' : ''} ${isImageLoaded ? 'opacity-100 blur-0 scale-100' : 'opacity-0 blur-xl scale-110'}`}
+            className={`
+                w-full h-full bg-cover bg-no-repeat transition-all duration-[2000ms] ease-out 
+                ${!imagePosition ? 'bg-center' : ''} 
+                ${isImageLoaded ? 'opacity-100 blur-0 scale-100 group-hover:scale-105' : 'opacity-0 blur-xl scale-110'}
+            `}
             style={{ 
-                backgroundImage: `url(${imageUrl})`,
+                backgroundImage: shouldLoad ? `url(${imageUrl})` : 'none',
                 backgroundPosition: imagePosition
             }}
             role="img"

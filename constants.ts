@@ -4,6 +4,23 @@ import { NavItem, FooterSection, SubMenuData, Language } from './types';
 // Helper to generate localized constants
 export const getNavItems = (lang: Language): NavItem[] => {
   const isVi = lang === 'vi';
+  const isAr = lang === 'ar';
+  
+  if (isAr) {
+    return [
+      { label: 'المتجر', href: '/store' },
+      { label: 'Mac', href: '/mac' },
+      { label: 'iPad', href: '/ipad' },
+      { label: 'iPhone', href: '/iphone' },
+      { label: 'Watch', href: '/watch' },
+      { label: 'AirPods', href: '/airpods' },
+      { label: 'TV & المنزل', href: '/tv-home' },
+      { label: 'الترفيه', href: '/entertainment' },
+      { label: 'إكسسوارات', href: '/accessories' },
+      { label: 'الدعم', href: '/support' },
+    ];
+  }
+
   return [
     { label: isVi ? 'Cửa Hàng' : 'Store', href: '/store' },
     { label: 'Mac', href: '/mac' },
@@ -20,6 +37,116 @@ export const getNavItems = (lang: Language): NavItem[] => {
 
 export const getNavSubmenus = (lang: Language): SubMenuData => {
   const isVi = lang === 'vi';
+  const isAr = lang === 'ar';
+
+  if (isAr) {
+    return {
+      'المتجر': [
+        {
+          title: 'تسوّق',
+          links: [
+            { label: 'تسوّق أحدث المنتجات', href: '/store' },
+            { label: 'Mac', href: '/mac' },
+            { label: 'iPad', href: '/ipad' },
+            { label: 'iPhone', href: '/iphone' },
+            { label: 'Apple Watch', href: '/watch' },
+            { label: 'إكسسوارات', href: '/accessories' },
+          ]
+        },
+        {
+          title: 'روابط سريعة',
+          links: [
+            { label: 'العثور على متجر', href: '/store/find-store' },
+            { label: 'حالة الطلب', href: '/store/order-status' },
+            { label: 'التمويل', href: '/store/financing' },
+          ]
+        }
+      ],
+      'Mac': [
+        {
+          title: 'استكشف Mac',
+          links: [
+            { label: 'استكشف كل Mac', href: '/mac' },
+            { label: 'MacBook Air', href: '/mac/macbook-air' },
+            { label: 'MacBook Pro', href: '/mac/macbook-pro' },
+            { label: 'iMac', href: '/mac/imac' },
+            { label: 'Mac mini', href: '/mac/mac-mini' },
+            { label: 'Mac Studio', href: '/mac/mac-studio' },
+            { label: 'Mac Pro', href: '/mac/mac-pro' },
+            { label: 'شاشات', href: '/mac/displays' },
+          ]
+        },
+        {
+            title: 'تسوّق Mac',
+            links: [
+                { label: 'تسوّق Mac', href: '/store/buy-mac' },
+                { label: 'إكسسوارات Mac', href: '/mac/accessories' }
+            ]
+        }
+      ],
+      'iPad': [
+        {
+          title: 'استكشف iPad',
+          links: [
+            { label: 'استكشف كل iPad', href: '/ipad' },
+            { label: 'iPad Pro', href: '/ipad/ipad-pro' },
+            { label: 'iPad Air', href: '/ipad/ipad-air' },
+            { label: 'iPad', href: '/ipad/ipad-10th-gen' },
+            { label: 'iPad mini', href: '/ipad/ipad-mini' },
+            { label: 'Apple Pencil', href: '/ipad/apple-pencil' },
+            { label: 'لوحات المفاتيح', href: '/ipad/keyboards' },
+          ]
+        }
+      ],
+      'iPhone': [
+        {
+          title: 'استكشف iPhone',
+          links: [
+            { label: 'استكشف كل iPhone', href: '/iphone' },
+            { label: 'iPhone 16 Pro', href: '/iphone/iphone-16-pro' },
+            { label: 'iPhone 16', href: '/iphone/iphone-16' },
+            { label: 'iPhone 15', href: '/iphone/iphone-15' },
+            { label: 'iPhone 14', href: '/iphone/iphone-14' },
+            { label: 'iPhone SE', href: '/iphone/iphone-se' },
+          ]
+        }
+      ],
+      'Watch': [
+         {
+            title: 'استكشف Watch',
+            links: [
+                { label: 'استكشف كل Apple Watch', href: '/watch' },
+                { label: 'Apple Watch Series 10', href: '/watch/apple-watch-series-10' },
+                { label: 'Apple Watch Ultra 2', href: '/watch/apple-watch-ultra-2' },
+                { label: 'Apple Watch SE', href: '/watch/apple-watch-se' },
+            ]
+         }
+      ],
+      'AirPods': [
+          {
+              title: 'استكشف AirPods',
+              links: [
+                  { label: 'استكشف كل AirPods', href: '/airpods' },
+                  { label: 'AirPods 4', href: '/airpods/airpods-4' },
+                  { label: 'AirPods Pro 2', href: '/airpods/airpods-pro-2' },
+                  { label: 'AirPods Max', href: '/airpods/airpods-max' },
+              ]
+          }
+      ],
+      'TV & المنزل': [
+          {
+              title: 'استكشف TV & المنزل',
+              links: [
+                  { label: 'استكشف TV & المنزل', href: '/tv-home' },
+                  { label: 'Apple TV 4K', href: '/tv-home/apple-tv-4k' },
+                  { label: 'HomePod', href: '/tv-home/homepod' },
+                  { label: 'HomePod mini', href: '/tv-home/homepod-mini' },
+              ]
+          }
+      ]
+    };
+  }
+
   return {
     [isVi ? 'Cửa Hàng' : 'Store']: [
       {
@@ -221,6 +348,111 @@ export const getNavSubmenus = (lang: Language): SubMenuData => {
 
 export const getFooterColumns = (lang: Language): FooterSection[][] => {
   const isVi = lang === 'vi';
+  const isAr = lang === 'ar';
+
+  if (isAr) {
+     return [
+        [
+            {
+                title: 'التسوق والتعلّم',
+                links: [
+                    { label: 'المتجر', href: '/store' },
+                    { label: 'Mac', href: '/mac' },
+                    { label: 'iPad', href: '/ipad' },
+                    { label: 'iPhone', href: '/iphone' },
+                    { label: 'Watch', href: '/watch' },
+                    { label: 'AirPods', href: '/airpods' },
+                    { label: 'TV & المنزل', href: '/tv-home' },
+                    { label: 'AirTag', href: '/store/airtag' },
+                    { label: 'إكسسوارات', href: '/store/accessories' },
+                ]
+            },
+            {
+                title: 'محفظة Apple',
+                links: [
+                    { label: 'المحفظة', href: '/wallet' },
+                    { label: 'Apple Pay', href: '/apple-pay' }
+                ]
+            }
+        ],
+        [
+            {
+                title: 'الحساب',
+                links: [
+                    { label: 'إدارة Apple ID الخاص بك', href: 'https://appleid.apple.com' },
+                    { label: 'حساب Apple Store', href: '/account' },
+                    { label: 'iCloud.com', href: 'https://www.icloud.com' }
+                ]
+            },
+            {
+                title: 'الترفيه',
+                links: [
+                    { label: 'Apple One', href: '/entertainment/apple-one' },
+                    { label: 'Apple TV+', href: '/entertainment/apple-tv-plus' },
+                    { label: 'Apple Music', href: '/entertainment/apple-music' },
+                    { label: 'Apple Arcade', href: '/entertainment/apple-arcade' },
+                    { label: 'Apple Podcasts', href: '/entertainment/apple-podcasts' },
+                    { label: 'Apple Books', href: '/entertainment/apple-books' },
+                    { label: 'App Store', href: '/entertainment/app-store' }
+                ]
+            }
+        ],
+        [
+             {
+                title: 'Apple Store',
+                links: [
+                    { label: 'العثور على متجر', href: '/store/find' },
+                    { label: 'Genius Bar', href: '/store/genius-bar' },
+                    { label: 'اليوم في Apple', href: '/store/today' },
+                    { label: 'تطبيق Apple Store', href: 'https://apps.apple.com' },
+                    { label: 'التمويل', href: '/store/financing' },
+                    { label: 'Apple Trade In', href: '/environment' },
+                    { label: 'حالة الطلب', href: '/store/order-status' },
+                ]
+             }
+        ],
+        [
+            {
+                title: 'للأعمال',
+                links: [
+                    { label: 'Apple والأعمال', href: '/business' },
+                    { label: 'التسوق للأعمال', href: '/business/shop' }
+                ]
+            },
+            {
+                title: 'للتعليم',
+                links: [
+                    { label: 'Apple والتعليم', href: '/education' },
+                    { label: 'التسوق للجامعة', href: '/education/shop' }
+                ]
+            }
+        ],
+        [
+            {
+                title: 'قيم Apple',
+                links: [
+                    { label: 'إمكانية الوصول', href: '/accessibility' },
+                    { label: 'البيئة', href: '/environment' },
+                    { label: 'الخصوصية', href: '/privacy' },
+                    { label: 'مسؤولية الموردين', href: '/supplier-responsibility' }
+                ]
+            },
+            {
+                title: 'نبذة عن Apple',
+                links: [
+                    { label: 'Newsroom', href: '/newsroom' },
+                    { label: 'قيادة Apple', href: '/about/leadership' },
+                    { label: 'فرص العمل', href: '/jobs' },
+                    { label: 'المستثمرون', href: 'https://investor.apple.com' },
+                    { label: 'الأخلاقيات والامتثال', href: '/compliance' },
+                    { label: 'الفعاليات', href: '/events' },
+                    { label: 'الاتصال بـ Apple', href: '/contact' }
+                ]
+            }
+        ]
+     ]
+  }
+
   return [
     [ // Column 1
       {

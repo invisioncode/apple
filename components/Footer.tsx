@@ -6,7 +6,7 @@ import AppleLogo from './AppleLogo';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Footer: React.FC = () => {
-  const { language, toggleLanguage, t } = useLanguage();
+  const { language, toggleLanguage, t, dir } = useLanguage();
   const [openSection, setOpenSection] = useState<string | null>(null);
   const location = useLocation();
 
@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
   };
 
   const getBreadcrumbName = (path: string) => {
-    // Simple mock mapping for breadcrumbs, realistically would need full route map or simple path splitting
+    if (path === '/') return null;
     const segments = path.split('/').filter(Boolean);
     if (segments.length === 0) return null;
     
@@ -46,7 +46,7 @@ const Footer: React.FC = () => {
   const mobileSections = FOOTER_COLUMNS.flat();
 
   return (
-    <footer className="bg-[#f5f5f7] text-[#1d1d1f] text-xs font-sans">
+    <footer className="bg-[#f5f5f7] text-[#1d1d1f] text-xs font-sans" dir={dir}>
       <div className="max-w-[1024px] mx-auto px-4">
         
         {/* Footnotes */}
@@ -63,7 +63,7 @@ const Footer: React.FC = () => {
             </Link>
             {currentPathName && (
                 <>
-                    <ChevronRight size={14} className="text-gray-400" />
+                    {dir === 'rtl' ? <ChevronRight size={14} className="text-gray-400 rotate-180" /> : <ChevronRight size={14} className="text-gray-400" />}
                     <span className="text-gray-800 font-normal">{currentPathName}</span>
                 </>
             )}
@@ -91,87 +91,61 @@ const Footer: React.FC = () => {
             ))}
         </nav>
 
-        {/* Directory Accordion (Mobile) */}
+        {/* Directory (Mobile) */}
         <nav aria-label="Directory Mobile" className="md:hidden pb-8">
-          {mobileSections.map((section, index) => (
-            <div key={section.title} className="border-b border-gray-300 last:border-none">
-              <h3 className="text-[12px] font-semibold text-[#1d1d1f]">
-                <button 
-                    type="button"
-                    onClick={() => toggleSection(section.title)}
-                    className="flex items-center justify-between w-full py-3 text-left focus:outline-none"
-                    aria-expanded={openSection === section.title}
-                    aria-controls={`footer-section-${index}`}
-                >
-                    <span className="flex-1">{section.title}</span>
-                    <ChevronDown 
-                        className={`w-4 h-4 text-gray-500 transition-transform duration-300 ${openSection === section.title ? 'rotate-180' : ''}`} 
-                        aria-hidden="true"
-                    />
-                </button>
-              </h3>
-              
-              <div 
-                id={`footer-section-${index}`}
-                className={`
-                    overflow-hidden transition-all duration-300 ease-in-out
-                    ${openSection === section.title ? 'max-h-[1000px] opacity-100 pb-4' : 'max-h-0 opacity-0'}
-                `}
-              >
-                <ul className="list-none p-0 m-0 space-y-2">
-                  {section.links.map((link) => (
-                    <li key={link.label} className="pl-1">
-                      <FooterLink label={link.label} href={link.href} className="text-gray-600 hover:underline hover:text-[#1d1d1f] block py-1" />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          ))}
-        </nav>
-
-        {/* Bottom */}
-        <div className="pt-6 md:border-t border-gray-300 flex flex-col justify-between items-start gap-4 text-gray-500 pb-10">
-          <div className="w-full">
-            <p className="mb-2">
-                {t('footer.waysToBuy')} <Link to="/store/find" className="text-apple-blue hover:underline">{t('footer.findStore')}</Link> hoặc <Link to="/reseller" className="text-apple-blue hover:underline">{t('footer.otherRetailer')}</Link> {t('footer.nearYou')} {t('footer.orCall')} 1800-1127.
-            </p>
-            
-            <div className="w-full h-px bg-gray-300 my-4 md:hidden" />
-
-            <div className="flex flex-col-reverse md:flex-row md:items-center justify-between mt-4 md:mt-2 gap-4">
-                
-                <div className="flex flex-col md:flex-row gap-4 md:items-center">
-                    <p>{t('footer.copyright')}</p>
-                    <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs">
-                        <Link to="/legal/privacy" className="hover:underline text-gray-600">{t('footer.privacy')}</Link>
-                        <span className="hidden md:inline text-gray-300">|</span>
-                        <Link to="/legal/terms" className="hover:underline text-gray-600">{t('footer.terms')}</Link>
-                        <span className="hidden md:inline text-gray-300">|</span>
-                        <Link to="/legal/sales-refunds" className="hover:underline text-gray-600">{t('footer.sales')}</Link>
-                        <span className="hidden md:inline text-gray-300">|</span>
-                        <Link to="/legal" className="hover:underline text-gray-600">{t('footer.legal')}</Link>
-                        <span className="hidden md:inline text-gray-300">|</span>
-                        <Link to="/sitemap" className="hover:underline text-gray-600">{t('footer.sitemap')}</Link>
+            {mobileSections.map((section, idx) => (
+                <div key={`${section.title}-${idx}`} className="border-b border-gray-300">
+                    <button 
+                        onClick={() => toggleSection(section.title)}
+                        className="w-full flex items-center justify-between py-3 text-[#1d1d1f] hover:text-black outline-none"
+                        aria-expanded={openSection === section.title}
+                    >
+                        <span className="font-semibold">{section.title}</span>
+                        <ChevronDown 
+                            size={16} 
+                            className={`transition-transform duration-300 ${openSection === section.title ? 'rotate-180' : ''}`} 
+                        />
+                    </button>
+                    <div 
+                        className={`overflow-hidden transition-all duration-300 ${openSection === section.title ? 'max-h-[500px] opacity-100 pb-4' : 'max-h-0 opacity-0'}`}
+                    >
+                        <ul className="space-y-2 pl-2">
+                            {section.links.map((link) => (
+                                <li key={link.label}>
+                                    <FooterLink label={link.label} href={link.href} />
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
+            ))}
+        </nav>
 
-                <div className="flex items-center gap-4">
-                     {/* Footer Language Switcher */}
-                     <button 
-                        onClick={toggleLanguage} 
-                        className="flex items-center gap-1 hover:underline text-[#1d1d1f]"
-                        aria-label="Change Language"
-                     >
-                        <span className="font-medium whitespace-nowrap">{t('footer.country')}</span>
-                        <span className="text-gray-400">|</span>
-                        <Globe size={14} className="text-gray-500" />
-                        <span className="text-gray-500">{language === 'vi' ? 'English' : 'Tiếng Việt'}</span>
-                     </button>
-                </div>
-            </div>
-          </div>
-        </div>
+        {/* Bottom Section */}
+        <section className="pt-8 pb-10 border-t border-gray-300 md:border-t-0 md:pt-2 flex flex-col md:flex-row-reverse md:justify-between gap-4">
+             <div className="flex items-center gap-2 mb-2 md:mb-0 whitespace-nowrap">
+                 <p className="text-gray-500">{t('footer.waysToBuy')} <Link to="/store/find" className="text-apple-blue hover:underline">{t('footer.findStore')}</Link> {t('footer.nearYou')} {t('footer.orCall')} <span className="text-apple-blue">1800-1192</span>.</p>
+             </div>
+        </section>
+
+        <section className="flex flex-col-reverse md:flex-row justify-between gap-4 pb-10 border-t border-gray-300 pt-4">
+             <div className="flex flex-col md:flex-row gap-4 md:items-center">
+                 <p className="text-gray-500">{t('footer.copyright')}</p>
+                 <div className="flex flex-wrap gap-2 md:gap-4 text-gray-600">
+                     <Link to="/privacy" className="hover:underline border-r border-gray-400 pr-2 md:pr-4 last:border-0">{t('footer.privacy')}</Link>
+                     <Link to="/legal" className="hover:underline border-r border-gray-400 pr-2 md:pr-4 last:border-0">{t('footer.terms')}</Link>
+                     <Link to="/legal/sales" className="hover:underline border-r border-gray-400 pr-2 md:pr-4 last:border-0">{t('footer.sales')}</Link>
+                     <Link to="/legal/web" className="hover:underline border-r border-gray-400 pr-2 md:pr-4 last:border-0">{t('footer.legal')}</Link>
+                     <Link to="/sitemap" className="hover:underline border-r border-gray-400 pr-2 md:pr-4 last:border-0">{t('footer.sitemap')}</Link>
+                 </div>
+             </div>
+             <div className="flex items-center gap-2 whitespace-nowrap">
+                 <button className="text-gray-600 hover:underline flex items-center gap-1" onClick={toggleLanguage}>
+                     <Globe size={16} />
+                     <span>{t('footer.country')}</span>
+                 </button>
+             </div>
+        </section>
       </div>
     </footer>
   );

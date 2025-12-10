@@ -51,4 +51,4 @@ export interface SubMenuData {
   [key: string]: SubMenuGroup[]; // key matches the NavItem label (e.g., "Mac")
 }
 
-export type Language = 'vi' | 'en';
+export type Language = 'vi' | 'en' | 'ar';
