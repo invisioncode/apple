@@ -1,9 +1,10 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, Search, ShoppingBag, Apple } from 'lucide-react';
+import { Menu, X, Search, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { NAV_ITEMS, NAV_SUBMENUS } from '../constants';
 import SmartSearch from './SmartSearch';
+import AppleLogo from './AppleLogo';
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -63,16 +64,16 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Logo */}
-          <div className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 z-50">
+          <div className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 z-50 h-full flex items-center">
              <Link 
                 to="/" 
-                className="text-[#e8e8ed] hover:opacity-80 transition-opacity" 
+                className="text-[#e8e8ed] hover:opacity-80 transition-opacity flex items-center h-full" 
                 aria-label="Apple" 
                 onClick={closeMobileMenu}
                 onMouseEnter={() => handleMouseEnter('')} // Close submenu when hovering logo
                 onMouseLeave={handleMouseLeave}
              >
-                <Apple size={20} className="fill-current" aria-hidden="true" />
+                <AppleLogo className="fill-current h-[44px] w-[14px]" aria-hidden="true" />
              </Link>
           </div>
 

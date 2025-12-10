@@ -1,7 +1,9 @@
+
 import React, { useState } from 'react';
 import { FOOTER_COLUMNS } from '../constants';
-import { ChevronDown, Apple, ChevronRight } from 'lucide-react';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
+import AppleLogo from './AppleLogo';
 
 const Footer: React.FC = () => {
   const [openSection, setOpenSection] = useState<string | null>(null);
@@ -25,6 +27,81 @@ const Footer: React.FC = () => {
     return map[path] || null;
   };
 
+  const getFooterLinkUrl = (label: string): string => {
+    const map: Record<string, string> = {
+      'Cửa Hàng': '/store',
+      'Mac': '/mac',
+      'iPad': '/ipad',
+      'iPhone': '/iphone',
+      'Watch': '/watch',
+      'AirPods': '/airpods',
+      'TV & Nhà': '/tv-home',
+      'AirTag': '/store/airtag',
+      'Phụ Kiện': '/store/accessories',
+      'Thẻ Quà Tặng': '/store/gift-cards',
+      'Ví': '/wallet',
+      'Apple Pay': '/apple-pay',
+      'Quản Lý ID Apple': 'https://appleid.apple.com',
+      'Tài Khoản Apple Store': '/account',
+      'iCloud.com': 'https://www.icloud.com',
+      'Apple One': '/entertainment/apple-one',
+      'Apple TV+': '/entertainment/apple-tv-plus',
+      'Apple Music': '/entertainment/apple-music',
+      'Apple Arcade': '/entertainment/apple-arcade',
+      'Apple Podcasts': '/entertainment/apple-podcasts',
+      'Apple Books': '/entertainment/apple-books',
+      'App Store': '/entertainment/app-store',
+      'Tìm Cửa Hàng': '/store/find',
+      'Genius Bar': '/store/genius-bar',
+      'Today at Apple': '/store/today',
+      'Trại Hè Apple': '/store/camp',
+      'Ứng dụng Apple Store': 'https://apps.apple.com',
+      'Tài Chính': '/store/financing',
+      'Tái Chế': '/environment',
+      'Tình Trạng Đơn Hàng': '/account/orders',
+      'Hỗ Trợ Mua Hàng': '/store/help',
+      'Apple và Doanh Nghiệp': '/business',
+      'Mua Sắm Cho Doanh Nghiệp': '/business/shop',
+      'Apple và Giáo Dục': '/education',
+      'Mua Sắm Cho Đại Học': '/education/shop',
+      'Apple trong Chăm Sóc Sức Khỏe': '/healthcare',
+      'Sức Khỏe trên Apple Watch': '/watch/health',
+      'Trợ Năng': '/accessibility',
+      'Giáo Dục': '/education-values',
+      'Môi Trường': '/environment',
+      'Quyền Riêng Tư': '/privacy',
+      'Trách Nhiệm Nhà Cung Cấp': '/supplier-responsibility',
+      'Newsroom': '/newsroom',
+      'Lãnh Đạo Apple': '/about/leadership',
+      'Cơ Hội Nghề Nghiệp': '/jobs',
+      'Nhà Đầu Tư': 'https://investor.apple.com',
+      'Đạo Đức & Tuân Thủ': '/compliance',
+      'Sự Kiện': '/events',
+      'Liên Hệ Apple': '/contact',
+    };
+    
+    // Fallback to a slug-like path for anything not explicitly mapped
+    return map[label] || `/${label.toLowerCase().replace(/\s+/g, '-')}`;
+  };
+
+  const FooterLink: React.FC<{ label: string; className?: string }> = ({ label, className = "text-gray-600 hover:underline hover:text-[#1d1d1f]" }) => {
+    const url = getFooterLinkUrl(label);
+    const isExternal = url.startsWith('http');
+
+    if (isExternal) {
+        return (
+            <a href={url} target="_blank" rel="noopener noreferrer" className={className}>
+                {label}
+            </a>
+        );
+    }
+    return (
+        <Link to={url} className={className}>
+            {label}
+        </Link>
+    );
+  };
+
   const currentPathName = getBreadcrumbName(location.pathname);
   const mobileSections = FOOTER_COLUMNS.flat();
 
@@ -40,9 +117,9 @@ const Footer: React.FC = () => {
         </section>
 
         {/* Breadcrumbs */}
-        <nav aria-label="Breadcrumbs" className="flex items-center gap-2 py-4 mb-4 text-gray-500 border-b border-gray-300 md:border-b-0">
+        <nav aria-label="Breadcrumbs" className="flex items-center gap-2 py-4 mb-4 text-gray-500 border-b border-gray-300 md:border-b-0 h-[50px]">
             <Link to="/" className="text-gray-800 hover:text-black" aria-label="Apple Home">
-                <Apple size={16} className="fill-current" />
+                <AppleLogo className="fill-current h-[44px] w-[14px]" />
             </Link>
             {currentPathName && (
                 <>
@@ -64,9 +141,7 @@ const Footer: React.FC = () => {
                             <ul className="space-y-2">
                                 {section.links.map((link) => (
                                     <li key={link}>
-                                        <a href="#" className="text-gray-600 hover:underline hover:text-[#1d1d1f]">
-                                            {link}
-                                        </a>
+                                        <FooterLink label={link} />
                                     </li>
                                 ))}
                             </ul>
@@ -106,9 +181,7 @@ const Footer: React.FC = () => {
                 <ul className="list-none p-0 m-0 space-y-2">
                   {section.links.map((link) => (
                     <li key={link} className="pl-1">
-                      <a href="#" className="text-gray-600 hover:underline hover:text-[#1d1d1f] block py-1">
-                        {link}
-                      </a>
+                      <FooterLink label={link} className="text-gray-600 hover:underline hover:text-[#1d1d1f] block py-1" />
                     </li>
                   ))}
                 </ul>
@@ -120,21 +193,21 @@ const Footer: React.FC = () => {
         {/* Bottom */}
         <div className="pt-6 md:border-t border-gray-300 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 pb-10">
           <div className="text-center md:text-left w-full">
-            <p className="mb-2">Xem thêm cách để mua hàng: <a href="#" className="text-apple-blue hover:underline">Tìm cửa hàng Apple Store</a> hoặc <a href="#" className="text-apple-blue hover:underline">nhà cung cấp khác</a> ở gần bạn. Hoặc gọi 1800-1127.</p>
+            <p className="mb-2">Xem thêm cách để mua hàng: <Link to="/store/find" className="text-apple-blue hover:underline">Tìm cửa hàng Apple Store</Link> hoặc <Link to="/reseller" className="text-apple-blue hover:underline">nhà cung cấp khác</Link> ở gần bạn. Hoặc gọi 1800-1127.</p>
             
             <div className="flex flex-col md:flex-row md:items-center justify-between mt-4 md:mt-2 gap-4">
                 <p>Copyright © 2024 Apple Inc. Bảo lưu mọi quyền.</p>
                 
                 <div className="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-2 text-xs">
-                    <a href="#" className="hover:underline text-gray-600">Chính Sách Quyền Riêng Tư</a>
+                    <Link to="/legal/privacy" className="hover:underline text-gray-600">Chính Sách Quyền Riêng Tư</Link>
                     <span className="hidden md:inline text-gray-300">|</span>
-                    <a href="#" className="hover:underline text-gray-600">Điều Khoản Sử Dụng</a>
+                    <Link to="/legal/terms" className="hover:underline text-gray-600">Điều Khoản Sử Dụng</Link>
                     <span className="hidden md:inline text-gray-300">|</span>
-                    <a href="#" className="hover:underline text-gray-600">Bán Hàng và Hoàn Tiền</a>
+                    <Link to="/legal/sales-refunds" className="hover:underline text-gray-600">Bán Hàng và Hoàn Tiền</Link>
                     <span className="hidden md:inline text-gray-300">|</span>
-                    <a href="#" className="hover:underline text-gray-600">Pháp Lý</a>
+                    <Link to="/legal" className="hover:underline text-gray-600">Pháp Lý</Link>
                     <span className="hidden md:inline text-gray-300">|</span>
-                    <a href="#" className="hover:underline text-gray-600">Sơ Đồ Trang Web</a>
+                    <Link to="/sitemap" className="hover:underline text-gray-600">Sơ Đồ Trang Web</Link>
                 </div>
 
                 <div className="md:ml-auto">
